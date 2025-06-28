@@ -13,6 +13,8 @@ export default {
         layer: "0 35px 60px -15px rgba(0, 0, 0, 0.3)",
       },
       colors: {
+        primary: '#1a2b6d',   // Your brand blue
+        accent: '#f5c800',    // Your gold/yellow
         black: "#0d0e12",
         white: "#fff",
         cyan: {

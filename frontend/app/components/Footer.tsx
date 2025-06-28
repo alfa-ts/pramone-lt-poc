@@ -1,26 +1,49 @@
+import { FaFacebook, FaLinkedin, FaInstagram } from "react-icons/fa";
+
 export default function Footer() {
   return (
-    <footer className="bg-gray-50 relative">
-      <div className="absolute inset-0 bg-[url(/images/tile-grid-black.png)] bg-size-[17px] opacity-20 bg-position-[0_1]" />
-      <div className="container relative">
-        <div className="flex flex-col items-center py-28 lg:flex-row">
-          <h3 className="mb-10 text-center text-4xl font-mono leading-tight tracking-tighter lg:mb-0 lg:w-1/2 lg:pr-4 lg:text-left lg:text-2xl">
-            Built with Sanity + Next.js.
-          </h3>
-          <div className="flex flex-col gap-3 items-center justify-center lg:w-1/2 lg:flex-row lg:pl-4">
-            <a
-              href="https://github.com/sanity-io/sanity-template-nextjs-clean"
-              className="rounded-full flex gap-2 font-mono whitespace-nowrap items-center bg-black hover:bg-blue focus:bg-blue py-3 px-6 text-white transition-colors duration-200"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View on GitHub
+    <footer className="bg-primary text-white py-8 mt-16">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <h4 className="text-lg font-bold mb-4">KAUNO KRAŠTO ASOCIACIJA</h4>
+          <p className="text-sm mb-2">Įmonės kodas: 134778710</p>
+          <p className="text-sm mb-2">
+            Adresas: Donelaičio g. 2, 119 kab., Kaunas
+          </p>
+          <p className="text-sm mb-2">Tel.: +370 37 409 578</p>
+          <p className="text-sm">El. paštas: info@pramone.lt</p>
+        </div>
+        <div>
+          <h4 className="text-lg font-bold mb-4">Puslapio struktūra</h4>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <a href="/apie" className="hover:text-accent">
+                Apie mus
+              </a>
+            </li>
+            <li>
+              <a href="/nariai" className="hover:text-accent">
+                Nariai
+              </a>
+            </li>
+            <li>
+              <a href="/kontaktai" className="hover:text-accent">
+                Kontaktai
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="text-lg font-bold mb-4">Sekite mus</h4>
+          <div className="flex space-x-4">
+            <a href="#" className="hover:text-accent">
+              <FaFacebook className="text-white h-6 w-6" />
             </a>
-            <a
-              href="https://nextjs.org/docs"
-              className="mx-3 hover:underline font-mono"
-            >
-              Read Next.js Documentation
+            <a href="#" className="hover:text-accent">
+              <FaLinkedin className="text-white h-6 w-6" />
+            </a>
+            <a href="#" className="hover:text-accent">
+              <FaInstagram className="text-white h-6 w-6" />
             </a>
           </div>
         </div>

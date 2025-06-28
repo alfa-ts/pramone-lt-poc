@@ -33,3 +33,52 @@
 
   --default-transition-duration: 250ms;
 }
+
+/* Section header styling */
+.section-header-container {
+  background-color: #1e3a8a; /* deep modern navy blue */
+  padding: 40px 20px;
+  border-radius: 0;
+}
+
+.section-header-container h1 {
+  color: #ffffff;
+}
+
+/* Footer styling */
+footer {
+  background-color: #1e3a8a; /* same modern navy */
+  color: #ffffff;
+  padding: 40px 20px;
+}
+
+footer a {
+  color: #f4b400; /* subtle modern gold accent */
+  text-decoration: underline;
+}
+
+footer a:hover {
+  color: #eab308; /* softer amber on hover */
+}
+
+/* Modern animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+}
+
+/* Dotted pattern */
+.dotted-pattern {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}

@@ -1,84 +1,86 @@
-import { Suspense } from "react";
-import Link from "next/link";
-import { PortableText } from "@portabletext/react";
-
-import { AllPosts } from "@/app/components/Posts";
-import GetStartedCode from "@/app/components/GetStartedCode";
-import SideBySideIcons from "@/app/components/SideBySideIcons";
 import { settingsQuery } from "@/sanity/lib/queries";
 import { sanityFetch } from "@/sanity/lib/live";
+import imageUrlBuilder from "@sanity/image-url";
+import { client } from "@/sanity/lib/client";
+import MemberItem, { Member } from "./components/MemberItem";
+
+const builder = imageUrlBuilder(client);
+
+export function urlFor(source: any) {
+  return builder.image(source);
+}
 
 export default async function Page() {
   const { data: settings } = await sanityFetch({
     query: settingsQuery,
   });
 
+  const query = `*[_type == "member"] | order(company asc)`;
+  const results = await client.fetch(query);
+
+  const members: Member[] = results.map((m: any) => ({
+    _id: m._id,
+    person: m.person,
+    title: m.title,
+    company: m.company,
+    address: m.address,
+    activity: m.activity,
+    logo: m.logo ? urlFor(m.logo).width(200).url() : undefined,
+  }));
+
   return (
     <>
-      <div className="relative">
-        <div className="relative bg-[url(/images/tile-1-black.png)] bg-size-[5px]">
-          <div className="bg-gradient-to-b from-white w-full h-full absolute top-0"></div>
-          <div className="container">
-            <div className="relative min-h-[40vh] mx-auto max-w-2xl pt-10 xl:pt-20 pb-30 space-y-6 lg:max-w-4xl lg:px-12 flex flex-col items-center justify-center">
-              <div className="flex flex-col gap-4 items-center">
-                <div className="text-md leading-6 prose uppercase py-1 px-3 bg-white font-mono italic">
-                  A starter template for
-                </div>
-                <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-black">
-                  <Link
-                    className="underline decoration-brand hover:text-brand underline-offset-8 hover:underline-offset-4 transition-all ease-out"
-                    href="https://sanity.io/"
-                  >
-                    Sanity
-                  </Link>
-                  +
-                  <Link
-                    className="underline decoration-black text-framework underline-offset-8 hover:underline-offset-4 transition-all ease-out"
-                    href="https://nextjs.org/"
-                  >
-                    Next.js
-                  </Link>
-                </h1>
-              </div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+        {/* Hero Section */}
+        <section className="relative bg-gradient-to-br from-blue-50 via-gray-100 to-blue-100 py-12 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-accent/10"></div>
+          <div className="absolute inset-0 dotted-pattern opacity-20"></div>
+          <div className="relative max-w-7xl mx-auto px-6 text-center">
+            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
+              Organizacijos nariai
+            </h1>
+            <p className="text-lg text-gray-600 mb-6 max-w-xl mx-auto">
+              Susipažinkite su mūsų bendruomenės nariais ir jų veikla
+            </p>
+            <div className="flex items-center justify-center text-gray-500 text-sm font-medium">
+              <span className="hover:text-primary transition-colors cursor-pointer">
+                Pradžia
+              </span>
+              <span className="mx-2">→</span>
+              <span className="text-primary font-semibold">Nariai</span>
             </div>
           </div>
-        </div>
-        <div className=" flex flex-col items-center">
-          <SideBySideIcons />
-          <div className="container relative mx-auto max-w-2xl pb-20 pt-10 space-y-6 lg:max-w-4xl lg:px-12 flex flex-col items-center">
-            <div className="prose sm:prose-lg md:prose-xl xl:prose-2xl text-gray-700 prose-a:text-gray-700 font-light text-center">
-              {settings?.description && (
-                <PortableText value={settings.description} />
-              )}
-              <div className="flex items-center flex-col gap-4">
-                <GetStartedCode />
-                <Link
-                  href="https://www.sanity.io/docs"
-                  className="inline-flex text-brand text-xs md:text-sm underline hover:text-gray-900"
-                  target="_blank"
-                  rel="noopener noreferrer"
+        </section>
+
+        {/* Members Section */}
+        <section className="relative py-12 bg-white">
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-50/30 to-transparent"></div>
+          <div className="relative max-w-7xl mx-auto px-6">
+            {/* Compact Header */}
+            <div className="flex items-center justify-between mb-8">
+              <div className="inline-flex items-center px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full">
+                {members.length} NARIŲ
+              </div>
+              <div className="w-16 h-1 bg-gradient-to-r from-primary to-accent rounded-full"></div>
+            </div>
+
+            {/* Members Grid */}
+            <div className="space-y-6">
+              {members.map((member, index) => (
+                <div
+                  key={member._id}
+                  className="opacity-0 animate-fade-in-up"
+                  style={{
+                    animationDelay: `${index * 100}ms`,
+                    animationFillMode: "forwards",
+                  }}
                 >
-                  Sanity Documentation
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    className="w-4 h-4 ml-1 inline"
-                    fill="currentColor"
-                  >
-                    <path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V12L17.206 8.207L11.2071 14.2071L9.79289 12.7929L15.792 6.793L12 3H21Z"></path>
-                  </svg>
-                </Link>
-              </div>
+                  <MemberItem member={member} />
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      </div>
-      <div className="border-t border-gray-100 bg-gray-50">
-        <div className="container">
-          <aside className="py-12 sm:py-20">
-            <Suspense>{await AllPosts()}</Suspense>
-          </aside>
-        </div>
+        </section>
       </div>
     </>
   );

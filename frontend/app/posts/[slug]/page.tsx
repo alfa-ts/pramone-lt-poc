@@ -5,7 +5,6 @@ import { Suspense } from "react";
 
 import Avatar from "@/app/components/Avatar";
 import CoverImage from "@/app/components/CoverImage";
-import { MorePosts } from "@/app/components/Posts";
 import PortableText from "@/app/components/PortableText";
 import { sanityFetch } from "@/sanity/lib/live";
 import { postPagesSlugs, postQuery } from "@/sanity/lib/queries";
@@ -35,7 +34,7 @@ export async function generateStaticParams() {
  */
 export async function generateMetadata(
   props: Props,
-  parent: ResolvingMetadata,
+  parent: ResolvingMetadata
 ): Promise<Metadata> {
   const params = await props.params;
   const { data: post } = await sanityFetch({
@@ -103,13 +102,6 @@ export default async function PostPage(props: Props) {
               )}
             </article>
           </div>
-        </div>
-      </div>
-      <div className="border-t border-gray-100 bg-gray-50">
-        <div className="container py-12 lg:py-24 grid gap-12">
-          <aside>
-            <Suspense>{await MorePosts({ skip: post._id, limit: 2 })}</Suspense>
-          </aside>
         </div>
       </div>
     </>
