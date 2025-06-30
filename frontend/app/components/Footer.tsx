@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FaFacebook, FaLinkedin, FaInstagram } from "react-icons/fa";
 
 export default function Footer() {
@@ -17,34 +18,34 @@ export default function Footer() {
           <h4 className="text-lg font-bold mb-4">Puslapio struktūra</h4>
           <ul className="space-y-2 text-sm">
             <li>
-              <a href="/apie" className="hover:text-accent">
+              <Link href="/apie" className="hover:text-accent">
                 Apie mus
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/nariai" className="hover:text-accent">
+              <Link href="/nariai" className="hover:text-accent">
                 Nariai
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/kontaktai" className="hover:text-accent">
+              <Link href="/kontaktai" className="hover:text-accent">
                 Kontaktai
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
         <div>
           <h4 className="text-lg font-bold mb-4">Sekite mus</h4>
           <div className="flex space-x-4">
-            <a href="#" className="hover:text-accent">
+            <Link href="#" className="hover:text-accent">
               <FaFacebook className="text-white h-6 w-6" />
-            </a>
-            <a href="#" className="hover:text-accent">
+            </Link>
+            <Link href="#" className="hover:text-accent">
               <FaLinkedin className="text-white h-6 w-6" />
-            </a>
-            <a href="#" className="hover:text-accent">
+            </Link>
+            <Link href="#" className="hover:text-accent">
               <FaInstagram className="text-white h-6 w-6" />
-            </a>
+            </Link>
           </div>
         </div>
       </div>

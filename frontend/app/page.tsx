@@ -6,7 +6,7 @@ import MemberItem, { Member } from "./components/MemberItem";
 
 const builder = imageUrlBuilder(client);
 
-export function urlFor(source: any) {
+function urlFor(source: any) {
   return builder.image(source);
 }
 
