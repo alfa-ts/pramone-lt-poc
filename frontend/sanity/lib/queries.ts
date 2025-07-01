@@ -2,6 +2,23 @@ import { defineQuery } from "next-sanity";
 
 export const settingsQuery = defineQuery(`*[_type == "settings"][0]`);
 
+export const leadershipQuery = defineQuery(`
+  *[_type == "leadership"] | order(role asc, sortOrder asc, name asc) {
+    _id,
+    name,
+    position,
+    role,
+    "photo": photo{
+      asset->{
+        _id,
+        url
+      },
+      alt
+    },
+    sortOrder
+  }
+`);
+
 const postFields = /* groq */ `
   _id,
   "status": select(_originalId in path("drafts.**") => "draft", "published"),
