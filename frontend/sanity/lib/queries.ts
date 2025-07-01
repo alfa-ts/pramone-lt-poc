@@ -34,8 +34,7 @@ export const newsQuery = defineQuery(`
       alt
     },
     publishedAt,
-    featured,
-    sortOrder
+    featured
   }
 `);
 
@@ -54,8 +53,7 @@ export const allNewsQuery = defineQuery(`
       alt
     },
     publishedAt,
-    featured,
-    sortOrder
+    featured
   }
 `);
 

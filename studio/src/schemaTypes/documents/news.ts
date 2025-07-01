@@ -81,8 +81,8 @@ export const news = defineType({
     defineField({
       name: 'publishedAt',
       title: 'Publikavimo data',
-      type: 'datetime',
-      initialValue: () => new Date().toISOString(),
+      type: 'date',
+      initialValue: () => new Date().toISOString().split('T')[0],
       validation: (rule) => rule.required(),
     }),
     defineField({
@@ -92,27 +92,12 @@ export const news = defineType({
       description: 'Ar šis straipsnis turėtų būti rodomas kaip svarbus',
       initialValue: false,
     }),
-    defineField({
-      name: 'sortOrder',
-      title: 'Rikiavimo tvarka',
-      type: 'number',
-      description: 'Mažesnis skaičius = aukštesnė pozicija sąraše',
-      initialValue: 0,
-    }),
   ],
   orderings: [
     {
       title: 'Pagal publikavimo datą (naujausios pirmos)',
       name: 'publishedAtDesc',
       by: [
-        {field: 'publishedAt', direction: 'desc'}
-      ]
-    },
-    {
-      title: 'Pagal rikiavimo tvarką',
-      name: 'sortOrder',
-      by: [
-        {field: 'sortOrder', direction: 'asc'},
         {field: 'publishedAt', direction: 'desc'}
       ]
     }
