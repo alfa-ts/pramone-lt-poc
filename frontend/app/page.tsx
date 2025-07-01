@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { sanityFetch } from "@/sanity/lib/live";
-import { leadershipQuery } from "@/sanity/lib/queries";
+import { leadershipQuery, newsQuery } from "@/sanity/lib/queries";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "@/sanity/lib/client";
 
@@ -10,46 +10,34 @@ function urlFor(source: any) {
   return builder.image(source);
 }
 
-const news = [
-  {
-    date: "Bir • 21 • 2025",
-    title: "KAUNO REGIONO FORUMAS '25",
-    category: "Bendros",
-    excerpt:
-      "Birželio 20 dieną Kauno regiono forume gvildenta tema 'Tvari darbo rinka: trūksta žmonių ar ryžto pokyčiams?' - joje dalyvavo ir stiprių pramonės verslo atstovų balsą transliavo Kauno krašto...",
-    image: "/news1.jpg", // Replace with actual image paths
-  },
-  {
-    date: "Bir • 17 • 2025",
-    title:
-      "KKPDA VISUOTINĖ – RINKIMINĖ KONFERENCIJA: KETVERI VEIKLOS METAI, NAUJA PREZIDIUMO SUDĖTIS IR PREZIDENTO KADENCIJOS TĘSTINUMAS",
-    category: "Bendros",
-    excerpt:
-      "2025 m. birželio 16 d. viešbutyje 'Radisson Hotel Kaunas' įvyko Kauno krašto pramonininkų ir darbdavių asociacijos visuotinis-rinkiminis narių susirinkimas...",
-    image: "/news2.jpg",
-  },
-  {
-    date: "Kov • 3 • 2025",
-    title: "KKPDA POZICIJA: UKRAINA PRIVALO BŪTI REMIAMA BE IŠSKAIČIAVIMŲ",
-    category: "Bendros",
-    excerpt:
-      "Karas griauna valstybes, naikina žmones, stabdo ekonomiką ir ardo pramonės pagrindus...",
-    image: "", // Color block
-  },
-  {
-    date: "Vas • 25 • 2025",
-    title: "SUSIRINKIMAS MOKSLO SALOJE",
-    category: "Bendros",
-    excerpt:
-      "Kauno pramonininkai lankėsi įspūdingoje Mokslo saloje: įkvepiamas, architektūra ir pažinimas...",
-    image: "/news4.jpg",
-  },
-];
+function formatDate(dateString: string) {
+  const date = new Date(dateString);
+  const months = ['Sau', 'Vas', 'Kov', 'Bal', 'Geg', 'Bir', 'Lie', 'Rug', 'Rgs', 'Spa', 'Lap', 'Grd'];
+  const month = months[date.getMonth()];
+  const day = date.getDate();
+  const year = date.getFullYear();
+  return `${month} • ${day} • ${year}`;
+}
+
+function formatCategory(category: string) {
+  const categoryMap: { [key: string]: string } = {
+    'bendros': 'Bendros',
+    'renginiai': 'Renginiai',
+    'projektai': 'Projektai',
+    'spaudai': 'Pranešimai spaudai'
+  };
+  return categoryMap[category] || 'Bendros';
+}
 
 export default async function Page() {
-  const { data: leadershipData } = await sanityFetch({
-    query: leadershipQuery,
-  });
+  const [{ data: leadershipData }, { data: newsData }] = await Promise.all([
+    sanityFetch({
+      query: leadershipQuery,
+    }),
+    sanityFetch({
+      query: newsQuery,
+    })
+  ]);
 
   // Group leadership data by role
   const groupedLeadership = leadershipData?.reduce((acc: any, member: any) => {
@@ -74,6 +62,16 @@ export default async function Page() {
     members: members as any[],
   }));
 
+  // Transform news data to match expected format
+  const news = newsData?.map((item: any) => ({
+    date: formatDate(item.publishedAt),
+    title: item.title,
+    category: formatCategory(item.category),
+    excerpt: item.excerpt,
+    image: item.coverImage?.asset?.url || "",
+    slug: item.slug?.current || "",
+  })) || [];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       {/* Landing Page */}
@@ -89,55 +87,57 @@ export default async function Page() {
           </p>
         </div>
       </section>
-      <section className="bg-white py-12">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex items-center justify-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-yellow-500 uppercase text-center">
-              Naujienos
-            </h2>
-          </div>
-          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {news.map((item, index) => (
-              <div key={index} className="flex flex-col">
-                <div className="relative w-full h-56 mb-4 overflow-hidden">
-                  {item.image ? (
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      fill
-                      className="object-cover rounded-sm"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-yellow-400 rounded-sm" />
-                  )}
-                  <div className="absolute top-2 left-2 bg-white text-xs font-bold text-blue-900 px-2 py-1 rounded shadow">
-                    {item.date}
+      {news.length > 0 && (
+        <section className="bg-white py-12">
+          <div className="max-w-6xl mx-auto px-4">
+            <div className="flex items-center justify-center mb-12">
+              <h2 className="text-2xl md:text-3xl font-bold text-yellow-500 uppercase text-center">
+                Naujienos
+              </h2>
+            </div>
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              {news.map((item: any, index: number) => (
+                <div key={index} className="flex flex-col">
+                  <div className="relative w-full h-56 mb-4 overflow-hidden">
+                    {item.image ? (
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        className="object-cover rounded-sm"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-yellow-400 rounded-sm" />
+                    )}
+                    <div className="absolute top-2 left-2 bg-white text-xs font-bold text-blue-900 px-2 py-1 rounded shadow">
+                      {item.date}
+                    </div>
+                  </div>
+                  <div className="flex flex-col flex-grow">
+                    <h3 className="text-sm text-gray-500 mb-1">
+                      {item.category}
+                    </h3>
+                    <h4 className="font-bold text-blue-900 text-lg mb-2">
+                      {item.title}
+                    </h4>
+                    <p className="text-gray-700 text-sm flex-grow">
+                      {item.excerpt}
+                    </p>
+                    <div className="mt-2">
+                      <a
+                        href={item.slug ? `/naujienos/${item.slug}` : "#"}
+                        className="text-blue-900 text-sm font-bold hover:underline inline-flex items-center"
+                      >
+                        Plačiau <span className="ml-1">&gt;</span>
+                      </a>
+                    </div>
                   </div>
                 </div>
-                <div className="flex flex-col flex-grow">
-                  <h3 className="text-sm text-gray-500 mb-1">
-                    {item.category}
-                  </h3>
-                  <h4 className="font-bold text-blue-900 text-lg mb-2">
-                    {item.title}
-                  </h4>
-                  <p className="text-gray-700 text-sm flex-grow">
-                    {item.excerpt}
-                  </p>
-                  <div className="mt-2">
-                    <a
-                      href="#"
-                      className="text-blue-900 text-sm font-bold hover:underline inline-flex items-center"
-                    >
-                      Plačiau <span className="ml-1">&gt;</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
       {people.length > 0 && (
         <section className="bg-gray-50 py-12">
           <div className="max-w-5xl mx-auto px-4 space-y-16">

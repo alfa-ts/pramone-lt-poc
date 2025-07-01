@@ -19,6 +19,66 @@ export const leadershipQuery = defineQuery(`
   }
 `);
 
+export const newsQuery = defineQuery(`
+  *[_type == "news"] | order(sortOrder asc, publishedAt desc) [0...4] {
+    _id,
+    title,
+    slug,
+    category,
+    excerpt,
+    "coverImage": coverImage{
+      asset->{
+        _id,
+        url
+      },
+      alt
+    },
+    publishedAt,
+    featured,
+    sortOrder
+  }
+`);
+
+export const allNewsQuery = defineQuery(`
+  *[_type == "news"] | order(publishedAt desc) {
+    _id,
+    title,
+    slug,
+    category,
+    excerpt,
+    "coverImage": coverImage{
+      asset->{
+        _id,
+        url
+      },
+      alt
+    },
+    publishedAt,
+    featured,
+    sortOrder
+  }
+`);
+
+export const singleNewsQuery = defineQuery(`
+  *[_type == "news" && slug.current == $slug][0] {
+    _id,
+    title,
+    slug,
+    category,
+    excerpt,
+    content,
+    "coverImage": coverImage{
+      asset->{
+        _id,
+        url
+      },
+      alt
+    },
+    publishedAt,
+    featured
+  }
+`);
+
 const postFields = /* groq */ `
   _id,
   "status": select(_originalId in path("drafts.**") => "draft", "published"),

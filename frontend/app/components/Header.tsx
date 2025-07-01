@@ -4,13 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaFacebookF } from "react-icons/fa";
 import Image from "next/image";
-import { FaHome, FaInfoCircle, FaUsers, FaPhone } from "react-icons/fa";
+import { FaHome, FaInfoCircle, FaUsers, FaPhone, FaNewspaper } from "react-icons/fa";
 
 export default function Header() {
   const pathname = usePathname();
 
   const getNavItemClasses = (href: string) => {
-    const isActive = pathname === href;
+    const isActive = pathname === href || (href === '/naujienos' && pathname.startsWith('/naujienos'));
     
     if (isActive) {
       return "flex items-center space-x-2 px-4 py-2 rounded-lg text-primary bg-primary/10 border border-primary/20 group";
@@ -77,6 +77,13 @@ export default function Header() {
             >
               <FaInfoCircle className="h-4 w-4 group-hover:scale-110 transition-transform" />
               <span className="font-medium">Apie mus</span>
+            </Link>
+            <Link
+              href="/naujienos"
+              className={getNavItemClasses("/naujienos")}
+            >
+              <FaNewspaper className="h-4 w-4 group-hover:scale-110 transition-transform" />
+              <span className="font-medium">Naujienos</span>
             </Link>
             <Link
               href="/nariai"
