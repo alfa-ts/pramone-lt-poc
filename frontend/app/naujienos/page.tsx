@@ -65,31 +65,34 @@ export default async function NewsListPage() {
         <div className="max-w-7xl mx-auto px-6">
           {news.length > 0 ? (
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {news.map((item: any, index: number) => (
-                <div
-                  key={index}
-                  className={`flex flex-col ${item.featured ? 'md:col-span-2 lg:col-span-2' : ''}`}
-                >
-                  <div className="relative w-full h-56 mb-4 overflow-hidden rounded-lg shadow-lg">
-                    {item.image ? (
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        className="object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-yellow-400 rounded-lg" />
-                    )}
-                    <div className="absolute top-2 left-2 bg-white text-xs font-bold text-blue-900 px-2 py-1 rounded shadow">
-                      {item.date}
-                    </div>
-                    {item.featured && (
-                      <div className="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded shadow">
-                        ⭐ Svarbu
-                      </div>
-                    )}
-                  </div>
+                             {news.map((item: any, index: number) => (
+                 <div
+                   key={index}
+                   className={`flex flex-col ${item.featured ? 'md:col-span-2 lg:col-span-2' : ''}`}
+                 >
+                   <Link 
+                     href={item.slug ? `/naujienos/${item.slug}` : "#"}
+                     className="relative w-full h-56 mb-4 overflow-hidden rounded-lg shadow-lg block cursor-pointer group"
+                   >
+                     {item.image ? (
+                       <Image
+                         src={item.image}
+                         alt={item.title}
+                         fill
+                         className="object-cover group-hover:scale-105 transition-transform duration-300"
+                       />
+                     ) : (
+                       <div className="w-full h-full bg-yellow-400 rounded-lg group-hover:scale-105 transition-transform duration-300" />
+                     )}
+                     <div className="absolute top-2 left-2 bg-white text-xs font-bold text-blue-900 px-2 py-1 rounded shadow">
+                       {item.date}
+                     </div>
+                     {item.featured && (
+                       <div className="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded shadow">
+                         ⭐ Svarbu
+                       </div>
+                     )}
+                   </Link>
                   <div className="flex flex-col flex-grow">
                     <h3 className="text-sm text-gray-500 mb-1">
                       {item.category}

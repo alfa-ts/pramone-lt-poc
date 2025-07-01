@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { sanityFetch } from "@/sanity/lib/live";
 import { leadershipQuery, newsQuery } from "@/sanity/lib/queries";
 import imageUrlBuilder from "@sanity/image-url";
@@ -12,7 +13,20 @@ function urlFor(source: any) {
 
 function formatDate(dateString: string) {
   const date = new Date(dateString);
-  const months = ['Sau', 'Vas', 'Kov', 'Bal', 'Geg', 'Bir', 'Lie', 'Rug', 'Rgs', 'Spa', 'Lap', 'Grd'];
+  const months = [
+    "Sau",
+    "Vas",
+    "Kov",
+    "Bal",
+    "Geg",
+    "Bir",
+    "Lie",
+    "Rug",
+    "Rgs",
+    "Spa",
+    "Lap",
+    "Grd",
+  ];
   const month = months[date.getMonth()];
   const day = date.getDate();
   const year = date.getFullYear();
@@ -21,12 +35,12 @@ function formatDate(dateString: string) {
 
 function formatCategory(category: string) {
   const categoryMap: { [key: string]: string } = {
-    'bendros': 'Bendros',
-    'renginiai': 'Renginiai',
-    'projektai': 'Projektai',
-    'spaudai': 'Pranešimai spaudai'
+    bendros: "Bendros",
+    renginiai: "Renginiai",
+    projektai: "Projektai",
+    spaudai: "Pranešimai spaudai",
   };
-  return categoryMap[category] || 'Bendros';
+  return categoryMap[category] || "Bendros";
 }
 
 export default async function Page() {
@@ -36,25 +50,27 @@ export default async function Page() {
     }),
     sanityFetch({
       query: newsQuery,
-    })
+    }),
   ]);
 
   // Group leadership data by role
-  const groupedLeadership = leadershipData?.reduce((acc: any, member: any) => {
-    const roleKey = member.role === 'prezidentas' ? 'Prezidentas' : 'Viceprezidentai';
-    
-    if (!acc[roleKey]) {
-      acc[roleKey] = [];
-    }
-    
-    acc[roleKey].push({
-      name: member.name,
-      position: member.position,
-      image: member.photo?.asset?.url || '/placeholder.jpg',
-    });
-    
-    return acc;
-  }, {}) || {};
+  const groupedLeadership =
+    leadershipData?.reduce((acc: any, member: any) => {
+      const roleKey =
+        member.role === "prezidentas" ? "Prezidentas" : "Viceprezidentai";
+
+      if (!acc[roleKey]) {
+        acc[roleKey] = [];
+      }
+
+      acc[roleKey].push({
+        name: member.name,
+        position: member.position,
+        image: member.photo?.asset?.url || "/placeholder.jpg",
+      });
+
+      return acc;
+    }, {}) || {};
 
   // Convert to the expected format
   const people = Object.entries(groupedLeadership).map(([role, members]) => ({
@@ -63,14 +79,15 @@ export default async function Page() {
   }));
 
   // Transform news data to match expected format
-  const news = newsData?.map((item: any) => ({
-    date: formatDate(item.publishedAt),
-    title: item.title,
-    category: formatCategory(item.category),
-    excerpt: item.excerpt,
-    image: item.coverImage?.asset?.url || "",
-    slug: item.slug?.current || "",
-  })) || [];
+  const news =
+    newsData?.map((item: any) => ({
+      date: formatDate(item.publishedAt),
+      title: item.title,
+      category: formatCategory(item.category),
+      excerpt: item.excerpt,
+      image: item.coverImage?.asset?.url || "",
+      slug: item.slug?.current || "",
+    })) || [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
@@ -98,21 +115,24 @@ export default async function Page() {
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {news.map((item: any, index: number) => (
                 <div key={index} className="flex flex-col">
-                  <div className="relative w-full h-56 mb-4 overflow-hidden">
+                  <Link
+                    href={item.slug ? `/naujienos/${item.slug}` : "#"}
+                    className="relative w-full h-56 mb-4 overflow-hidden block cursor-pointer group"
+                  >
                     {item.image ? (
                       <Image
                         src={item.image}
                         alt={item.title}
                         fill
-                        className="object-cover rounded-sm"
+                        className="object-cover rounded-sm group-hover:scale-105 transition-transform duration-300"
                       />
                     ) : (
-                      <div className="w-full h-full bg-yellow-400 rounded-sm" />
+                      <div className="w-full h-full bg-yellow-400 rounded-sm group-hover:scale-105 transition-transform duration-300" />
                     )}
                     <div className="absolute top-2 left-2 bg-white text-xs font-bold text-blue-900 px-2 py-1 rounded shadow">
                       {item.date}
                     </div>
-                  </div>
+                  </Link>
                   <div className="flex flex-col flex-grow">
                     <h3 className="text-sm text-gray-500 mb-1">
                       {item.category}

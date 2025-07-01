@@ -20,7 +20,7 @@ export const leadershipQuery = defineQuery(`
 `);
 
 export const newsQuery = defineQuery(`
-  *[_type == "news"] | order(sortOrder asc, publishedAt desc) [0...4] {
+  *[_type == "news"] | order(publishedAt desc) [0...4] {
     _id,
     title,
     slug,
