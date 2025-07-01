@@ -1,14 +1,23 @@
+"use client";
+
 import Link from "next/link";
-import { settingsQuery } from "@/sanity/lib/queries";
-import { sanityFetch } from "@/sanity/lib/live";
+import { usePathname } from "next/navigation";
 import { FaFacebookF } from "react-icons/fa";
 import Image from "next/image";
 import { FaHome, FaInfoCircle, FaUsers, FaPhone } from "react-icons/fa";
 
-export default async function Header() {
-  const { data: settings } = await sanityFetch({
-    query: settingsQuery,
-  });
+export default function Header() {
+  const pathname = usePathname();
+
+  const getNavItemClasses = (href: string) => {
+    const isActive = pathname === href;
+    
+    if (isActive) {
+      return "flex items-center space-x-2 px-4 py-2 rounded-lg text-primary bg-primary/10 border border-primary/20 group";
+    }
+    
+    return "flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-700 hover:text-primary hover:bg-primary/5 transition-all duration-200 group";
+  };
 
   return (
     <>
@@ -46,39 +55,39 @@ export default async function Header() {
             </div>
             <div>
               <h1 className="text-lg md:text-xl font-bold text-gray-900 leading-tight">
-                KAUNO KRAŠTO PRAMONININKŲ
+                KAUNO KRAŠTO
               </h1>
               <p className="text-sm text-gray-600 font-medium">
-                IR DARBDAVIŲ ASOCIACIJA
+                PRAMONININKŲ IR DARBDAVIŲ ASOCIACIJA
               </p>
             </div>
           </div>
-          
+
           <nav className="hidden md:flex items-center space-x-2">
             <Link
               href="/"
-              className="flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-700 hover:text-primary hover:bg-primary/5 transition-all duration-200 group"
+              className={getNavItemClasses("/")}
             >
               <FaHome className="h-4 w-4 group-hover:scale-110 transition-transform" />
               <span className="font-medium">Pradžia</span>
             </Link>
             <Link
               href="/apie"
-              className="flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-700 hover:text-primary hover:bg-primary/5 transition-all duration-200 group"
+              className={getNavItemClasses("/apie")}
             >
               <FaInfoCircle className="h-4 w-4 group-hover:scale-110 transition-transform" />
               <span className="font-medium">Apie mus</span>
             </Link>
             <Link
               href="/nariai"
-              className="flex items-center space-x-2 px-4 py-2 rounded-lg text-primary bg-primary/10 border border-primary/20 group"
+              className={getNavItemClasses("/nariai")}
             >
               <FaUsers className="h-4 w-4 group-hover:scale-110 transition-transform" />
               <span className="font-medium">Nariai</span>
             </Link>
             <Link
               href="/kontaktai"
-              className="flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-700 hover:text-primary hover:bg-primary/5 transition-all duration-200 group"
+              className={getNavItemClasses("/kontaktai")}
             >
               <FaPhone className="h-4 w-4 group-hover:scale-110 transition-transform" />
               <span className="font-medium">Kontaktai</span>
