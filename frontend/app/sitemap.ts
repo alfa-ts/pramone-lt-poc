@@ -41,10 +41,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Add news articles
   if (allNews && allNews.length > 0) {
     for (const newsItem of allNews) {
-      if (newsItem.slug?.current) {
+      const typedNewsItem = newsItem as {
+        slug?: { current?: string };
+        publishedAt?: string;
+      };
+      if (typedNewsItem.slug?.current) {
         sitemap.push({
-          url: `https://${domain}/naujienos/${newsItem.slug.current}`,
-          lastModified: newsItem.publishedAt ? new Date(newsItem.publishedAt) : new Date(),
+          url: `https://${domain}/naujienos/${typedNewsItem.slug.current}`,
+          lastModified: typedNewsItem.publishedAt ? new Date(typedNewsItem.publishedAt) : new Date(),
           priority: 0.6,
           changeFrequency: "never",
         });

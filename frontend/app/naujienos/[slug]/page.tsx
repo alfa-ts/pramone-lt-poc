@@ -39,6 +39,19 @@ export default async function NewsDetailPage({
     notFound();
   }
 
+  // Type assertion to help TypeScript understand the news object structure
+  const typedNews = news as {
+    title: string;
+    category: string;
+    excerpt: string;
+    publishedAt: string;
+    content?: any;
+    coverImage?: {
+      asset?: { url: string };
+      alt?: string;
+    };
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       {/* Header */}
@@ -53,21 +66,21 @@ export default async function NewsDetailPage({
             <span className="mx-2">→</span>
             <span className="text-primary font-semibold">Naujienos</span>
             <span className="mx-2">→</span>
-            <span className="text-primary font-semibold">{news.title}</span>
+            <span className="text-primary font-semibold">{typedNews.title}</span>
           </div>
 
           <div className="text-center">
             <div className="inline-flex items-center px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full mb-4">
-              {formatCategory(news.category)}
+              {formatCategory(typedNews.category)}
             </div>
             <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
-              {news.title}
+              {typedNews.title}
             </h1>
             <p className="text-lg text-gray-600 mb-6 max-w-3xl mx-auto">
-              {news.excerpt}
+              {typedNews.excerpt}
             </p>
             <div className="text-sm text-gray-500">
-              {formatDate(news.publishedAt)}
+              {formatDate(typedNews.publishedAt)}
             </div>
           </div>
         </div>
@@ -76,20 +89,20 @@ export default async function NewsDetailPage({
       {/* Article Content */}
       <section className="py-12">
         <div className="max-w-4xl mx-auto px-6">
-          {news.coverImage?.asset?.url && (
+          {typedNews.coverImage?.asset?.url && (
             <div className="relative w-full h-96 mb-8 overflow-hidden rounded-lg shadow-lg">
               <Image
-                src={news.coverImage.asset.url}
-                alt={news.coverImage.alt || news.title}
+                src={typedNews.coverImage.asset.url}
+                alt={typedNews.coverImage.alt || typedNews.title}
                 fill
                 className="object-cover"
               />
             </div>
           )}
 
-          {news.content && (
+          {typedNews.content && (
             <div className="prose prose-lg max-w-none">
-              <PortableText value={news.content} />
+              <PortableText value={typedNews.content} />
             </div>
           )}
 
