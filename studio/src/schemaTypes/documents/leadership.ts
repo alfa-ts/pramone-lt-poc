@@ -47,11 +47,15 @@ export const leadership = defineType({
           name: 'alt',
           type: 'string',
           title: 'Alternatyvus tekstas',
-          description: 'Svarbu SEO ir prieinamumui',
+          description: 'Aprašo asmens nuotrauką. Sanity AI gali automatiškai sugeneruoti aprašymą.',
+          placeholder: 'Pvz: Asociacijos prezidento nuotrauka',
           validation: (rule) => {
             return rule.custom((alt, context) => {
               if ((context.document?.photo as any)?.asset?._ref && !alt) {
-                return 'Privaloma nurodyti alternatyvų tekstą'
+                return {
+                  message: 'Rekomenduojama nurodyti alternatyvų tekstą',
+                  level: 'warning'
+                }
               }
               return true
             })

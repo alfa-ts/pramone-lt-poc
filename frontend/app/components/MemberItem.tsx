@@ -9,6 +9,7 @@ export interface Member {
   address: string;
   activity: string;
   logo?: string;
+  logoAlt?: string;
 }
 
 export default function MemberItem({ member }: { member: Member }) {
@@ -23,7 +24,7 @@ export default function MemberItem({ member }: { member: Member }) {
           <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl p-6 group-hover:bg-gradient-to-br group-hover:from-primary/5 group-hover:to-accent/5 transition-all duration-500 border border-gray-100 group-hover:border-primary/20">
             <Image
               src={member.logo || "/images/default-logo.png"}
-              alt={member.company}
+              alt={member.logoAlt || member.company}
               width={160}
               height={80}
               className="w-full h-16 object-contain filter grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"

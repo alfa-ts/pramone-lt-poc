@@ -33,8 +33,7 @@ export const newsQuery = defineQuery(`
       },
       alt
     },
-    publishedAt,
-    featured
+    publishedAt
   }
 `);
 
@@ -52,8 +51,7 @@ export const allNewsQuery = defineQuery(`
       },
       alt
     },
-    publishedAt,
-    featured
+    publishedAt
   }
 `);
 
@@ -72,8 +70,7 @@ export const singleNewsQuery = defineQuery(`
       },
       alt
     },
-    publishedAt,
-    featured
+    publishedAt
   }
 `);
 

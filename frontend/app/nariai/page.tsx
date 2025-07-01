@@ -15,7 +15,21 @@ export default async function Page() {
     query: settingsQuery,
   });
 
-  const query = `*[_type == "member"] | order(company asc)`;
+  const query = `*[_type == "member"] | order(company asc) {
+    _id,
+    person,
+    title,
+    company,
+    address,
+    activity,
+    "logo": logo{
+      asset->{
+        _id,
+        url
+      },
+      alt
+    }
+  }`;
   const results = await client.fetch(query);
 
   const members: Member[] = results.map((m: any) => ({
@@ -25,7 +39,8 @@ export default async function Page() {
     company: m.company,
     address: m.address,
     activity: m.activity,
-    logo: m.logo ? urlFor(m.logo).width(200).url() : undefined,
+    logo: m.logo?.asset?.url ? urlFor(m.logo).width(200).url() : undefined,
+    logoAlt: m.logo?.alt || "",
   }));
 
   return (

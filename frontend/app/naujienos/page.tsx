@@ -33,8 +33,8 @@ export default async function NewsListPage() {
     category: formatCategory(item.category),
     excerpt: item.excerpt,
     image: item.coverImage?.asset?.url || "",
+    alt: item.coverImage?.alt || "",
     slug: item.slug?.current || "",
-    featured: item.featured || false,
   })) || [];
 
   return (
@@ -68,7 +68,7 @@ export default async function NewsListPage() {
                              {news.map((item: any, index: number) => (
                  <div
                    key={index}
-                   className={`flex flex-col ${item.featured ? 'md:col-span-2 lg:col-span-2' : ''}`}
+                   className="flex flex-col"
                  >
                    <Link 
                      href={item.slug ? `/naujienos/${item.slug}` : "#"}
@@ -77,7 +77,7 @@ export default async function NewsListPage() {
                      {item.image ? (
                        <Image
                          src={item.image}
-                         alt={item.title}
+                         alt={item.alt || item.title}
                          fill
                          className="object-cover group-hover:scale-105 transition-transform duration-300"
                        />
@@ -87,17 +87,12 @@ export default async function NewsListPage() {
                      <div className="absolute top-2 left-2 bg-white text-xs font-bold text-blue-900 px-2 py-1 rounded shadow">
                        {item.date}
                      </div>
-                     {item.featured && (
-                       <div className="absolute top-2 right-2 bg-primary text-white text-xs font-bold px-2 py-1 rounded shadow">
-                         ⭐ Svarbu
-                       </div>
-                     )}
                    </Link>
                   <div className="flex flex-col flex-grow">
                     <h3 className="text-sm text-gray-500 mb-1">
                       {item.category}
                     </h3>
-                    <h4 className={`font-bold text-blue-900 mb-2 ${item.featured ? 'text-xl' : 'text-lg'}`}>
+                    <h4 className="font-bold text-blue-900 mb-2 text-lg">
                       {item.title}
                     </h4>
                     <p className="text-gray-700 text-sm flex-grow">

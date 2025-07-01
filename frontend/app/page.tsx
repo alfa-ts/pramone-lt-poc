@@ -76,6 +76,7 @@ export default async function Page() {
         name: member.name,
         position: member.position,
         image: member.photo?.asset?.url || "/placeholder.jpg",
+        alt: member.photo?.alt || "",
       });
 
       return acc;
@@ -95,6 +96,7 @@ export default async function Page() {
       category: formatCategory(item.category),
       excerpt: item.excerpt,
       image: item.coverImage?.asset?.url || "",
+      alt: item.coverImage?.alt || "",
       slug: item.slug?.current || "",
     })) || [];
 
@@ -131,7 +133,7 @@ export default async function Page() {
                     {item.image ? (
                       <Image
                         src={item.image}
-                        alt={item.title}
+                        alt={item.alt || item.title}
                         fill
                         className="object-cover rounded-sm group-hover:scale-105 transition-transform duration-300"
                       />
@@ -146,9 +148,14 @@ export default async function Page() {
                     <h3 className="text-sm text-gray-500 mb-1">
                       {item.category}
                     </h3>
-                    <h4 className="font-bold text-blue-900 text-lg mb-2">
-                      {item.title}
-                    </h4>
+                    <Link 
+                      href={item.slug ? `/naujienos/${item.slug}` : "#"}
+                      className="block"
+                    >
+                      <h4 className="font-bold text-blue-900 text-lg mb-2 hover:text-primary transition-colors cursor-pointer">
+                        {item.title}
+                      </h4>
+                    </Link>
                     <p className="text-gray-700 text-sm flex-grow">
                       {item.excerpt}
                     </p>
@@ -194,7 +201,7 @@ export default async function Page() {
                       <div className="w-40 h-40 rounded-full overflow-hidden mb-4 shadow-lg">
                         <Image
                           src={member.image}
-                          alt={member.name}
+                          alt={member.alt || member.name}
                           width={160}
                           height={160}
                           className="object-cover w-full h-full"

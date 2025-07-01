@@ -66,11 +66,15 @@ export const news = defineType({
           name: 'alt',
           type: 'string',
           title: 'Alternatyvus tekstas',
-          description: 'Svarbu SEO ir prieinamumui',
+          description: 'Aprašo nuotrauką. Palikus tuščią, Sanity AI automatiškai sugeneruos aprašymą.',
+          placeholder: 'Pvz: Nuotrauka apie...',
           validation: (rule) => {
             return rule.custom((alt, context) => {
               if ((context.document?.coverImage as any)?.asset?._ref && !alt) {
-                return 'Privaloma nurodyti alternatyvų tekstą'
+                return {
+                  message: 'Rekomenduojama nurodyti alternatyvų tekstą geresniam prieinamumui',
+                  level: 'warning'
+                }
               }
               return true
             })
@@ -84,13 +88,6 @@ export const news = defineType({
       type: 'date',
       initialValue: () => new Date().toISOString().split('T')[0],
       validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'featured',
-      title: 'Svarbus straipsnis',
-      type: 'boolean',
-      description: 'Ar šis straipsnis turėtų būti rodomas kaip svarbus',
-      initialValue: false,
     }),
   ],
   orderings: [
@@ -108,19 +105,17 @@ export const news = defineType({
       subtitle: 'category',
       media: 'coverImage',
       publishedAt: 'publishedAt',
-      featured: 'featured',
     },
-    prepare({title, subtitle, media, publishedAt, featured}) {
+    prepare({title, subtitle, media, publishedAt}) {
       const categoryTitle = subtitle === 'bendros' ? 'Bendros' : 
                            subtitle === 'renginiai' ? 'Renginiai' :
                            subtitle === 'projektai' ? 'Projektai' :
                            subtitle === 'spaudai' ? 'Pranešimai spaudai' : subtitle;
       
       const date = publishedAt ? new Date(publishedAt).toLocaleDateString('lt-LT') : '';
-      const featuredText = featured ? '⭐ ' : '';
       
       return {
-        title: `${featuredText}${title}`,
+        title,
         subtitle: `${categoryTitle} • ${date}`,
         media,
       }

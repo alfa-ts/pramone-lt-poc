@@ -3,7 +3,7 @@ import {defineField, defineType} from 'sanity'
 
 export const member = defineType({
   name: 'member',
-  title: 'Member',
+  title: 'Nariai',
   icon: UserIcon,
   type: 'document',
   fields: [
@@ -50,12 +50,16 @@ export const member = defineType({
         defineField({
           name: 'alt',
           type: 'string',
-          title: 'Alternative text',
-          description: 'Svarbu SEO ir prieinamumui',
+          title: 'Alternatyvus tekstas',
+          description: 'Aprašo įmonės logotipą. Sanity AI gali automatiškai sugeneruoti aprašymą.',
+          placeholder: 'Pvz: [Įmonės pavadinimas] logotipas',
           validation: (rule) => {
             return rule.custom((alt, context) => {
               if ((context.document?.logo as any)?.asset?._ref && !alt) {
-                return 'Privaloma nurodyti alternatyvų tekstą'
+                return {
+                  message: 'Rekomenduojama nurodyti alternatyvų tekstą',
+                  level: 'warning'
+                }
               }
               return true
             })
