@@ -7,31 +7,32 @@ import { notFound } from "next/navigation";
 
 function formatDate(dateString: string) {
   const date = new Date(dateString);
-  return date.toLocaleDateString('lt-LT', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
+  return date.toLocaleDateString("lt-LT", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 }
 
 function formatCategory(category: string) {
   const categoryMap: { [key: string]: string } = {
-    'bendros': 'Bendros',
-    'renginiai': 'Renginiai',
-    'projektai': 'Projektai',
-    'spaudai': 'Pranešimai spaudai'
+    bendros: "Bendros",
+    renginiai: "Renginiai",
+    projektai: "Projektai",
+    spaudai: "Pranešimai spaudai",
   };
-  return categoryMap[category] || 'Bendros';
+  return categoryMap[category] || "Bendros";
 }
 
 export default async function NewsDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const { slug } = await params;
   const { data: news } = await sanityFetch({
     query: singleNewsQuery,
-    params: { slug: params.slug },
+    params: { slug },
   });
 
   if (!news) {
@@ -54,7 +55,7 @@ export default async function NewsDetailPage({
             <span className="mx-2">→</span>
             <span className="text-primary font-semibold">{news.title}</span>
           </div>
-          
+
           <div className="text-center">
             <div className="inline-flex items-center px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full mb-4">
               {formatCategory(news.category)}
@@ -85,13 +86,13 @@ export default async function NewsDetailPage({
               />
             </div>
           )}
-          
+
           {news.content && (
             <div className="prose prose-lg max-w-none">
               <PortableText value={news.content} />
             </div>
           )}
-          
+
           <div className="mt-12 pt-8 border-t border-gray-200">
             <Link
               href="/"
@@ -104,4 +105,4 @@ export default async function NewsDetailPage({
       </section>
     </div>
   );
-} 
+}
