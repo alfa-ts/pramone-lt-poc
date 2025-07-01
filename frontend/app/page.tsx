@@ -56,8 +56,17 @@ export default async function Page() {
   // Group leadership data by role
   const groupedLeadership =
     leadershipData?.reduce((acc: any, member: any) => {
-      const roleKey =
-        member.role === "prezidentas" ? "Prezidentas" : "Viceprezidentai";
+      // Clean the role value by trimming whitespace and removing invisible characters
+      const cleanRole = member.role?.trim().replace(/[\u200B-\u200D\uFEFF]/g, '') || '';
+      
+      let roleKey: string;
+      if (cleanRole === "prezidentas") {
+        roleKey = "Prezidentas";
+      } else if (cleanRole === "viceprezidentas") {
+        roleKey = "Viceprezidentai";
+      } else {
+        roleKey = "Viceprezidentai"; // fallback
+      }
 
       if (!acc[roleKey]) {
         acc[roleKey] = [];

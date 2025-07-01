@@ -3,7 +3,7 @@ import {LinkIcon} from '@sanity/icons'
 
 /**
  * Link schema object. This link object lets the user first select the type of link and then
- * then enter the URL, page reference, or post reference - depending on the type selected.
+ * then enter the URL or news reference - depending on the type selected.
  * Learn more: https://www.sanity.io/docs/object-type
  */
 
@@ -21,8 +21,7 @@ export const link = defineType({
       options: {
         list: [
           {title: 'URL', value: 'href'},
-          {title: 'Page', value: 'page'},
-          {title: 'Post', value: 'post'},
+          {title: 'Naujienos', value: 'news'},
         ],
         layout: 'radio',
       },
@@ -42,31 +41,16 @@ export const link = defineType({
         }),
     }),
     defineField({
-      name: 'page',
-      title: 'Page',
+      name: 'news',
+      title: 'Naujienos straipsnis',
       type: 'reference',
-      to: [{type: 'page'}],
-      hidden: ({parent}) => parent?.linkType !== 'page',
+      to: [{type: 'news'}],
+      hidden: ({parent}) => parent?.linkType !== 'news',
       validation: (Rule) =>
-        // Custom validation to ensure page reference is provided if the link type is 'page'
+        // Custom validation to ensure news reference is provided if the link type is 'news'
         Rule.custom((value, context: any) => {
-          if (context.parent?.linkType === 'page' && !value) {
-            return 'Page reference is required when Link Type is Page'
-          }
-          return true
-        }),
-    }),
-    defineField({
-      name: 'post',
-      title: 'Post',
-      type: 'reference',
-      to: [{type: 'post'}],
-      hidden: ({parent}) => parent?.linkType !== 'post',
-      validation: (Rule) =>
-        // Custom validation to ensure post reference is provided if the link type is 'post'
-        Rule.custom((value, context: any) => {
-          if (context.parent?.linkType === 'post' && !value) {
-            return 'Post reference is required when Link Type is Post'
+          if (context.parent?.linkType === 'news' && !value) {
+            return 'News reference is required when Link Type is News'
           }
           return true
         }),

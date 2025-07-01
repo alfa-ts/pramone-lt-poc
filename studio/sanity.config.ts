@@ -34,10 +34,8 @@ const homeLocation = {
 // path for different document types and used in the presentation tool.
 function resolveHref(documentType?: string, slug?: string): string | undefined {
   switch (documentType) {
-    case 'post':
-      return slug ? `/posts/${slug}` : undefined
-    case 'page':
-      return slug ? `/${slug}` : undefined
+    case 'news':
+      return slug ? `/naujienos/${slug}` : undefined
     default:
       console.warn('Invalid document type:', documentType)
       return undefined
@@ -47,7 +45,7 @@ function resolveHref(documentType?: string, slug?: string): string | undefined {
 // Main Sanity configuration
 export default defineConfig({
   name: 'default',
-  title: 'Sanity + Next.js Starter Template',
+  title: 'Kauno Krašto Pramonininkų ir Darbdavių Asociacija',
 
   projectId,
   dataset,
@@ -69,12 +67,12 @@ export default defineConfig({
             filter: `_type == "settings" && _id == "siteSettings"`,
           },
           {
-            route: '/:slug',
-            filter: `_type == "page" && slug.current == $slug || _id == $slug`,
+            route: '/naujienos/:slug',
+            filter: `_type == "news" && slug.current == $slug || _id == $slug`,
           },
           {
-            route: '/posts/:slug',
-            filter: `_type == "post" && slug.current == $slug || _id == $slug`,
+            route: '/nariai',
+            filter: `_type == "member"`,
           },
         ]),
         // Locations Resolver API allows you to define where data is being used in your application. https://www.sanity.io/docs/presentation-resolver-api#8d8bca7bfcd7
@@ -84,21 +82,7 @@ export default defineConfig({
             message: 'This document is used on all pages',
             tone: 'positive',
           }),
-          page: defineLocations({
-            select: {
-              name: 'name',
-              slug: 'slug.current',
-            },
-            resolve: (doc) => ({
-              locations: [
-                {
-                  title: doc?.name || 'Untitled',
-                  href: resolveHref('page', doc?.slug)!,
-                },
-              ],
-            }),
-          }),
-          post: defineLocations({
+          news: defineLocations({
             select: {
               title: 'title',
               slug: 'slug.current',
@@ -107,12 +91,48 @@ export default defineConfig({
               locations: [
                 {
                   title: doc?.title || 'Untitled',
-                  href: resolveHref('post', doc?.slug)!,
+                  href: resolveHref('news', doc?.slug)!,
                 },
                 {
                   title: 'Home',
                   href: '/',
                 } satisfies DocumentLocation,
+                {
+                  title: 'Naujienos',
+                  href: '/naujienos',
+                } satisfies DocumentLocation,
+              ].filter(Boolean) as DocumentLocation[],
+            }),
+          }),
+          member: defineLocations({
+            select: {
+              company: 'company',
+              person: 'person',
+            },
+            resolve: (doc) => ({
+              locations: [
+                {
+                  title: 'Nariai',
+                  href: '/nariai',
+                },
+                {
+                  title: 'Home',
+                  href: '/',
+                } satisfies DocumentLocation,
+              ].filter(Boolean) as DocumentLocation[],
+            }),
+          }),
+          leadership: defineLocations({
+            select: {
+              name: 'name',
+              role: 'role',
+            },
+            resolve: (doc) => ({
+              locations: [
+                {
+                  title: 'Home',
+                  href: '/',
+                },
               ].filter(Boolean) as DocumentLocation[],
             }),
           }),

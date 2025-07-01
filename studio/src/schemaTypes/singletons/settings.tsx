@@ -51,8 +51,7 @@ export const settings = defineType({
                     options: {
                       list: [
                         {title: 'URL', value: 'href'},
-                        {title: 'Page', value: 'page'},
-                        {title: 'Post', value: 'post'},
+                        {title: 'Naujienos', value: 'news'},
                       ],
                       layout: 'radio',
                     },
@@ -71,29 +70,15 @@ export const settings = defineType({
                       }),
                   }),
                   defineField({
-                    name: 'page',
-                    title: 'Page',
+                    name: 'news',
+                    title: 'Naujienos straipsnis',
                     type: 'reference',
-                    to: [{type: 'page'}],
-                    hidden: ({parent}) => parent?.linkType !== 'page',
+                    to: [{type: 'news'}],
+                    hidden: ({parent}) => parent?.linkType !== 'news',
                     validation: (Rule) =>
                       Rule.custom((value, context: any) => {
-                        if (context.parent?.linkType === 'page' && !value) {
-                          return 'Page reference is required when Link Type is Page'
-                        }
-                        return true
-                      }),
-                  }),
-                  defineField({
-                    name: 'post',
-                    title: 'Post',
-                    type: 'reference',
-                    to: [{type: 'post'}],
-                    hidden: ({parent}) => parent?.linkType !== 'post',
-                    validation: (Rule) =>
-                      Rule.custom((value, context: any) => {
-                        if (context.parent?.linkType === 'post' && !value) {
-                          return 'Post reference is required when Link Type is Post'
+                        if (context.parent?.linkType === 'news' && !value) {
+                          return 'News reference is required when Link Type is News'
                         }
                         return true
                       }),

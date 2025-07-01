@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 import { sanityFetch } from "@/sanity/lib/live";
-import { sitemapData } from "@/sanity/lib/queries";
+import { allNewsQuery } from "@/sanity/lib/queries";
 import { headers } from "next/headers";
 
 /**
@@ -9,51 +9,46 @@ import { headers } from "next/headers";
  */
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const allPostsAndPages = await sanityFetch({
-    query: sitemapData,
+  const { data: allNews } = await sanityFetch({
+    query: allNewsQuery,
   });
   const headersList = await headers();
   const sitemap: MetadataRoute.Sitemap = [];
-  const domain: String = headersList.get("host") as string;
+  const domain = headersList.get("host") as string;
+  
+  // Add main pages
   sitemap.push({
-    url: domain as string,
+    url: `https://${domain}`,
     lastModified: new Date(),
     priority: 1,
     changeFrequency: "monthly",
   });
 
-  if (allPostsAndPages != null && allPostsAndPages.data.length != 0) {
-    let priority: number;
-    let changeFrequency:
-      | "monthly"
-      | "always"
-      | "hourly"
-      | "daily"
-      | "weekly"
-      | "yearly"
-      | "never"
-      | undefined;
-    let url: string;
+  sitemap.push({
+    url: `https://${domain}/nariai`,
+    lastModified: new Date(),
+    priority: 0.8,
+    changeFrequency: "monthly",
+  });
 
-    for (const p of allPostsAndPages.data) {
-      switch (p._type) {
-        case "page":
-          priority = 0.8;
-          changeFrequency = "monthly";
-          url = `${domain}/${p.slug}`;
-          break;
-        case "post":
-          priority = 0.5;
-          changeFrequency = "never";
-          url = `${domain}/posts/${p.slug}`;
-          break;
+  sitemap.push({
+    url: `https://${domain}/naujienos`,
+    lastModified: new Date(),
+    priority: 0.8,
+    changeFrequency: "weekly",
+  });
+
+  // Add news articles
+  if (allNews && allNews.length > 0) {
+    for (const newsItem of allNews) {
+      if (newsItem.slug?.current) {
+        sitemap.push({
+          url: `https://${domain}/naujienos/${newsItem.slug.current}`,
+          lastModified: newsItem.publishedAt ? new Date(newsItem.publishedAt) : new Date(),
+          priority: 0.6,
+          changeFrequency: "never",
+        });
       }
-      sitemap.push({
-        lastModified: p._updatedAt || new Date(),
-        priority,
-        changeFrequency,
-        url,
-      });
     }
   }
 
