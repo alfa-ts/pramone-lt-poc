@@ -15,7 +15,6 @@ import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 import { settingsQuery } from "@/sanity/lib/queries";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 import { handleError } from "./client-utils";
-import { ensureDraftModeDisabledInProduction } from "./actions";
 
 /**
  * Generate metadata for the page.
@@ -63,14 +62,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Ensure draft mode is disabled in production
-  await ensureDraftModeDisabledInProduction();
-  
   const { isEnabled: isDraftMode } = await draftMode();
-  
-  // Disable draft mode in production environment
-  const isDraftModeAllowed = process.env.NODE_ENV !== 'production';
-  const showDraftMode = isDraftMode && isDraftModeAllowed;
 
   return (
     <html lang="en" className={`${inter.variable} bg-white text-black`}>
@@ -78,7 +70,7 @@ export default async function RootLayout({
         <section className="min-h-screen flex flex-col">
           {/* The <Toaster> component is responsible for rendering toast notifications used in /app/client-utils.ts and /app/components/DraftModeToast.tsx */}
           <Toaster />
-          {showDraftMode && (
+          {isDraftMode && (
             <>
               <DraftModeToast />
               {/*  Enable Visual Editing, only to be rendered when Draft Mode is enabled */}
