@@ -194,7 +194,7 @@ export default async function IstorijaPage() {
               Asociacijos prezidento žodis
             </h2>
 
-            <div className="grid md:grid-cols-2 gap-12 items-center mb-12">
+            <div className="grid md:grid-cols-2 gap-12 items-center mb-8">
               {/* President's message text */}
               <div className="space-y-4 text-gray-700 italic leading-relaxed">
                 <p>
@@ -230,7 +230,7 @@ export default async function IstorijaPage() {
             </div>
 
             {/* President's info */}
-            <div className="text-center mb-12">
+            <div className="text-left mb-12">
               <h3 className="text-2xl font-bold text-blue-900 uppercase mb-2">
                 {president.name}
               </h3>
