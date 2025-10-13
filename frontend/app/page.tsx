@@ -91,7 +91,7 @@ export default async function Page() {
           <div className="grid gap-12 md:grid-cols-3 text-center">
             {/* Years of experience */}
             <div className="flex flex-col items-center">
-              <div className="w-16 h-16 rounded-full bg-yellow-400 flex items-center justify-center shadow-md mb-4">
+              <div className="w-16 h-16 rounded-full bg-yellow-500 flex items-center justify-center shadow-md mb-4">
                 <FaClock className="text-white text-2xl" />
               </div>
               <h3 className="text-blue-900 font-extrabold uppercase tracking-wide text-lg mb-3">
@@ -109,7 +109,7 @@ export default async function Page() {
 
             {/* Members */}
             <div className="flex flex-col items-center">
-              <div className="w-16 h-16 rounded-full bg-yellow-400 flex items-center justify-center shadow-md mb-4">
+              <div className="w-16 h-16 rounded-full bg-yellow-500 flex items-center justify-center shadow-md mb-4">
                 <FaUsers className="text-white text-2xl" />
               </div>
               <h3 className="text-blue-900 font-extrabold uppercase tracking-wide text-lg mb-3">
@@ -127,7 +127,7 @@ export default async function Page() {
 
             {/* How to join */}
             <div className="flex flex-col items-center">
-              <div className="w-16 h-16 rounded-full bg-yellow-400 flex items-center justify-center shadow-md mb-4">
+              <div className="w-16 h-16 rounded-full bg-yellow-500 flex items-center justify-center shadow-md mb-4">
                 <FaQuestionCircle className="text-white text-2xl" />
               </div>
               <h3 className="text-blue-900 font-extrabold uppercase tracking-wide text-lg mb-3">
@@ -168,7 +168,7 @@ export default async function Page() {
                         className="object-cover rounded-sm group-hover:scale-105 transition-transform duration-300"
                       />
                     ) : (
-                      <div className="w-full h-full bg-yellow-400 rounded-sm group-hover:scale-105 transition-transform duration-300" />
+                      <div className="w-full h-full bg-yellow-500 rounded-sm group-hover:scale-105 transition-transform duration-300" />
                     )}
                     <div className="absolute top-2 left-2 bg-white text-xs font-bold text-blue-900 px-2 py-1 rounded shadow">
                       {item.date}

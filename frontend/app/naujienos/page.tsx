@@ -82,7 +82,7 @@ export default async function NewsListPage() {
                          className="object-cover group-hover:scale-105 transition-transform duration-300"
                        />
                      ) : (
-                       <div className="w-full h-full bg-yellow-400 rounded-lg group-hover:scale-105 transition-transform duration-300" />
+                      <div className="w-full h-full bg-yellow-500 rounded-lg group-hover:scale-105 transition-transform duration-300" />
                      )}
                      <div className="absolute top-2 left-2 bg-white text-xs font-bold text-blue-900 px-2 py-1 rounded shadow">
                        {item.date}

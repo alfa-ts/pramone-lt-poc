@@ -14,7 +14,7 @@ export default {
       },
       colors: {
         primary: '#1a2b6d',   // Your brand blue
-        accent: '#f5c800',    // Your gold/yellow
+        accent: '#e0b100',    // Darker, richer gold
         black: "#0d0e12",
         white: "#fff",
         cyan: {
