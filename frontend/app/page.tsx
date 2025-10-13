@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { sanityFetch } from "@/sanity/lib/live";
-import { newsQuery } from "@/sanity/lib/queries";
+import { newsQuery, membersCountQuery } from "@/sanity/lib/queries";
+import { FaClock, FaUsers, FaQuestionCircle } from "react-icons/fa";
 
 function formatDate(dateString: string) {
   const date = new Date(dateString);
@@ -36,9 +37,25 @@ function formatCategory(category: string) {
 }
 
 export default async function Page() {
-  const { data: newsData } = await sanityFetch({
-    query: newsQuery,
-  });
+  const [{ data: newsData }, { data: membersCount }] = await Promise.all([
+    sanityFetch({ query: newsQuery }),
+    sanityFetch({ query: membersCountQuery }),
+  ]);
+
+  // Calculate full years of activity since 1989-12-22
+  const now = new Date();
+  const foundingYear = 1989;
+  const anniversaryMonth = 11; // December (0-based)
+  const anniversaryDay = 22;
+  let yearsOfActivity = now.getFullYear() - foundingYear;
+  const anniversaryThisYear = new Date(
+    now.getFullYear(),
+    anniversaryMonth,
+    anniversaryDay
+  );
+  if (now < anniversaryThisYear) {
+    yearsOfActivity -= 1;
+  }
 
   // Transform news data to match expected format
   const news =
@@ -65,6 +82,67 @@ export default async function Page() {
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Čia bus pagrindinis puslapis
           </p>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="bg-white py-12">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid gap-12 md:grid-cols-3 text-center">
+            {/* Years of experience */}
+            <div className="flex flex-col items-center">
+              <div className="w-16 h-16 rounded-full bg-yellow-400 flex items-center justify-center shadow-md mb-4">
+                <FaClock className="text-white text-2xl" />
+              </div>
+              <h3 className="text-blue-900 font-extrabold uppercase tracking-wide text-lg mb-3">
+                {yearsOfActivity} METŲ PATIRTIS
+              </h3>
+              <p className="text-gray-700 max-w-sm">
+                1989 m. gruodžio 22 d. buvo įsteigta Kauno pramonininkų asociacija.
+              </p>
+              <div className="mt-3">
+                <Link href="/apie/istorija" className="text-blue-900 text-sm font-bold hover:underline inline-flex items-center">
+                  Plačiau <span className="ml-1">&gt;</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Members */}
+            <div className="flex flex-col items-center">
+              <div className="w-16 h-16 rounded-full bg-yellow-400 flex items-center justify-center shadow-md mb-4">
+                <FaUsers className="text-white text-2xl" />
+              </div>
+              <h3 className="text-blue-900 font-extrabold uppercase tracking-wide text-lg mb-3">
+                {membersCount || 0} NARIAI
+              </h3>
+              <p className="text-gray-700 max-w-sm">
+                Kauno krašto pramonininkų ir darbdavių asociacija – savarankiška pelno nesiekianti organizacija, kurios tikslas suvienyti regiono pramonės bendruomenę.
+              </p>
+              <div className="mt-3">
+                <Link href="/nariai" className="text-blue-900 text-sm font-bold hover:underline inline-flex items-center">
+                  Plačiau <span className="ml-1">&gt;</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* How to join */}
+            <div className="flex flex-col items-center">
+              <div className="w-16 h-16 rounded-full bg-yellow-400 flex items-center justify-center shadow-md mb-4">
+                <FaQuestionCircle className="text-white text-2xl" />
+              </div>
+              <h3 className="text-blue-900 font-extrabold uppercase tracking-wide text-lg mb-3">
+                KAIP TAPTI NARIU?
+              </h3>
+              <p className="text-gray-700 max-w-sm">
+                Naujus narius Asociaciją priima Prezidiumas pagal pateiktą juridinio ar fizinio asmens prašymą.
+              </p>
+              <div className="mt-3">
+                <Link href="/apie/valdymas" className="text-blue-900 text-sm font-bold hover:underline inline-flex items-center">
+                  Plačiau <span className="ml-1">&gt;</span>
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
       {news.length > 0 && (

@@ -87,4 +87,12 @@ export const membersCountQuery = defineQuery(`
   count(*[_type == "member"])
 `);
 
+export const strategicDirectionsQuery = defineQuery(`
+  *[_type == "strategicDirection"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {
+    _id,
+    title,
+    sortOrder
+  }
+`);
+
 // Removed unused queries for pages, posts, and people since those document types are no longer needed
