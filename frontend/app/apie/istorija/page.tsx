@@ -147,7 +147,7 @@ export default async function IstorijaPage() {
             </p>
             <div className="relative">
               {/* Vertical line */}
-              <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-yellow-500 to-primary"></div>
+              <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-stone-300 via-amber-200 to-stone-300"></div>
 
               {/* Timeline items */}
               <div className="space-y-8">
@@ -163,13 +163,13 @@ export default async function IstorijaPage() {
 
                     {/* Content */}
                     <div className="ml-20 flex-1">
-                      <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 border-l-4 border-primary">
+                      <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 border-l-4 border-amber-300">
                         <div className="flex items-baseline gap-3 mb-2">
-                          <span className="text-2xl font-bold text-primary">
+                          <span className="text-xl font-semibold text-stone-700">
                             {president.startYear}
                           </span>
-                          <span className="text-gray-400">—</span>
-                          <span className="text-2xl font-bold text-primary">
+                          <span className="text-stone-400">—</span>
+                          <span className="text-xl font-semibold text-stone-700">
                             {president.endYear || "dabartis"}
                           </span>
                         </div>
