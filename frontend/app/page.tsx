@@ -2,14 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { sanityFetch } from "@/sanity/lib/live";
 import { leadershipQuery, newsQuery } from "@/sanity/lib/queries";
-import imageUrlBuilder from "@sanity/image-url";
-import { client } from "@/sanity/lib/client";
-
-const builder = imageUrlBuilder(client);
-
-function urlFor(source: any) {
-  return builder.image(source);
-}
 
 function formatDate(dateString: string) {
   const date = new Date(dateString);
@@ -57,8 +49,9 @@ export default async function Page() {
   const groupedLeadership =
     leadershipData?.reduce((acc: any, member: any) => {
       // Clean the role value by trimming whitespace and removing invisible characters
-      const cleanRole = member.role?.trim().replace(/[\u200B-\u200D\uFEFF]/g, '') || '';
-      
+      const cleanRole =
+        member.role?.trim().replace(/[\u200B-\u200D\uFEFF]/g, "") || "";
+
       let roleKey: string;
       if (cleanRole === "prezidentas") {
         roleKey = "Prezidentas";
@@ -148,7 +141,7 @@ export default async function Page() {
                     <h3 className="text-sm text-gray-500 mb-1">
                       {item.category}
                     </h3>
-                    <Link 
+                    <Link
                       href={item.slug ? `/naujienos/${item.slug}` : "#"}
                       className="block"
                     >
