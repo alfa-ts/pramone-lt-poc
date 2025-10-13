@@ -74,4 +74,17 @@ export const singleNewsQuery = defineQuery(`
   }
 `);
 
+export const pastPresidentsQuery = defineQuery(`
+  *[_type == "pastPresident"] | order(startYear asc) {
+    _id,
+    name,
+    startYear,
+    endYear
+  }
+`);
+
+export const membersCountQuery = defineQuery(`
+  count(*[_type == "member"])
+`);
+
 // Removed unused queries for pages, posts, and people since those document types are no longer needed

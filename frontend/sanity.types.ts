@@ -580,6 +580,12 @@ export type SingleNewsQueryResult = {
   } | null;
   publishedAt: string;
 } | null;
+// Variable: pastPresidentsQuery
+// Query: *[_type == "pastPresident"] | order(sortOrder asc, startYear asc) {    _id,    name,    startYear,    endYear  }
+export type PastPresidentsQueryResult = Array<never>;
+// Variable: membersCountQuery
+// Query: count(*[_type == "member"])
+export type MembersCountQueryResult = number;
 
 // Query TypeMap
 import "@sanity/client";
@@ -590,5 +596,7 @@ declare module "@sanity/client" {
     "\n  *[_type == \"news\"] | order(publishedAt desc) [0...4] {\n    _id,\n    title,\n    slug,\n    category,\n    excerpt,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt\n  }\n": NewsQueryResult;
     "\n  *[_type == \"news\"] | order(publishedAt desc) {\n    _id,\n    title,\n    slug,\n    category,\n    excerpt,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt\n  }\n": AllNewsQueryResult;
     "\n  *[_type == \"news\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    category,\n    excerpt,\n    content,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt\n  }\n": SingleNewsQueryResult;
+    "\n  *[_type == \"pastPresident\"] | order(sortOrder asc, startYear asc) {\n    _id,\n    name,\n    startYear,\n    endYear\n  }\n": PastPresidentsQueryResult;
+    "\n  count(*[_type == \"member\"])\n": MembersCountQueryResult;
   }
 }
