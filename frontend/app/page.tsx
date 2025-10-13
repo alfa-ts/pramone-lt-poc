@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { sanityFetch } from "@/sanity/lib/live";
-import { leadershipQuery, newsQuery } from "@/sanity/lib/queries";
+import { newsQuery } from "@/sanity/lib/queries";
 
 function formatDate(dateString: string) {
   const date = new Date(dateString);
@@ -36,50 +36,9 @@ function formatCategory(category: string) {
 }
 
 export default async function Page() {
-  const [{ data: leadershipData }, { data: newsData }] = await Promise.all([
-    sanityFetch({
-      query: leadershipQuery,
-    }),
-    sanityFetch({
-      query: newsQuery,
-    }),
-  ]);
-
-  // Group leadership data by role
-  const groupedLeadership =
-    leadershipData?.reduce((acc: any, member: any) => {
-      // Clean the role value by trimming whitespace and removing invisible characters
-      const cleanRole =
-        member.role?.trim().replace(/[\u200B-\u200D\uFEFF]/g, "") || "";
-
-      let roleKey: string;
-      if (cleanRole === "prezidentas") {
-        roleKey = "Prezidentas";
-      } else if (cleanRole === "viceprezidentas") {
-        roleKey = "Viceprezidentai";
-      } else {
-        roleKey = "Viceprezidentai"; // fallback
-      }
-
-      if (!acc[roleKey]) {
-        acc[roleKey] = [];
-      }
-
-      acc[roleKey].push({
-        name: member.name,
-        position: member.position,
-        image: member.photo?.asset?.url || "/placeholder.jpg",
-        alt: member.photo?.alt || "",
-      });
-
-      return acc;
-    }, {}) || {};
-
-  // Convert to the expected format
-  const people = Object.entries(groupedLeadership).map(([role, members]) => ({
-    role,
-    members: members as any[],
-  }));
+  const { data: newsData } = await sanityFetch({
+    query: newsQuery,
+  });
 
   // Transform news data to match expected format
   const news =
@@ -164,53 +123,6 @@ export default async function Page() {
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-      )}
-      {people.length > 0 && (
-        <section className="bg-gray-50 py-12">
-          <div className="max-w-5xl mx-auto px-4 space-y-16">
-            {people.map((group) => (
-              <div key={group.role}>
-                <div className="flex items-center justify-center mb-8">
-                  <hr className="flex-grow border-gray-300" />
-                  <h2 className="text-xl md:text-2xl font-bold text-yellow-500 mx-4 uppercase text-center">
-                    {group.role}
-                  </h2>
-                  <hr className="flex-grow border-gray-300" />
-                </div>
-                <div
-                  className={`flex ${
-                    group.members.length > 1
-                      ? "flex-wrap justify-center gap-8"
-                      : "justify-center"
-                  }`}
-                >
-                  {group.members.map((member: any) => (
-                    <div
-                      key={member.name}
-                      className="flex flex-col items-center text-center max-w-xs"
-                    >
-                      <div className="w-40 h-40 rounded-full overflow-hidden mb-4 shadow-lg">
-                        <Image
-                          src={member.image}
-                          alt={member.alt || member.name}
-                          width={160}
-                          height={160}
-                          className="object-cover w-full h-full"
-                        />
-                      </div>
-                      <h3 className="font-bold text-blue-900 text-lg uppercase">
-                        {member.name}
-                      </h3>
-                      <p className="text-blue-900 text-sm mt-1">
-                        {member.position}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
           </div>
         </section>
       )}
