@@ -23,19 +23,13 @@ export type CallToAction = {
 
 export type Link = {
   _type: "link";
-  linkType?: "href" | "page" | "post";
+  linkType?: "href" | "news";
   href?: string;
-  page?: {
+  news?: {
     _ref: string;
     _type: "reference";
     _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "page";
-  };
-  post?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "post";
+    [internalGroqTypeReferenceTo]?: "news";
   };
   openInNewTab?: boolean;
 };
@@ -54,19 +48,13 @@ export type InfoSection = {
     style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
     listItem?: "bullet" | "number";
     markDefs?: Array<{
-      linkType?: "href" | "page" | "post";
+      linkType?: "href" | "news";
       href?: string;
-      page?: {
+      news?: {
         _ref: string;
         _type: "reference";
         _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "page";
-      };
-      post?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "post";
+        [internalGroqTypeReferenceTo]?: "news";
       };
       openInNewTab?: boolean;
       _type: "link";
@@ -88,19 +76,13 @@ export type BlockContent = Array<{
   style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
   listItem?: "bullet" | "number";
   markDefs?: Array<{
-    linkType?: "href" | "page" | "post";
+    linkType?: "href" | "news";
     href?: string;
-    page?: {
+    news?: {
       _ref: string;
       _type: "reference";
       _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "page";
-    };
-    post?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "post";
+      [internalGroqTypeReferenceTo]?: "news";
     };
     openInNewTab?: boolean;
     _type: "link";
@@ -110,6 +92,57 @@ export type BlockContent = Array<{
   _type: "block";
   _key: string;
 }>;
+
+export type Leadership = {
+  _id: string;
+  _type: "leadership";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name: string;
+  position: string;
+  role: "prezidentas" | "viceprezidentas";
+  photo: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  sortOrder?: number;
+};
+
+export type Member = {
+  _id: string;
+  _type: "member";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  person: string;
+  title?: string;
+  company: string;
+  address?: string;
+  activity?: string;
+  logo?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+};
 
 export type Settings = {
   _id: string;
@@ -128,19 +161,13 @@ export type Settings = {
     style?: "normal";
     listItem?: never;
     markDefs?: Array<{
-      linkType?: "href" | "page" | "post";
+      linkType?: "href" | "news";
       href?: string;
-      page?: {
+      news?: {
         _ref: string;
         _type: "reference";
         _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "page";
-      };
-      post?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "post";
+        [internalGroqTypeReferenceTo]?: "news";
       };
       openInNewTab?: boolean;
       _type: "link";
@@ -166,34 +193,18 @@ export type Settings = {
   };
 };
 
-export type Page = {
+export type News = {
   _id: string;
-  _type: "page";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name: string;
-  slug: Slug;
-  heading: string;
-  subheading?: string;
-  pageBuilder?: Array<{
-    _key: string;
-  } & CallToAction | {
-    _key: string;
-  } & InfoSection>;
-};
-
-export type Post = {
-  _id: string;
-  _type: "post";
+  _type: "news";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
   title: string;
   slug: Slug;
+  category: "bendros" | "renginiai" | "projektai" | "spaudai";
+  excerpt: string;
   content?: BlockContent;
-  excerpt?: string;
-  coverImage: {
+  coverImage?: {
     asset?: {
       _ref: string;
       _type: "reference";
@@ -206,36 +217,7 @@ export type Post = {
     alt?: string;
     _type: "image";
   };
-  date?: string;
-  author?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "person";
-  };
-};
-
-export type Person = {
-  _id: string;
-  _type: "person";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  firstName: string;
-  lastName: string;
-  picture: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt?: string;
-    _type: "image";
-  };
+  publishedAt: string;
 };
 
 export type SanityAssistInstructionTask = {
@@ -380,25 +362,25 @@ export type SanityImagePalette = {
 
 export type SanityImageDimensions = {
   _type: "sanity.imageDimensions";
-  height?: number;
-  width?: number;
-  aspectRatio?: number;
+  height: number;
+  width: number;
+  aspectRatio: number;
 };
 
 export type SanityImageHotspot = {
   _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
+  x: number;
+  y: number;
+  height: number;
+  width: number;
 };
 
 export type SanityImageCrop = {
   _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
 };
 
 export type SanityFileAsset = {
@@ -477,7 +459,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = CallToAction | Link | InfoSection | BlockContent | Settings | Page | Post | Person | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = CallToAction | Link | InfoSection | BlockContent | Leadership | Member | Settings | News | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: settingsQuery
@@ -499,19 +481,13 @@ export type SettingsQueryResult = {
     style?: "normal";
     listItem?: never;
     markDefs?: Array<{
-      linkType?: "href" | "page" | "post";
+      linkType?: "href" | "news";
       href?: string;
-      page?: {
+      news?: {
         _ref: string;
         _type: "reference";
         _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "page";
-      };
-      post?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "post";
+        [internalGroqTypeReferenceTo]?: "news";
       };
       openInNewTab?: boolean;
       _type: "link";
@@ -538,16 +514,72 @@ export type SettingsQueryResult = {
 } | null;
 // Variable: leadershipQuery
 // Query: *[_type == "leadership"] | order(role asc, sortOrder asc, name asc) {    _id,    name,    position,    role,    "photo": photo{      asset->{        _id,        url      },      alt    },    sortOrder  }
-export type LeadershipQueryResult = Array<never>;
+export type LeadershipQueryResult = Array<{
+  _id: string;
+  name: string;
+  position: string;
+  role: "prezidentas" | "viceprezidentas";
+  photo: {
+    asset: {
+      _id: string;
+      url: string | null;
+    } | null;
+    alt: string | null;
+  };
+  sortOrder: number | null;
+}>;
 // Variable: newsQuery
 // Query: *[_type == "news"] | order(publishedAt desc) [0...4] {    _id,    title,    slug,    category,    excerpt,    "coverImage": coverImage{      asset->{        _id,        url      },      alt    },    publishedAt  }
-export type NewsQueryResult = Array<never>;
+export type NewsQueryResult = Array<{
+  _id: string;
+  title: string;
+  slug: Slug;
+  category: "bendros" | "projektai" | "renginiai" | "spaudai";
+  excerpt: string;
+  coverImage: {
+    asset: {
+      _id: string;
+      url: string | null;
+    } | null;
+    alt: string | null;
+  } | null;
+  publishedAt: string;
+}>;
 // Variable: allNewsQuery
 // Query: *[_type == "news"] | order(publishedAt desc) {    _id,    title,    slug,    category,    excerpt,    "coverImage": coverImage{      asset->{        _id,        url      },      alt    },    publishedAt  }
-export type AllNewsQueryResult = Array<never>;
+export type AllNewsQueryResult = Array<{
+  _id: string;
+  title: string;
+  slug: Slug;
+  category: "bendros" | "projektai" | "renginiai" | "spaudai";
+  excerpt: string;
+  coverImage: {
+    asset: {
+      _id: string;
+      url: string | null;
+    } | null;
+    alt: string | null;
+  } | null;
+  publishedAt: string;
+}>;
 // Variable: singleNewsQuery
 // Query: *[_type == "news" && slug.current == $slug][0] {    _id,    title,    slug,    category,    excerpt,    content,    "coverImage": coverImage{      asset->{        _id,        url      },      alt    },    publishedAt  }
-export type SingleNewsQueryResult = null;
+export type SingleNewsQueryResult = {
+  _id: string;
+  title: string;
+  slug: Slug;
+  category: "bendros" | "projektai" | "renginiai" | "spaudai";
+  excerpt: string;
+  content: BlockContent | null;
+  coverImage: {
+    asset: {
+      _id: string;
+      url: string | null;
+    } | null;
+    alt: string | null;
+  } | null;
+  publishedAt: string;
+} | null;
 
 // Query TypeMap
 import "@sanity/client";
