@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaFacebookF, FaChevronDown } from "react-icons/fa";
+import { FaFacebookF, FaChevronDown, FaLinkedinIn } from "react-icons/fa";
 import Image from "next/image";
 import {
   FaHome,
@@ -25,7 +25,7 @@ export default function Header() {
     return "flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-700 hover:text-primary hover:bg-primary/5 transition-all duration-200 group";
   };
 
-  const apieMenuItems = [
+  const aboutUsMenuItems = [
     {
       href: "/apie/misija-vizija",
       label: "Misija, vizija ir strateginės veiklos kryptys",
@@ -53,14 +53,23 @@ export default function Header() {
               📍 Kaunas K. Donelaičio g. 2, I aukštas - 119 kabinetas
             </span>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="hidden md:inline text-accent font-medium uppercase tracking-wide">
-              Turite klausimų? Skambinkite:
-            </span>
-            <span className="font-bold text-lg">+370 37 409 578</span>
-            <div className="bg-white/10 p-2 rounded-full hover:bg-accent transition-colors cursor-pointer">
+          <div className="flex items-center gap-3">
+            <a
+              href="https://www.facebook.com/kaunokrastopramonininku"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white/10 p-2 rounded-full hover:bg-accent transition-colors cursor-pointer"
+            >
               <FaFacebookF className="text-white" />
-            </div>
+            </a>
+            <a
+              href="https://www.linkedin.com/company/kkpda/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white/10 p-2 rounded-full hover:bg-accent transition-colors cursor-pointer"
+            >
+              <FaLinkedinIn className="text-white" />
+            </a>
           </div>
         </div>
       </div>
@@ -116,7 +125,7 @@ export default function Header() {
               {isAboutUsDropdownOpen && (
                 <div className="absolute top-full left-0 pt-2 z-50">
                   <div className="w-80 bg-white rounded-lg shadow-xl border border-gray-100 py-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                    {apieMenuItems.map((item) => (
+                    {aboutUsMenuItems.map((item) => (
                       <Link
                         key={item.href}
                         href={item.href}
