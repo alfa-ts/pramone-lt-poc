@@ -1,6 +1,7 @@
 import { defineQuery } from "next-sanity";
 
 export const settingsQuery = defineQuery(`*[_type == "settings"][0]`);
+// Removed: contacts settings singleton no longer used
 
 export const leadershipQuery = defineQuery(`
   *[_type == "leadership"] | order(role asc, sortOrder asc, name asc) {
@@ -92,6 +93,20 @@ export const strategicDirectionsQuery = defineQuery(`
     _id,
     title,
     sortOrder
+  }
+`);
+
+// Manual order via singleton array of references:
+// 1) If contactsPage exists and has items, return contacts in that specific order
+// 2) Otherwise, fall back to createdAt order
+export const contactsQuery = defineQuery(`
+  {
+    "ordered": *[_type == "contactsPage" && _id == "contactsPage"][0].items[]-> {
+      _id, kind, name, position, phone, email, address
+    },
+    "fallback": *[_type == "contact"] | order(_createdAt asc) {
+      _id, kind, name, position, phone, email, address
+    }
   }
 `);
 

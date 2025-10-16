@@ -589,6 +589,9 @@ export type MembersCountQueryResult = number;
 // Variable: strategicDirectionsQuery
 // Query: *[_type == "strategicDirection"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {    _id,    title,    sortOrder  }
 export type StrategicDirectionsQueryResult = Array<never>;
+// Variable: contactsQuery
+// Query: *[_type == "contact"] | order(orderRank asc) {    _id,    kind,    name,    position,    phone,    email,    address,    orderRank  }
+export type ContactsQueryResult = Array<never>;
 
 // Query TypeMap
 import "@sanity/client";
@@ -602,5 +605,6 @@ declare module "@sanity/client" {
     "\n  *[_type == \"pastPresident\"] | order(startYear asc) {\n    _id,\n    name,\n    startYear,\n    endYear\n  }\n": PastPresidentsQueryResult;
     "\n  count(*[_type == \"member\"])\n": MembersCountQueryResult;
     "\n  *[_type == \"strategicDirection\"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {\n    _id,\n    title,\n    sortOrder\n  }\n": StrategicDirectionsQueryResult;
+    "\n  *[_type == \"contact\"] | order(orderRank asc) {\n    _id,\n    kind,\n    name,\n    position,\n    phone,\n    email,\n    address,\n    orderRank\n  }\n": ContactsQueryResult;
   }
 }
