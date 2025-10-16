@@ -59,43 +59,43 @@ export default function VeiklaPage() {
           <div className="mt-10 space-y-3 text-gray-700">
             <p>
               KKPDA 2015-2016 m. veiklos ataskaita {" "}
-              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold">
+              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold transition-colors">
                 KKPDA veiklos ataskaita 2015-2016 m
               </a>
             </p>
             <p>
               KKPDA 2017-2018 m. veiklos ataskaita {" "}
-              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold">
+              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold transition-colors">
                 KKPDA veiklos ataskaita 2017-2018 m
               </a>
             </p>
             <p>
               KKPDA 2019-2020 m. veiklos ataskaita {" "}
-              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold">
+              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold transition-colors">
                 KKPDA veiklos ataskaita 2019-2020 m
               </a>
             </p>
             <p>
               KKPDA 2021 m. veiklos ataskaita {" "}
-              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold">
+              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold transition-colors">
                 KKPDA veiklos ataskaita 2021 m
               </a>
             </p>
             <p>
               KKPDA 2022 m. veiklos ataskaita {" "}
-              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold">
+              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold transition-colors">
                 KKPDA veiklos ataskaita 2022 m
               </a>
             </p>
             <p>
               KKPDA 2023 m. veiklos ataskaita {" "}
-              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold">
+              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold transition-colors">
                 KKPDA veiklos ataskaita 2023 m
               </a>
             </p>
             <p>
               KKPDA 2024 m. veiklos ataskaita {" "}
-              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold">
+              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold transition-colors">
                 KKPDA veiklos ataskaita 2024 m
               </a>
             </p>
