@@ -9,6 +9,7 @@ import { news } from './documents/news'
 import { pastPresident } from './documents/pastPresident'
 import { contact } from './documents/contact'
 import { strategicDirection } from './documents/strategicDirection'
+import { partner } from './documents/partner'
 import { contactsPage } from './singletons/contacts'
 // Removed contactsSettings singleton
 
@@ -25,6 +26,7 @@ export const schemaTypes = [
   pastPresident,
   contact,
   strategicDirection,
+  partner,
   // Objects
   blockContent,
   infoSection,

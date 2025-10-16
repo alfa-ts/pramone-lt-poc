@@ -96,6 +96,21 @@ export const strategicDirectionsQuery = defineQuery(`
   }
 `);
 
+export const partnersQuery = defineQuery(`
+  {
+    "cooperate": *[_type == "partner" && group == "cooperate"] | order(coalesce(sortOrder, 9999) asc, title asc) {
+      _id,
+      title,
+      extra
+    },
+    "agreements": *[_type == "partner" && group == "agreements"] | order(coalesce(sortOrder, 9999) asc, title asc) {
+      _id,
+      title,
+      extra
+    }
+  }
+`);
+
 // Manual order via singleton array of references:
 // 1) If contactsPage exists and has items, return contacts in that specific order
 // 2) Otherwise, fall back to createdAt order
