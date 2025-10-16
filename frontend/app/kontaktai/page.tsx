@@ -1,6 +1,5 @@
 import { sanityFetch } from "@/sanity/lib/live";
 import { contactsQuery } from "@/sanity/lib/queries";
-import ContactForm from "../components/ContactForm";
 import { FaMapMarkerAlt, FaUser } from "react-icons/fa";
 
 type Contact = {
@@ -32,7 +31,7 @@ export default async function KontaktaiPage() {
       </section>
 
       <section className="bg-white py-12">
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-start">
+        <div className="max-w-7xl mx-auto px-6">
           {/* Contacts list */}
           <div>
             <h2 className="text-xl md:text-2xl font-bold text-blue-900 mb-6">
@@ -80,8 +79,6 @@ export default async function KontaktaiPage() {
             </div>
           </div>
 
-          {/* Write to us form */}
-          <ContactForm />
         </div>
       </section>
     </div>
