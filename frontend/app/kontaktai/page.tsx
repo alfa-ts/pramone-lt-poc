@@ -39,23 +39,25 @@ export default async function KontaktaiPage() {
             </h2>
 
             <div className="space-y-6">
-              {(contacts || []).map((c) => (
+              {(contacts || []).map((c) => {
+                const isAddress = c?.kind === "address" || (!!c.address && !c.name);
+                return (
                 <div
                   key={c._id}
                   className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border-t-4 border-yellow-500 hover:scale-105 transform"
                 >
                   <div className="flex items-center gap-3 mb-2">
-                    {c.kind === "address" ? (
+                    {isAddress ? (
                       <span className="text-amber-500"><FaMapMarkerAlt /></span>
                     ) : (
                       <span className="text-amber-500"><FaUser /></span>
                     )}
                     <div className="font-semibold text-blue-900">
-                      {c.kind === "address" ? "Adresas" : c.position}
+                      {isAddress ? "Adresas" : c.position}
                     </div>
                   </div>
-                  {c.kind === "address" ? (
-                    <p className="text-gray-700">{c.address}</p>
+                  {isAddress ? (
+                    <p className="text-gray-700">{c.address || ""}</p>
                   ) : (
                     <>
                       <p className="text-gray-800 font-medium">{c.name}</p>
@@ -75,7 +77,8 @@ export default async function KontaktaiPage() {
                     )}
                   </p>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
