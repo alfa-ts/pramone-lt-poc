@@ -2,20 +2,11 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { contactsQuery } from "@/sanity/lib/queries";
 import { FaMapMarkerAlt, FaUser } from "react-icons/fa";
 
-type Contact = {
-  _id: string;
-  name: string;
-  position: string;
-  phone?: string;
-  email: string;
-  address?: string;
-};
-
 export default async function KontaktaiPage() {
-  const { data } = await sanityFetch<{ data: { ordered?: Contact[]; fallback: Contact[] } }>({
+  const { data } = await sanityFetch({
     query: contactsQuery,
   });
-  const contacts: Contact[] = (data as any)?.ordered?.length ? (data as any).ordered : (data as any).fallback;
+  const contacts = data?.ordered?.length ? data.ordered : data.fallback || [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
@@ -39,53 +30,66 @@ export default async function KontaktaiPage() {
             </h2>
 
             <div className="space-y-6">
-              {(contacts || []).map((c) => {
-                const isAddress = c?.kind === "address" || (!!c.address && !c.name);
+              {contacts.map((c) => {
+                const isAddress =
+                  c.kind === "address" || (!!c.address && !c.name);
                 return (
-                <div
-                  key={c._id}
-                  className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border-t-4 border-yellow-500 hover:scale-105 transform"
-                >
-                  <div className="flex items-center gap-3 mb-2">
-                    {isAddress ? (
-                      <span className="text-amber-500"><FaMapMarkerAlt /></span>
-                    ) : (
-                      <span className="text-amber-500"><FaUser /></span>
-                    )}
-                    <div className="font-semibold text-blue-900">
-                      {isAddress ? "Adresas" : c.position}
+                  <div
+                    key={c._id}
+                    className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-6 border-t-4 border-yellow-500 hover:scale-105 transform"
+                  >
+                    <div className="flex items-center gap-3 mb-2">
+                      {isAddress ? (
+                        <span className="text-amber-500">
+                          <FaMapMarkerAlt />
+                        </span>
+                      ) : (
+                        <span className="text-amber-500">
+                          <FaUser />
+                        </span>
+                      )}
+                      <div className="font-semibold text-blue-900">
+                        {isAddress ? "Adresas" : c.position}
+                      </div>
                     </div>
-                  </div>
-                  {isAddress ? (
-                    <p className="text-gray-700">{c.address || ""}</p>
-                  ) : (
-                    <>
-                      <p className="text-gray-800 font-medium">{c.name}</p>
-                    </>
-                  )}
-                  {c.phone && (
-                    <p className="text-gray-700 mt-1">
-                      Mob. tel. <a href={`tel:${c.phone}`} className="text-amber-600 underline">{c.phone}</a>
-                    </p>
-                  )}
-                  <p className="text-gray-700">
-                    {c.email && (
+                    {isAddress ? (
+                      <p className="text-gray-700">{c.address || ""}</p>
+                    ) : (
                       <>
-                        El. paštas: {" "}
-                        <a href={`mailto:${c.email}`} className="text-amber-600 underline">{c.email}</a>
+                        <p className="text-gray-800 font-medium">{c.name}</p>
                       </>
                     )}
-                  </p>
-                </div>
+                    {c.phone && (
+                      <p className="text-gray-700 mt-1">
+                        Mob. tel.{" "}
+                        <a
+                          href={`tel:${c.phone}`}
+                          className="text-amber-600 underline"
+                        >
+                          {c.phone}
+                        </a>
+                      </p>
+                    )}
+                    <p className="text-gray-700">
+                      {c.email && (
+                        <>
+                          El. paštas:{" "}
+                          <a
+                            href={`mailto:${c.email}`}
+                            className="text-amber-600 underline"
+                          >
+                            {c.email}
+                          </a>
+                        </>
+                      )}
+                    </p>
+                  </div>
                 );
               })}
             </div>
           </div>
-
         </div>
       </section>
     </div>
   );
 }
-
-
