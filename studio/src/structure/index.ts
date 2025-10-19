@@ -13,23 +13,13 @@ export const structure: StructureResolver = (S: StructureBuilder) =>
   S.list()
     .title('Website Content')
     .items([
-      // Custom ordered list for contacts
+      // Contacts singleton
       S.listItem()
         .title('Kontaktai')
-        .child(
-          S.list()
-            .title('Kontaktai')
-            .items([
-              S.listItem()
-                .title('Rikiavimas')
-                .child(S.document().schemaType('contactsPage').documentId('contactsPage')),
-              S.divider(),
-              S.documentTypeListItem('contact').title('Įrašai'),
-            ])
-        ),
+        .child(S.document().schemaType('contactInfo').documentId('contactInfo')),
       // Rest of types excluding disabled ones and the explicitly added contact list
       ...S.documentTypeListItems()
-        .filter((listItem: any) => !DISABLED_TYPES.includes(listItem.getId()) && listItem.getId() !== 'contact' && listItem.getId() !== 'contactsSettings'),
+        .filter((listItem: any) => !DISABLED_TYPES.includes(listItem.getId()) && listItem.getId() !== 'contact' && listItem.getId() !== 'contactsSettings' && listItem.getId() !== 'contactsPage' && listItem.getId() !== 'contactInfo'),
       // Settings Singleton
       S.listItem()
         .title('Site Settings')

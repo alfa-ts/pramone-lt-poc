@@ -111,17 +111,12 @@ export const partnersQuery = defineQuery(`
   }
 `);
 
-// Manual order via singleton array of references:
-// 1) If contactsPage exists and has items, return contacts in that specific order
-// 2) Otherwise, fall back to createdAt order
-export const contactsQuery = defineQuery(`
-  {
-    "ordered": *[_type == "contactsPage" && _id == "contactsPage"][0].items[]-> {
-      _id, kind, name, position, phone, email, address
-    },
-    "fallback": *[_type == "contact"] | order(_createdAt asc) {
-      _id, kind, name, position, phone, email, address
-    }
+export const contactInfoQuery = defineQuery(`
+  *[_type == "contactInfo"][0] {
+    address,
+    phone,
+    email,
+    googleAddress
   }
 `);
 
