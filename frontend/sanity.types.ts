@@ -177,6 +177,34 @@ export type Member = {
   };
 };
 
+export type Istatai = {
+  _id: string;
+  _type: "istatai";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  statutesFile?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+    };
+    media?: unknown;
+    _type: "file";
+  };
+  ethicsFile?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+    };
+    media?: unknown;
+    _type: "file";
+  };
+};
+
 export type ContactInfo = {
   _id: string;
   _type: "contactInfo";
@@ -504,7 +532,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = CallToAction | Link | InfoSection | BlockContent | Partner | StrategicDirection | PastPresident | Leadership | Member | ContactInfo | Settings | News | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = CallToAction | Link | InfoSection | BlockContent | Partner | StrategicDirection | PastPresident | Leadership | Member | Istatai | ContactInfo | Settings | News | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: settingsQuery
@@ -665,6 +693,14 @@ export type ContactInfoQueryResult = {
   email: string | null;
   googleAddress: string | null;
 } | null;
+// Variable: legalDocumentsQuery
+// Query: *[_type == "istatai"][0] {    "statutesUrl": statutesFile.asset->url,    "statutesName": statutesFile.asset->originalFilename,    "ethicsUrl": ethicsFile.asset->url,    "ethicsName": ethicsFile.asset->originalFilename  }
+export type LegalDocumentsQueryResult = {
+  statutesUrl: string | null;
+  statutesName: string | null;
+  ethicsUrl: string | null;
+  ethicsName: string | null;
+} | null;
 
 // Query TypeMap
 import "@sanity/client";
@@ -680,5 +716,6 @@ declare module "@sanity/client" {
     "\n  *[_type == \"strategicDirection\"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {\n    _id,\n    title,\n    sortOrder\n  }\n": StrategicDirectionsQueryResult;
     "\n  {\n    \"cooperate\": *[_type == \"partner\" && group == \"cooperate\"] | order(coalesce(sortOrder, 9999) asc, title asc) {\n      _id,\n      title,\n      extra\n    },\n    \"agreements\": *[_type == \"partner\" && group == \"agreements\"] | order(coalesce(sortOrder, 9999) asc, title asc) {\n      _id,\n      title,\n      extra\n    }\n  }\n": PartnersQueryResult;
     "\n  *[_type == \"contactInfo\"][0] {\n    address,\n    phone,\n    email,\n    googleAddress\n  }\n": ContactInfoQueryResult;
+    "\n  *[_type == \"istatai\"][0] {\n    \"statutesUrl\": statutesFile.asset->url,\n    \"statutesName\": statutesFile.asset->originalFilename,\n    \"ethicsUrl\": ethicsFile.asset->url,\n    \"ethicsName\": ethicsFile.asset->originalFilename\n  }\n": LegalDocumentsQueryResult;
   }
 }
