@@ -8,18 +8,23 @@ import { leadership } from './documents/leadership'
 import { news } from './documents/news'
 import { pastPresident } from './documents/pastPresident'
 import { strategicDirection } from './documents/strategicDirection'
+import { partner } from './documents/partner'
+import { contactInfo } from './singletons/contactInfo'
+// Removed contactsSettings singleton
 
 // Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
 
 export const schemaTypes = [
   // Singletons
   settings,
+  contactInfo,
   // Documents
   member,
   leadership,
   news,
   pastPresident,
   strategicDirection,
+  partner,
   // Objects
   blockContent,
   infoSection,

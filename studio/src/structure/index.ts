@@ -13,10 +13,14 @@ export const structure: StructureResolver = (S: StructureBuilder) =>
   S.list()
     .title('Website Content')
     .items([
+      // Contacts singleton
+      S.listItem()
+        .title('Kontaktai')
+        .child(S.document().schemaType('contactInfo').documentId('contactInfo')),
+      // Rest of types excluding disabled ones and the explicitly added contact list
       ...S.documentTypeListItems()
-        // Remove the "assist.instruction.context" and "settings" content from the list of content types
-        .filter((listItem: any) => !DISABLED_TYPES.includes(listItem.getId())),
-      // Settings Singleton in order to view/edit the one particular document for Settings.  Learn more about Singletons: https://www.sanity.io/docs/create-a-link-to-a-single-edit-page-in-your-main-document-type-list
+        .filter((listItem: any) => !DISABLED_TYPES.includes(listItem.getId()) && listItem.getId() !== 'contact' && listItem.getId() !== 'contactsSettings' && listItem.getId() !== 'contactsPage' && listItem.getId() !== 'contactInfo'),
+      // Settings Singleton
       S.listItem()
         .title('Site Settings')
         .child(S.document().schemaType('settings').documentId('siteSettings'))

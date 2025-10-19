@@ -1,6 +1,7 @@
 import { defineQuery } from "next-sanity";
 
 export const settingsQuery = defineQuery(`*[_type == "settings"][0]`);
+// Removed: contacts settings singleton no longer used
 
 export const leadershipQuery = defineQuery(`
   *[_type == "leadership"] | order(role asc, sortOrder asc, name asc) {
@@ -92,6 +93,30 @@ export const strategicDirectionsQuery = defineQuery(`
     _id,
     title,
     sortOrder
+  }
+`);
+
+export const partnersQuery = defineQuery(`
+  {
+    "cooperate": *[_type == "partner" && group == "cooperate"] | order(coalesce(sortOrder, 9999) asc, title asc) {
+      _id,
+      title,
+      extra
+    },
+    "agreements": *[_type == "partner" && group == "agreements"] | order(coalesce(sortOrder, 9999) asc, title asc) {
+      _id,
+      title,
+      extra
+    }
+  }
+`);
+
+export const contactInfoQuery = defineQuery(`
+  *[_type == "contactInfo"][0] {
+    address,
+    phone,
+    email,
+    googleAddress
   }
 `);
 
