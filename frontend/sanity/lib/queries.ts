@@ -120,4 +120,13 @@ export const contactInfoQuery = defineQuery(`
   }
 `);
 
+export const legalDocumentsQuery = defineQuery(`
+  *[_type == "istatai"][0] {
+    "statutesUrl": statutesFile.asset->url,
+    "statutesName": statutesFile.asset->originalFilename,
+    "ethicsUrl": ethicsFile.asset->url,
+    "ethicsName": ethicsFile.asset->originalFilename
+  }
+`);
+
 // Removed unused queries for pages, posts, and people since those document types are no longer needed

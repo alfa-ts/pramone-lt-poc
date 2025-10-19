@@ -1,10 +1,12 @@
-"use client";
+import { sanityFetch } from "@/sanity/lib/live";
+import { legalDocumentsQuery } from "@/sanity/lib/queries";
 
-export default function IstataiPage() {
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    alert("link to");
-  };
+export default async function IstataiPage() {
+  const { data } = await sanityFetch({ query: legalDocumentsQuery });
+  const statutesUrl: string | undefined = data?.statutesUrl || undefined;
+  const statutesName: string | undefined = data?.statutesName || undefined;
+  const ethicsUrl: string | undefined = data?.ethicsUrl || undefined;
+  const ethicsName: string | undefined = data?.ethicsName || undefined;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
@@ -30,31 +32,52 @@ export default function IstataiPage() {
           </p>
 
           <p className="leading-relaxed">
-            Asociacijos įstatai, įregistruoti Juridinių asmenų registre 2021 m. gruodžio 7 dieną: {" "}
-            <a
-              href="#"
-              onClick={handleClick}
-              className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold"
-            >
-              KKPDA įstatai 2021
-            </a>
+            Asociacijos įstatai, įregistruoti Juridinių asmenų registre 2021 m. gruodžio 7 dieną.
           </p>
 
+          <div className="rounded-lg border border-gray-200 p-5 bg-gray-50">
+            <div className="flex items-center justify-between flex-wrap gap-3">
+              <div>
+                <div className="font-semibold text-blue-900">KKPDA įstatai</div>
+                <div className="text-sm text-gray-500">{statutesName || 'PDF failas'}</div>
+              </div>
+              {statutesUrl && (
+                <a
+                  href={statutesUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold"
+                >
+                  Atidaryti dokumentą
+                </a>
+              )}
+            </div>
+          </div>
+
           <p className="leading-relaxed">
-            Asociacijos {" "}
-            <a
-              href="#"
-              onClick={handleClick}
-              className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold"
-            >
-              Etikos kodeksas
-            </a>
-            .
+            Asociacijos Etikos kodeksas.
           </p>
+
+          <div className="rounded-lg border border-gray-200 p-5 bg-gray-50">
+            <div className="flex items-center justify-between flex-wrap gap-3">
+              <div>
+                <div className="font-semibold text-blue-900">Etikos kodeksas</div>
+                <div className="text-sm text-gray-500">{ethicsName || 'PDF failas'}</div>
+              </div>
+              {ethicsUrl && (
+                <a
+                  href={ethicsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold"
+                >
+                  Atidaryti dokumentą
+                </a>
+              )}
+            </div>
+          </div>
         </div>
       </section>
     </div>
   );
 }
-
-

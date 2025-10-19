@@ -17,9 +17,13 @@ export const structure: StructureResolver = (S: StructureBuilder) =>
       S.listItem()
         .title('Kontaktai')
         .child(S.document().schemaType('contactInfo').documentId('contactInfo')),
+      // Įstatai singleton
+      S.listItem()
+        .title('Įstatai')
+        .child(S.document().schemaType('istatai').documentId('istatai')),
       // Rest of types excluding disabled ones and the explicitly added contact list
       ...S.documentTypeListItems()
-        .filter((listItem: any) => !DISABLED_TYPES.includes(listItem.getId()) && listItem.getId() !== 'contact' && listItem.getId() !== 'contactsSettings' && listItem.getId() !== 'contactsPage' && listItem.getId() !== 'contactInfo'),
+        .filter((listItem: any) => !DISABLED_TYPES.includes(listItem.getId()) && listItem.getId() !== 'contact' && listItem.getId() !== 'contactsSettings' && listItem.getId() !== 'contactsPage' && listItem.getId() !== 'contactInfo' && listItem.getId() !== 'istatai'),
       // Settings Singleton
       S.listItem()
         .title('Site Settings')
