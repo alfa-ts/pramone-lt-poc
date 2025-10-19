@@ -115,23 +115,6 @@ export type StrategicDirection = {
   sortOrder?: number;
 };
 
-export type Contact = {
-  _id: string;
-  _type: "contact";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  orderRank?: string;
-  kind: "person" | "address";
-  name?: string;
-  position?: string;
-  phone?: string;
-  email?: string;
-  address?: string;
-  sortOrder?: number;
-};
-
 export type PastPresident = {
   _id: string;
   _type: "pastPresident";
@@ -194,19 +177,16 @@ export type Member = {
   };
 };
 
-export type ContactsPage = {
+export type ContactInfo = {
   _id: string;
-  _type: "contactsPage";
+  _type: "contactInfo";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  items?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "contact";
-  }>;
+  address?: string;
+  phone?: string;
+  email?: string;
+  googleAddress?: string;
 };
 
 export type Settings = {
@@ -524,7 +504,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = CallToAction | Link | InfoSection | BlockContent | Partner | StrategicDirection | Contact | PastPresident | Leadership | Member | ContactsPage | Settings | News | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = CallToAction | Link | InfoSection | BlockContent | Partner | StrategicDirection | PastPresident | Leadership | Member | ContactInfo | Settings | News | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: settingsQuery
@@ -677,28 +657,14 @@ export type PartnersQueryResult = {
     extra: string | null;
   }>;
 };
-// Variable: contactsQuery
-// Query: {    "ordered": *[_type == "contactsPage" && _id == "contactsPage"][0].items[]-> {      _id, kind, name, position, phone, email, address    },    "fallback": *[_type == "contact"] | order(_createdAt asc) {      _id, kind, name, position, phone, email, address    }  }
-export type ContactsQueryResult = {
-  ordered: Array<{
-    _id: string;
-    kind: "address" | "person";
-    name: string | null;
-    position: string | null;
-    phone: string | null;
-    email: string | null;
-    address: string | null;
-  }> | null;
-  fallback: Array<{
-    _id: string;
-    kind: "address" | "person";
-    name: string | null;
-    position: string | null;
-    phone: string | null;
-    email: string | null;
-    address: string | null;
-  }>;
-};
+// Variable: contactInfoQuery
+// Query: *[_type == "contactInfo"][0] {    address,    phone,    email,    googleAddress  }
+export type ContactInfoQueryResult = {
+  address: string | null;
+  phone: string | null;
+  email: string | null;
+  googleAddress: string | null;
+} | null;
 
 // Query TypeMap
 import "@sanity/client";
@@ -713,6 +679,6 @@ declare module "@sanity/client" {
     "\n  count(*[_type == \"member\"])\n": MembersCountQueryResult;
     "\n  *[_type == \"strategicDirection\"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {\n    _id,\n    title,\n    sortOrder\n  }\n": StrategicDirectionsQueryResult;
     "\n  {\n    \"cooperate\": *[_type == \"partner\" && group == \"cooperate\"] | order(coalesce(sortOrder, 9999) asc, title asc) {\n      _id,\n      title,\n      extra\n    },\n    \"agreements\": *[_type == \"partner\" && group == \"agreements\"] | order(coalesce(sortOrder, 9999) asc, title asc) {\n      _id,\n      title,\n      extra\n    }\n  }\n": PartnersQueryResult;
-    "\n  {\n    \"ordered\": *[_type == \"contactsPage\" && _id == \"contactsPage\"][0].items[]-> {\n      _id, kind, name, position, phone, email, address\n    },\n    \"fallback\": *[_type == \"contact\"] | order(_createdAt asc) {\n      _id, kind, name, position, phone, email, address\n    }\n  }\n": ContactsQueryResult;
+    "\n  *[_type == \"contactInfo\"][0] {\n    address,\n    phone,\n    email,\n    googleAddress\n  }\n": ContactInfoQueryResult;
   }
 }
