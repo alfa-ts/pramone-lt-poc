@@ -93,6 +93,56 @@ export type BlockContent = Array<{
   _key: string;
 }>;
 
+export type Partner = {
+  _id: string;
+  _type: "partner";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  group: "cooperate" | "agreements";
+  title: string;
+  extra?: string;
+  sortOrder?: number;
+};
+
+export type StrategicDirection = {
+  _id: string;
+  _type: "strategicDirection";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  sortOrder?: number;
+};
+
+export type Contact = {
+  _id: string;
+  _type: "contact";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  orderRank?: string;
+  kind: "person" | "address";
+  name?: string;
+  position?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  sortOrder?: number;
+};
+
+export type PastPresident = {
+  _id: string;
+  _type: "pastPresident";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name: string;
+  startYear: number;
+  endYear?: number;
+};
+
 export type Leadership = {
   _id: string;
   _type: "leadership";
@@ -142,6 +192,21 @@ export type Member = {
     alt?: string;
     _type: "image";
   };
+};
+
+export type ContactsPage = {
+  _id: string;
+  _type: "contactsPage";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  items?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "contact";
+  }>;
 };
 
 export type Settings = {
@@ -459,7 +524,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = CallToAction | Link | InfoSection | BlockContent | Leadership | Member | Settings | News | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = CallToAction | Link | InfoSection | BlockContent | Partner | StrategicDirection | Contact | PastPresident | Leadership | Member | ContactsPage | Settings | News | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: settingsQuery
@@ -582,16 +647,58 @@ export type SingleNewsQueryResult = {
 } | null;
 // Variable: pastPresidentsQuery
 // Query: *[_type == "pastPresident"] | order(startYear asc) {    _id,    name,    startYear,    endYear  }
-export type PastPresidentsQueryResult = Array<never>;
+export type PastPresidentsQueryResult = Array<{
+  _id: string;
+  name: string;
+  startYear: number;
+  endYear: number | null;
+}>;
 // Variable: membersCountQuery
 // Query: count(*[_type == "member"])
 export type MembersCountQueryResult = number;
 // Variable: strategicDirectionsQuery
 // Query: *[_type == "strategicDirection"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {    _id,    title,    sortOrder  }
-export type StrategicDirectionsQueryResult = Array<never>;
+export type StrategicDirectionsQueryResult = Array<{
+  _id: string;
+  title: string;
+  sortOrder: number | null;
+}>;
+// Variable: partnersQuery
+// Query: {    "cooperate": *[_type == "partner" && group == "cooperate"] | order(coalesce(sortOrder, 9999) asc, title asc) {      _id,      title,      extra    },    "agreements": *[_type == "partner" && group == "agreements"] | order(coalesce(sortOrder, 9999) asc, title asc) {      _id,      title,      extra    }  }
+export type PartnersQueryResult = {
+  cooperate: Array<{
+    _id: string;
+    title: string;
+    extra: string | null;
+  }>;
+  agreements: Array<{
+    _id: string;
+    title: string;
+    extra: string | null;
+  }>;
+};
 // Variable: contactsQuery
-// Query: *[_type == "contact"] | order(orderRank asc) {    _id,    kind,    name,    position,    phone,    email,    address,    orderRank  }
-export type ContactsQueryResult = Array<never>;
+// Query: {    "ordered": *[_type == "contactsPage" && _id == "contactsPage"][0].items[]-> {      _id, kind, name, position, phone, email, address    },    "fallback": *[_type == "contact"] | order(_createdAt asc) {      _id, kind, name, position, phone, email, address    }  }
+export type ContactsQueryResult = {
+  ordered: Array<{
+    _id: string;
+    kind: "address" | "person";
+    name: string | null;
+    position: string | null;
+    phone: string | null;
+    email: string | null;
+    address: string | null;
+  }> | null;
+  fallback: Array<{
+    _id: string;
+    kind: "address" | "person";
+    name: string | null;
+    position: string | null;
+    phone: string | null;
+    email: string | null;
+    address: string | null;
+  }>;
+};
 
 // Query TypeMap
 import "@sanity/client";
@@ -605,6 +712,7 @@ declare module "@sanity/client" {
     "\n  *[_type == \"pastPresident\"] | order(startYear asc) {\n    _id,\n    name,\n    startYear,\n    endYear\n  }\n": PastPresidentsQueryResult;
     "\n  count(*[_type == \"member\"])\n": MembersCountQueryResult;
     "\n  *[_type == \"strategicDirection\"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {\n    _id,\n    title,\n    sortOrder\n  }\n": StrategicDirectionsQueryResult;
-    "\n  *[_type == \"contact\"] | order(orderRank asc) {\n    _id,\n    kind,\n    name,\n    position,\n    phone,\n    email,\n    address,\n    orderRank\n  }\n": ContactsQueryResult;
+    "\n  {\n    \"cooperate\": *[_type == \"partner\" && group == \"cooperate\"] | order(coalesce(sortOrder, 9999) asc, title asc) {\n      _id,\n      title,\n      extra\n    },\n    \"agreements\": *[_type == \"partner\" && group == \"agreements\"] | order(coalesce(sortOrder, 9999) asc, title asc) {\n      _id,\n      title,\n      extra\n    }\n  }\n": PartnersQueryResult;
+    "\n  {\n    \"ordered\": *[_type == \"contactsPage\" && _id == \"contactsPage\"][0].items[]-> {\n      _id, kind, name, position, phone, email, address\n    },\n    \"fallback\": *[_type == \"contact\"] | order(_createdAt asc) {\n      _id, kind, name, position, phone, email, address\n    }\n  }\n": ContactsQueryResult;
   }
 }

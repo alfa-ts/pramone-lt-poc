@@ -5,7 +5,6 @@ import {
   pastPresidentsQuery,
   membersCountQuery,
 } from "@/sanity/lib/queries";
-import { FaUsers, FaClock, FaTrophy } from "react-icons/fa";
 
 export default async function IstorijaPage() {
   const [
