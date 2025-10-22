@@ -12,6 +12,7 @@ import { partner } from './documents/partner'
 import { activityReport } from './documents/activityReport'
 import { contactInfo } from './singletons/contactInfo'
 import { legalDocuments } from './singletons/legalDocuments'
+import { membershipInfo } from './singletons/membershipInfo'
 // Removed contactsSettings singleton
 
 // Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
@@ -21,6 +22,7 @@ export const schemaTypes = [
   settings,
   contactInfo,
   legalDocuments,
+  membershipInfo,
   // Documents
   member,
   leadership,

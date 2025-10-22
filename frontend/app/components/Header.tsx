@@ -43,6 +43,7 @@ export default function Header() {
   const isMembersActive = pathname.startsWith("/nariai");
   const isContactsActive = pathname.startsWith("/kontaktai");
   const isHomeActive = pathname === "/";
+  const [isMembersDropdownOpen, setIsMembersDropdownOpen] = useState(false);
 
   return (
     <>
@@ -150,13 +151,52 @@ export default function Header() {
               <FaNewspaper className="h-4 w-4 group-hover:scale-110 transition-transform" />
               <span className="font-medium">Naujienos</span>
             </Link>
-            <Link
-              href="/nariai"
-              className={getNavItemClasses("/nariai", isMembersActive)}
+            <div
+              className="relative"
+              onMouseEnter={() => setIsMembersDropdownOpen(true)}
+              onMouseLeave={() => setIsMembersDropdownOpen(false)}
             >
-              <FaUsers className="h-4 w-4 group-hover:scale-110 transition-transform" />
-              <span className="font-medium">Nariai</span>
-            </Link>
+              <button
+                className={
+                  isMembersActive
+                    ? "flex items-center space-x-2 px-4 py-2 rounded-lg text-primary bg-primary/10 border border-primary/20 group cursor-pointer"
+                    : "flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-700 hover:text-primary hover:bg-primary/5 transition-all duration-200 group cursor-pointer"
+                }
+              >
+                <FaUsers className="h-4 w-4 group-hover:scale-110 transition-transform" />
+                <span className="font-medium">Nariai</span>
+                <FaChevronDown
+                  className={`h-3 w-3 transition-transform duration-200 ${isMembersDropdownOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+
+              {isMembersDropdownOpen && (
+                <div className="absolute top-full left-0 pt-2 z-50">
+                  <div className="w-80 bg-white rounded-lg shadow-xl border border-gray-100 py-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <Link
+                      href="/nariai"
+                      className={`block px-4 py-3 text-sm transition-all duration-200 ${
+                        pathname === "/nariai"
+                          ? "bg-primary/10 text-primary font-semibold border-l-4 border-primary"
+                          : "text-gray-700 hover:bg-primary/10 hover:text-primary hover:pl-5 hover:font-medium border-l-4 border-transparent hover:border-primary/50"
+                      }`}
+                    >
+                      Nariai
+                    </Link>
+                    <Link
+                      href="/nariai/kaip-tapti-nariu"
+                      className={`block px-4 py-3 text-sm transition-all duration-200 ${
+                        pathname === "/nariai/kaip-tapti-nariu"
+                          ? "bg-primary/10 text-primary font-semibold border-l-4 border-primary"
+                          : "text-gray-700 hover:bg-primary/10 hover:text-primary hover:pl-5 hover:font-medium border-l-4 border-transparent hover:border-primary/50"
+                      }`}
+                    >
+                      Kaip tapti nariu?
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
             <Link
               href="/kontaktai"
               className={getNavItemClasses("/kontaktai", isContactsActive)}
