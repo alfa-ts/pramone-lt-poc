@@ -59,7 +59,7 @@ export default async function VeiklaPage() {
               reports.map((item: any) => (
                 <div key={item._id} className="rounded-lg border border-gray-200 p-5 bg-gray-50">
                   <div className="flex items-center justify-between flex-wrap gap-3">
-                    <div className="flex items-start gap-3">
+                    <div className={`flex gap-3 ${item.fileName ? 'items-start' : 'items-center'}`}>
                       {/* Document icon */}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -74,7 +74,9 @@ export default async function VeiklaPage() {
                       </svg>
                       <div>
                         <div className="font-semibold text-blue-900">KKPDA {item.period} m. veiklos ataskaita</div>
-                        <div className="text-sm text-gray-500">{item.fileName || 'PDF failas'}</div>
+                        {item.fileName && (
+                          <div className="text-sm text-gray-500">{item.fileName}</div>
+                        )}
                       </div>
                     </div>
                     {item.fileUrl ? (

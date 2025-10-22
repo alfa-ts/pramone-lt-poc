@@ -139,4 +139,32 @@ export const activityReportsQuery = defineQuery(`
   }
 `);
 
+export const membershipInfoQuery = defineQuery(`
+  *[_type == "membershipInfo"][0] {
+    whyJoinTitle,
+    whyJoinText,
+    "whyJoinFileUrl": whyJoinFile.asset->url,
+    "whyJoinFileName": whyJoinFile.asset->originalFilename,
+
+    benefitsTitle,
+    benefitsText,
+    "benefitsFileUrl": benefitsFile.asset->url,
+    "benefitsFileName": benefitsFile.asset->originalFilename,
+
+    feeTitle,
+    feeText,
+    "feeFileUrl": feeFile.asset->url,
+    "feeFileName": feeFile.asset->originalFilename,
+
+    requiredDocumentsTitle,
+    requiredDocuments[] {
+      _key,
+      title,
+      description,
+      "fileUrl": file.asset->url,
+      "fileName": file.asset->originalFilename
+    }
+  }
+`);
+
 // Removed unused queries for pages, posts, and people since those document types are no longer needed
