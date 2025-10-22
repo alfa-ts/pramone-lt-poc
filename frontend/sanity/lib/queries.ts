@@ -129,4 +129,14 @@ export const legalDocumentsQuery = defineQuery(`
   }
 `);
 
+export const activityReportsQuery = defineQuery(`
+  *[_type == "activityReport"] | order(_createdAt asc) {
+    _id,
+    period,
+    "fileUrl": file.asset->url,
+    "fileName": file.asset->originalFilename,
+    _createdAt
+  }
+`);
+
 // Removed unused queries for pages, posts, and people since those document types are no longer needed
