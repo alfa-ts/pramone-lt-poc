@@ -1,10 +1,8 @@
-"use client";
+import { sanityFetch } from "@/sanity/lib/live";
+import { activityReportsQuery } from "@/sanity/lib/queries";
 
-export default function VeiklaPage() {
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    alert("link to");
-  };
+export default async function VeiklaPage() {
+  const { data: reports } = await sanityFetch({ query: activityReportsQuery });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
@@ -56,49 +54,47 @@ export default function VeiklaPage() {
           </div>
 
           {/* Reports */}
-          <div className="mt-10 space-y-3 text-gray-700">
-            <p>
-              KKPDA 2015-2016 m. veiklos ataskaita {" "}
-              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold transition-colors">
-                KKPDA veiklos ataskaita 2015-2016 m
-              </a>
-            </p>
-            <p>
-              KKPDA 2017-2018 m. veiklos ataskaita {" "}
-              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold transition-colors">
-                KKPDA veiklos ataskaita 2017-2018 m
-              </a>
-            </p>
-            <p>
-              KKPDA 2019-2020 m. veiklos ataskaita {" "}
-              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold transition-colors">
-                KKPDA veiklos ataskaita 2019-2020 m
-              </a>
-            </p>
-            <p>
-              KKPDA 2021 m. veiklos ataskaita {" "}
-              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold transition-colors">
-                KKPDA veiklos ataskaita 2021 m
-              </a>
-            </p>
-            <p>
-              KKPDA 2022 m. veiklos ataskaita {" "}
-              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold transition-colors">
-                KKPDA veiklos ataskaita 2022 m
-              </a>
-            </p>
-            <p>
-              KKPDA 2023 m. veiklos ataskaita {" "}
-              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold transition-colors">
-                KKPDA veiklos ataskaita 2023 m
-              </a>
-            </p>
-            <p>
-              KKPDA 2024 m. veiklos ataskaita {" "}
-              <a href="#" onClick={handleLinkClick} className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold transition-colors">
-                KKPDA veiklos ataskaita 2024 m
-              </a>
-            </p>
+          <div className="mt-10 space-y-6 text-gray-700">
+            {Array.isArray(reports) && reports.length > 0 ? (
+              reports.map((item: any) => (
+                <div key={item._id} className="rounded-lg border border-gray-200 p-5 bg-gray-50">
+                  <div className="flex items-center justify-between flex-wrap gap-3">
+                    <div className="flex items-start gap-3">
+                      {/* Document icon */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        className="w-7 h-7 text-amber-500 mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M7 3h6l5 5v13a1 1 0 01-1 1H7a1 1 0 01-1-1V4a1 1 0 011-1z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 3v6h6" />
+                      </svg>
+                      <div>
+                        <div className="font-semibold text-blue-900">KKPDA {item.period} m. veiklos ataskaita</div>
+                        <div className="text-sm text-gray-500">{item.fileName || 'PDF failas'}</div>
+                      </div>
+                    </div>
+                    {item.fileUrl ? (
+                      <a
+                        href={item.fileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-amber-500 underline underline-offset-2 hover:text-amber-600 font-semibold"
+                      >
+                        Atsisųsti dokumentą
+                      </a>
+                    ) : (
+                      <span className="text-gray-400">(failas nepasiekiamas)</span>
+                    )}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500">Šiuo metu ataskaitų nėra.</p>
+            )}
           </div>
         </div>
       </section>
