@@ -17,7 +17,7 @@ export const leadership = defineType({
       name: 'position',
       title: 'Pareigos',
       type: 'string',
-      validation: (rule) => rule.required(),
+      // Optional
     }),
     defineField({
       name: 'role',
@@ -27,6 +27,8 @@ export const leadership = defineType({
         list: [
           {title: 'Prezidentas', value: 'prezidentas'},
           {title: 'Viceprezidentas', value: 'viceprezidentas'},
+          {title: 'Prezidiumo narys', value: 'prezidiumoNarys'},
+          {title: 'Prezidiumo garbės narys', value: 'prezidiumoGarbesNarys'},
         ],
         layout: 'radio'
       },
@@ -49,17 +51,7 @@ export const leadership = defineType({
           title: 'Alternatyvus tekstas',
           description: 'Aprašo asmens nuotrauką. Sanity AI gali automatiškai sugeneruoti aprašymą.',
           placeholder: 'Pvz: Asociacijos prezidento nuotrauka',
-          validation: (rule) => {
-            return rule.custom((alt, context) => {
-              if ((context.document?.photo as any)?.asset?._ref && !alt) {
-                return {
-                  message: 'Rekomenduojama nurodyti alternatyvų tekstą',
-                  level: 'warning'
-                }
-              }
-              return true
-            })
-          },
+          // Optional alt text
         }),
       ],
       validation: (rule) => rule.required(),
@@ -91,7 +83,13 @@ export const leadership = defineType({
       media: 'photo',
     },
     prepare({title, subtitle, role, media}) {
-      const roleTitle = role === 'prezidentas' ? 'Prezidentas' : 'Viceprezidentas'
+      const roleTitle = role === 'prezidentas'
+        ? 'Prezidentas'
+        : role === 'viceprezidentas'
+          ? 'Viceprezidentas'
+          : role === 'prezidiumoNarys'
+            ? 'Prezidiumo narys'
+            : 'Prezidiumo garbės narys'
       return {
         title,
         subtitle: `${roleTitle} - ${subtitle}`,
