@@ -139,4 +139,43 @@ export const activityReportsQuery = defineQuery(`
   }
 `);
 
+export const eventsListQuery = defineQuery(`
+  *[_type == "event" &&
+    (!defined($from) || $from == null || coalesce(startAt, dateTime(date)) >= dateTime($from)) &&
+    (!defined($to) || $to == null || coalesce(startAt, dateTime(date)) <= dateTime($to))
+  ] | order(coalesce(startAt, dateTime(date)) desc) {
+    _id,
+    title,
+    slug,
+    date,
+    startAt,
+    endAt,
+    time,
+    location,
+    organizers,
+    excerpt,
+    "plainContent": pt::text(content),
+    "cover": images[0]{ asset->{ _id, url } }
+  }
+`);
+
+export const singleEventQuery = defineQuery(`
+  *[_type == "event" && slug.current == $slug][0] {
+    _id,
+    title,
+    slug,
+    date,
+    startAt,
+    endAt,
+    time,
+    location,
+    locationLat,
+    locationLng,
+    organizers,
+    excerpt,
+    content,
+    images[]{ asset->{ _id, url } }
+  }
+`);
+
 // Removed unused queries for pages, posts, and people since those document types are no longer needed

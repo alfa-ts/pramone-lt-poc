@@ -701,6 +701,15 @@ export type LegalDocumentsQueryResult = {
   ethicsUrl: string | null;
   ethicsName: string | null;
 } | null;
+// Variable: activityReportsQuery
+// Query: *[_type == "activityReport"] | order(_createdAt asc) {    _id,    period,    "fileUrl": file.asset->url,    "fileName": file.asset->originalFilename,    _createdAt  }
+export type ActivityReportsQueryResult = Array<never>;
+// Variable: eventsListQuery
+// Query: *[_type == "event"] | order(coalesce(startAt, dateTime(date)) desc) {    _id,    title,    slug,    date,    startAt,    endAt,    time,    location,    organizers,    excerpt,    "plainContent": pt::text(content),    "cover": images[0]{ asset->{ _id, url } }  }
+export type EventsListQueryResult = Array<never>;
+// Variable: singleEventQuery
+// Query: *[_type == "event" && slug.current == $slug][0] {    _id,    title,    slug,    date,    startAt,    endAt,    time,    location,    locationLat,    locationLng,    organizers,    excerpt,    content,    images[]{ asset->{ _id, url } }  }
+export type SingleEventQueryResult = null;
 
 // Query TypeMap
 import "@sanity/client";
@@ -717,5 +726,8 @@ declare module "@sanity/client" {
     "\n  {\n    \"cooperate\": *[_type == \"partner\" && group == \"cooperate\"] | order(coalesce(sortOrder, 9999) asc, title asc) {\n      _id,\n      title,\n      extra\n    },\n    \"agreements\": *[_type == \"partner\" && group == \"agreements\"] | order(coalesce(sortOrder, 9999) asc, title asc) {\n      _id,\n      title,\n      extra\n    }\n  }\n": PartnersQueryResult;
     "\n  *[_type == \"contactInfo\"][0] {\n    address,\n    phone,\n    email,\n    googleAddress\n  }\n": ContactInfoQueryResult;
     "\n  *[_type == \"istatai\"][0] {\n    \"statutesUrl\": statutesFile.asset->url,\n    \"statutesName\": statutesFile.asset->originalFilename,\n    \"ethicsUrl\": ethicsFile.asset->url,\n    \"ethicsName\": ethicsFile.asset->originalFilename\n  }\n": LegalDocumentsQueryResult;
+    "\n  *[_type == \"activityReport\"] | order(_createdAt asc) {\n    _id,\n    period,\n    \"fileUrl\": file.asset->url,\n    \"fileName\": file.asset->originalFilename,\n    _createdAt\n  }\n": ActivityReportsQueryResult;
+    "\n  *[_type == \"event\"] | order(coalesce(startAt, dateTime(date)) desc) {\n    _id,\n    title,\n    slug,\n    date,\n    startAt,\n    endAt,\n    time,\n    location,\n    organizers,\n    excerpt,\n    \"plainContent\": pt::text(content),\n    \"cover\": images[0]{ asset->{ _id, url } }\n  }\n": EventsListQueryResult;
+    "\n  *[_type == \"event\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    date,\n    startAt,\n    endAt,\n    time,\n    location,\n    locationLat,\n    locationLng,\n    organizers,\n    excerpt,\n    content,\n    images[]{ asset->{ _id, url } }\n  }\n": SingleEventQueryResult;
   }
 }
