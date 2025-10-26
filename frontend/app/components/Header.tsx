@@ -13,17 +13,17 @@ import {
 } from "react-icons/fa";
 import { useState } from "react";
 
+const getNavItemClasses = (isActive: boolean) => {
+  if (isActive) {
+    return "flex items-center space-x-2 px-4 py-2 rounded-lg text-primary bg-primary/10 border border-primary/20 group";
+  }
+
+  return "flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-700 hover:text-primary hover:bg-primary/5 transition-all duration-200 group";
+};
+
 export default function Header() {
   const pathname = usePathname();
   const [isAboutUsDropdownOpen, setIsAboutUsDropdownOpen] = useState(false);
-
-  const getNavItemClasses = (href: string, isActive: boolean) => {
-    if (isActive) {
-      return "flex items-center space-x-2 px-4 py-2 rounded-lg text-primary bg-primary/10 border border-primary/20 group";
-    }
-
-    return "flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-700 hover:text-primary hover:bg-primary/5 transition-all duration-200 group";
-  };
 
   const aboutUsMenuItems = [
     {
@@ -39,7 +39,8 @@ export default function Header() {
   ];
 
   const isAboutUsActive = pathname.startsWith("/apie");
-  const isNewsActive = pathname.startsWith("/naujienos");
+  const isNewsActive =
+    pathname.startsWith("/naujienos") || pathname.startsWith("/renginiai");
   const isMembersActive = pathname.startsWith("/nariai");
   const isContactsActive = pathname.startsWith("/kontaktai");
   const isHomeActive = pathname === "/";
@@ -99,7 +100,7 @@ export default function Header() {
           </div>
 
           <nav className="hidden md:flex items-center space-x-2">
-            <Link href="/" className={getNavItemClasses("/", isHomeActive)}>
+            <Link href="/" className={getNavItemClasses(isHomeActive)}>
               <FaHome className="h-4 w-4 group-hover:scale-110 transition-transform" />
               <span className="font-medium">Pradžia</span>
             </Link>
@@ -144,13 +145,40 @@ export default function Header() {
               )}
             </div>
 
-            <Link
-              href="/naujienos"
-              className={getNavItemClasses("/naujienos", isNewsActive)}
-            >
-              <FaNewspaper className="h-4 w-4 group-hover:scale-110 transition-transform" />
-              <span className="font-medium">Naujienos</span>
-            </Link>
+            <div className="relative group">
+              <Link
+                href="/naujienos"
+                className={getNavItemClasses(isNewsActive)}
+              >
+                <FaNewspaper className="h-4 w-4 group-hover:scale-110 transition-transform" />
+                <span className="font-medium">Naujienos</span>
+                <FaChevronDown className="h-3 w-3" />
+              </Link>
+              <div className="hidden group-hover:block absolute top-full left-0 pt-2 z-50">
+                <div className="w-72 bg-white rounded-lg shadow-xl border border-gray-100 py-2">
+                  <Link
+                    href="/naujienos"
+                    className={`block px-4 py-3 text-sm transition-all duration-200 ${
+                      pathname === "/naujienos"
+                        ? "bg-primary/10 text-primary font-semibold border-l-4 border-primary"
+                        : "text-gray-700 hover:bg-primary/10 hover:text-primary hover:pl-5 hover:font-medium border-l-4 border-transparent hover:border-primary/50"
+                    }`}
+                  >
+                    Naujienos
+                  </Link>
+                  <Link
+                    href="/renginiai"
+                    className={`block px-4 py-3 text-sm transition-all duration-200 ${
+                      pathname.startsWith("/renginiai")
+                        ? "bg-primary/10 text-primary font-semibold border-l-4 border-primary"
+                        : "text-gray-700 hover:bg-primary/10 hover:text-primary hover:pl-5 hover:font-medium border-l-4 border-transparent hover:border-primary/50"
+                    }`}
+                  >
+                    Renginiai
+                  </Link>
+                </div>
+              </div>
+            </div>
             <div
               className="relative"
               onMouseEnter={() => setIsMembersDropdownOpen(true)}
@@ -199,7 +227,7 @@ export default function Header() {
             </div>
             <Link
               href="/kontaktai"
-              className={getNavItemClasses("/kontaktai", isContactsActive)}
+              className={getNavItemClasses(isContactsActive)}
             >
               <FaPhone className="h-4 w-4 group-hover:scale-110 transition-transform" />
               <span className="font-medium">Kontaktai</span>

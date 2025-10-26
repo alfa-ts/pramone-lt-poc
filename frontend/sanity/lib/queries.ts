@@ -139,23 +139,59 @@ export const activityReportsQuery = defineQuery(`
   }
 `);
 
+export const eventsListQuery = defineQuery(`
+  *[_type == "event" &&
+    (!defined($from) || $from == null || coalesce(startAt, dateTime(date)) >= dateTime($from)) &&
+    (!defined($to) || $to == null || coalesce(startAt, dateTime(date)) <= dateTime($to))
+  ] | order(coalesce(startAt, dateTime(date)) desc) {
+    _id,
+    title,
+    slug,
+    date,
+    startAt,
+    endAt,
+    time,
+    location,
+    organizers,
+    excerpt,
+    "plainContent": pt::text(content),
+    "cover": images[0]{ asset->{ _id, url } }
+  }
+`);
+
+export const singleEventQuery = defineQuery(`
+  *[_type == "event" && slug.current == $slug][0] {
+    _id,
+    title,
+    slug,
+    date,
+    startAt,
+    endAt,
+    time,
+    location,
+    locationLat,
+    locationLng,
+    organizers,
+    excerpt,
+    content,
+    images[]{ asset->{ _id, url } }
+  }
+`);
+
 export const membershipInfoQuery = defineQuery(`
   *[_type == "membershipInfo"][0] {
     whyJoinTitle,
     whyJoinText,
     "whyJoinFileUrl": whyJoinFile.asset->url,
     "whyJoinFileName": whyJoinFile.asset->originalFilename,
-
     benefitsTitle,
     benefitsText,
     "benefitsFileUrl": benefitsFile.asset->url,
     "benefitsFileName": benefitsFile.asset->originalFilename,
-
     feeTitle,
     feeText,
     "feeFileUrl": feeFile.asset->url,
     "feeFileName": feeFile.asset->originalFilename,
-
     requiredDocumentsTitle,
     requiredDocuments[] {
       _key,

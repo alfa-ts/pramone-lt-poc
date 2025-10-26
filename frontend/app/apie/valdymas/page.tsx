@@ -19,8 +19,12 @@ export default async function ValdymasPage() {
         roleKey = "Prezidentas";
       } else if (cleanRole === "viceprezidentas") {
         roleKey = "Viceprezidentai";
+      } else if (cleanRole === "prezidiumoNarys") {
+        roleKey = "Prezidiumo nariai";
+      } else if (cleanRole === "prezidiumoGarbesNarys") {
+        roleKey = "Prezidiumo garbės nariai";
       } else {
-        roleKey = "Viceprezidentai"; // fallback
+        roleKey = "Kita"; // fallback
       }
 
       if (!acc[roleKey]) {
@@ -38,10 +42,16 @@ export default async function ValdymasPage() {
     }, {}) || {};
 
   // Convert to the expected format
-  const people = Object.entries(groupedLeadership).map(([role, members]) => ({
-    role,
-    members: members as any[],
-  }));
+  const desiredOrder = [
+    "Prezidentas",
+    "Viceprezidentai",
+    "Prezidiumo nariai",
+    "Prezidiumo garbės nariai",
+  ];
+
+  const people = desiredOrder
+    .filter((role) => groupedLeadership[role])
+    .map((role) => ({ role, members: groupedLeadership[role] as any[] }));
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
