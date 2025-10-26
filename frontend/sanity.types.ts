@@ -93,6 +93,87 @@ export type BlockContent = Array<{
   _key: string;
 }>;
 
+export type ActivityReport = {
+  _id: string;
+  _type: "activityReport";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  period: string;
+  file: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+    };
+    media?: unknown;
+    _type: "file";
+  };
+};
+
+export type Event = {
+  _id: string;
+  _type: "event";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  slug: Slug;
+  date?: string;
+  startAt?: string;
+  endAt?: string;
+  time?: string;
+  location?: string;
+  locationLat?: number;
+  locationLng?: number;
+  organizers?: string;
+  images?: Array<{
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+    _key: string;
+  }>;
+  excerpt?: string;
+  content?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  } | {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+    _key: string;
+  }>;
+};
+
 export type Partner = {
   _id: string;
   _type: "partner";
@@ -133,8 +214,8 @@ export type Leadership = {
   _updatedAt: string;
   _rev: string;
   name: string;
-  position: string;
-  role: "prezidentas" | "viceprezidentas";
+  position?: string;
+  role: "prezidentas" | "viceprezidentas" | "prezidiumoNarys" | "prezidiumoGarbesNarys";
   photo: {
     asset?: {
       _ref: string;
@@ -175,6 +256,70 @@ export type Member = {
     alt?: string;
     _type: "image";
   };
+};
+
+export type MembershipInfo = {
+  _id: string;
+  _type: "membershipInfo";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  whyJoinTitle: string;
+  whyJoinText?: string;
+  whyJoinFile?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+    };
+    media?: unknown;
+    _type: "file";
+  };
+  benefitsTitle: string;
+  benefitsText?: string;
+  benefitsFile?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+    };
+    media?: unknown;
+    _type: "file";
+  };
+  feeTitle: string;
+  feeText?: string;
+  feeImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  requiredDocumentsTitle: string;
+  requiredDocuments?: Array<{
+    title: string;
+    description?: string;
+    file?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+      };
+      media?: unknown;
+      _type: "file";
+    };
+    _type: "documentItem";
+    _key: string;
+  }>;
 };
 
 export type Istatai = {
@@ -532,7 +677,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = CallToAction | Link | InfoSection | BlockContent | Partner | StrategicDirection | PastPresident | Leadership | Member | Istatai | ContactInfo | Settings | News | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = CallToAction | Link | InfoSection | BlockContent | ActivityReport | Event | Partner | StrategicDirection | PastPresident | Leadership | Member | MembershipInfo | Istatai | ContactInfo | Settings | News | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: settingsQuery
@@ -590,8 +735,8 @@ export type SettingsQueryResult = {
 export type LeadershipQueryResult = Array<{
   _id: string;
   name: string;
-  position: string;
-  role: "prezidentas" | "viceprezidentas";
+  position: string | null;
+  role: "prezidentas" | "prezidiumoGarbesNarys" | "prezidiumoNarys" | "viceprezidentas";
   photo: {
     asset: {
       _id: string;
@@ -703,13 +848,115 @@ export type LegalDocumentsQueryResult = {
 } | null;
 // Variable: activityReportsQuery
 // Query: *[_type == "activityReport"] | order(_createdAt asc) {    _id,    period,    "fileUrl": file.asset->url,    "fileName": file.asset->originalFilename,    _createdAt  }
-export type ActivityReportsQueryResult = Array<never>;
+export type ActivityReportsQueryResult = Array<{
+  _id: string;
+  period: string;
+  fileUrl: string | null;
+  fileName: string | null;
+  _createdAt: string;
+}>;
 // Variable: eventsListQuery
-// Query: *[_type == "event"] | order(coalesce(startAt, dateTime(date)) desc) {    _id,    title,    slug,    date,    startAt,    endAt,    time,    location,    organizers,    excerpt,    "plainContent": pt::text(content),    "cover": images[0]{ asset->{ _id, url } }  }
-export type EventsListQueryResult = Array<never>;
+// Query: *[_type == "event" &&    (!defined($from) || $from == null || coalesce(startAt, dateTime(date)) >= dateTime($from)) &&    (!defined($to) || $to == null || coalesce(startAt, dateTime(date)) <= dateTime($to))  ] | order(coalesce(startAt, dateTime(date)) desc) {    _id,    title,    slug,    date,    startAt,    endAt,    time,    location,    organizers,    excerpt,    "plainContent": pt::text(content),    "cover": images[0]{ asset->{ _id, url } }  }
+export type EventsListQueryResult = Array<{
+  _id: string;
+  title: string;
+  slug: Slug;
+  date: string | null;
+  startAt: string | null;
+  endAt: string | null;
+  time: string | null;
+  location: string | null;
+  organizers: string | null;
+  excerpt: string | null;
+  plainContent: string;
+  cover: {
+    asset: {
+      _id: string;
+      url: string | null;
+    } | null;
+  } | null;
+}>;
 // Variable: singleEventQuery
 // Query: *[_type == "event" && slug.current == $slug][0] {    _id,    title,    slug,    date,    startAt,    endAt,    time,    location,    locationLat,    locationLng,    organizers,    excerpt,    content,    images[]{ asset->{ _id, url } }  }
-export type SingleEventQueryResult = null;
+export type SingleEventQueryResult = {
+  _id: string;
+  title: string;
+  slug: Slug;
+  date: string | null;
+  startAt: string | null;
+  endAt: string | null;
+  time: string | null;
+  location: string | null;
+  locationLat: number | null;
+  locationLng: number | null;
+  organizers: string | null;
+  excerpt: string | null;
+  content: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  } | {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+    _key: string;
+  }> | null;
+  images: Array<{
+    asset: {
+      _id: string;
+      url: string | null;
+    } | null;
+  }> | null;
+} | null;
+// Variable: membershipInfoQuery
+// Query: *[_type == "membershipInfo"][0] {    whyJoinTitle,    whyJoinText,    "whyJoinFileUrl": whyJoinFile.asset->url,    "whyJoinFileName": whyJoinFile.asset->originalFilename,    benefitsTitle,    benefitsText,    "benefitsFileUrl": benefitsFile.asset->url,    "benefitsFileName": benefitsFile.asset->originalFilename,    feeTitle,    feeText,    "feeImage": feeImage{      asset->{        _id,        url      },      alt    },    requiredDocumentsTitle,    requiredDocuments[] {      _key,      title,      description,      "fileUrl": file.asset->url,      "fileName": file.asset->originalFilename    }  }
+export type MembershipInfoQueryResult = {
+  whyJoinTitle: string;
+  whyJoinText: string | null;
+  whyJoinFileUrl: string | null;
+  whyJoinFileName: string | null;
+  benefitsTitle: string;
+  benefitsText: string | null;
+  benefitsFileUrl: string | null;
+  benefitsFileName: string | null;
+  feeTitle: string;
+  feeText: string | null;
+  feeImage: {
+    asset: {
+      _id: string;
+      url: string | null;
+    } | null;
+    alt: string | null;
+  } | null;
+  requiredDocumentsTitle: string;
+  requiredDocuments: Array<{
+    _key: string;
+    title: string;
+    description: string | null;
+    fileUrl: string | null;
+    fileName: string | null;
+  }> | null;
+} | null;
 
 // Query TypeMap
 import "@sanity/client";
@@ -727,7 +974,8 @@ declare module "@sanity/client" {
     "\n  *[_type == \"contactInfo\"][0] {\n    address,\n    phone,\n    email,\n    googleAddress\n  }\n": ContactInfoQueryResult;
     "\n  *[_type == \"istatai\"][0] {\n    \"statutesUrl\": statutesFile.asset->url,\n    \"statutesName\": statutesFile.asset->originalFilename,\n    \"ethicsUrl\": ethicsFile.asset->url,\n    \"ethicsName\": ethicsFile.asset->originalFilename\n  }\n": LegalDocumentsQueryResult;
     "\n  *[_type == \"activityReport\"] | order(_createdAt asc) {\n    _id,\n    period,\n    \"fileUrl\": file.asset->url,\n    \"fileName\": file.asset->originalFilename,\n    _createdAt\n  }\n": ActivityReportsQueryResult;
-    "\n  *[_type == \"event\"] | order(coalesce(startAt, dateTime(date)) desc) {\n    _id,\n    title,\n    slug,\n    date,\n    startAt,\n    endAt,\n    time,\n    location,\n    organizers,\n    excerpt,\n    \"plainContent\": pt::text(content),\n    \"cover\": images[0]{ asset->{ _id, url } }\n  }\n": EventsListQueryResult;
+    "\n  *[_type == \"event\" &&\n    (!defined($from) || $from == null || coalesce(startAt, dateTime(date)) >= dateTime($from)) &&\n    (!defined($to) || $to == null || coalesce(startAt, dateTime(date)) <= dateTime($to))\n  ] | order(coalesce(startAt, dateTime(date)) desc) {\n    _id,\n    title,\n    slug,\n    date,\n    startAt,\n    endAt,\n    time,\n    location,\n    organizers,\n    excerpt,\n    \"plainContent\": pt::text(content),\n    \"cover\": images[0]{ asset->{ _id, url } }\n  }\n": EventsListQueryResult;
     "\n  *[_type == \"event\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    date,\n    startAt,\n    endAt,\n    time,\n    location,\n    locationLat,\n    locationLng,\n    organizers,\n    excerpt,\n    content,\n    images[]{ asset->{ _id, url } }\n  }\n": SingleEventQueryResult;
+    "\n  *[_type == \"membershipInfo\"][0] {\n    whyJoinTitle,\n    whyJoinText,\n    \"whyJoinFileUrl\": whyJoinFile.asset->url,\n    \"whyJoinFileName\": whyJoinFile.asset->originalFilename,\n    benefitsTitle,\n    benefitsText,\n    \"benefitsFileUrl\": benefitsFile.asset->url,\n    \"benefitsFileName\": benefitsFile.asset->originalFilename,\n    feeTitle,\n    feeText,\n    \"feeImage\": feeImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    requiredDocumentsTitle,\n    requiredDocuments[] {\n      _key,\n      title,\n      description,\n      \"fileUrl\": file.asset->url,\n      \"fileName\": file.asset->originalFilename\n    }\n  }\n": MembershipInfoQueryResult;
   }
 }
