@@ -1846,7 +1846,7 @@
         },
         "optional": true
       },
-      "feeFile": {
+      "feeImage": {
         "type": "objectAttribute",
         "value": {
           "type": "object",
@@ -1877,7 +1877,7 @@
                     "optional": true
                   }
                 },
-                "dereferencesTo": "sanity.fileAsset"
+                "dereferencesTo": "sanity.imageAsset"
               },
               "optional": true
             },
@@ -1888,11 +1888,34 @@
               },
               "optional": true
             },
+            "hotspot": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "sanity.imageHotspot"
+              },
+              "optional": true
+            },
+            "crop": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "inline",
+                "name": "sanity.imageCrop"
+              },
+              "optional": true
+            },
+            "alt": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              },
+              "optional": true
+            },
             "_type": {
               "type": "objectAttribute",
               "value": {
                 "type": "string",
-                "value": "file"
+                "value": "image"
               }
             }
           }

@@ -190,8 +190,13 @@ export const membershipInfoQuery = defineQuery(`
     "benefitsFileName": benefitsFile.asset->originalFilename,
     feeTitle,
     feeText,
-    "feeFileUrl": feeFile.asset->url,
-    "feeFileName": feeFile.asset->originalFilename,
+    "feeImage": feeImage{
+      asset->{
+        _id,
+        url
+      },
+      alt
+    },
     requiredDocumentsTitle,
     requiredDocuments[] {
       _key,

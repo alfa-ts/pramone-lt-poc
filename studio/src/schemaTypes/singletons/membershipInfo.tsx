@@ -58,10 +58,20 @@ export const membershipInfo = defineType({
       type: 'text',
     }),
     defineField({
-      name: 'feeFile',
-      title: 'Nario mokestis – papildomas failas (nebūtina)',
-      type: 'file',
-      options: {storeOriginalFilename: true},
+      name: 'feeImage',
+      title: 'Nario mokestis – paveikslėlis (nebūtina)',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative text',
+          description: 'Svarbu SEO ir prieinamumui',
+        }
+      ]
     }),
 
     defineField({

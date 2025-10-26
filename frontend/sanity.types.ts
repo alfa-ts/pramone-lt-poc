@@ -290,15 +290,18 @@ export type MembershipInfo = {
   };
   feeTitle: string;
   feeText?: string;
-  feeFile?: {
+  feeImage?: {
     asset?: {
       _ref: string;
       _type: "reference";
       _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
     };
     media?: unknown;
-    _type: "file";
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
   };
   requiredDocumentsTitle: string;
   requiredDocuments?: Array<{
@@ -926,7 +929,7 @@ export type SingleEventQueryResult = {
   }> | null;
 } | null;
 // Variable: membershipInfoQuery
-// Query: *[_type == "membershipInfo"][0] {    whyJoinTitle,    whyJoinText,    "whyJoinFileUrl": whyJoinFile.asset->url,    "whyJoinFileName": whyJoinFile.asset->originalFilename,    benefitsTitle,    benefitsText,    "benefitsFileUrl": benefitsFile.asset->url,    "benefitsFileName": benefitsFile.asset->originalFilename,    feeTitle,    feeText,    "feeFileUrl": feeFile.asset->url,    "feeFileName": feeFile.asset->originalFilename,    requiredDocumentsTitle,    requiredDocuments[] {      _key,      title,      description,      "fileUrl": file.asset->url,      "fileName": file.asset->originalFilename    }  }
+// Query: *[_type == "membershipInfo"][0] {    whyJoinTitle,    whyJoinText,    "whyJoinFileUrl": whyJoinFile.asset->url,    "whyJoinFileName": whyJoinFile.asset->originalFilename,    benefitsTitle,    benefitsText,    "benefitsFileUrl": benefitsFile.asset->url,    "benefitsFileName": benefitsFile.asset->originalFilename,    feeTitle,    feeText,    "feeImage": feeImage{      asset->{        _id,        url      },      alt    },    requiredDocumentsTitle,    requiredDocuments[] {      _key,      title,      description,      "fileUrl": file.asset->url,      "fileName": file.asset->originalFilename    }  }
 export type MembershipInfoQueryResult = {
   whyJoinTitle: string;
   whyJoinText: string | null;
@@ -938,8 +941,13 @@ export type MembershipInfoQueryResult = {
   benefitsFileName: string | null;
   feeTitle: string;
   feeText: string | null;
-  feeFileUrl: string | null;
-  feeFileName: string | null;
+  feeImage: {
+    asset: {
+      _id: string;
+      url: string | null;
+    } | null;
+    alt: string | null;
+  } | null;
   requiredDocumentsTitle: string;
   requiredDocuments: Array<{
     _key: string;
@@ -968,6 +976,6 @@ declare module "@sanity/client" {
     "\n  *[_type == \"activityReport\"] | order(_createdAt asc) {\n    _id,\n    period,\n    \"fileUrl\": file.asset->url,\n    \"fileName\": file.asset->originalFilename,\n    _createdAt\n  }\n": ActivityReportsQueryResult;
     "\n  *[_type == \"event\" &&\n    (!defined($from) || $from == null || coalesce(startAt, dateTime(date)) >= dateTime($from)) &&\n    (!defined($to) || $to == null || coalesce(startAt, dateTime(date)) <= dateTime($to))\n  ] | order(coalesce(startAt, dateTime(date)) desc) {\n    _id,\n    title,\n    slug,\n    date,\n    startAt,\n    endAt,\n    time,\n    location,\n    organizers,\n    excerpt,\n    \"plainContent\": pt::text(content),\n    \"cover\": images[0]{ asset->{ _id, url } }\n  }\n": EventsListQueryResult;
     "\n  *[_type == \"event\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    date,\n    startAt,\n    endAt,\n    time,\n    location,\n    locationLat,\n    locationLng,\n    organizers,\n    excerpt,\n    content,\n    images[]{ asset->{ _id, url } }\n  }\n": SingleEventQueryResult;
-    "\n  *[_type == \"membershipInfo\"][0] {\n    whyJoinTitle,\n    whyJoinText,\n    \"whyJoinFileUrl\": whyJoinFile.asset->url,\n    \"whyJoinFileName\": whyJoinFile.asset->originalFilename,\n    benefitsTitle,\n    benefitsText,\n    \"benefitsFileUrl\": benefitsFile.asset->url,\n    \"benefitsFileName\": benefitsFile.asset->originalFilename,\n    feeTitle,\n    feeText,\n    \"feeFileUrl\": feeFile.asset->url,\n    \"feeFileName\": feeFile.asset->originalFilename,\n    requiredDocumentsTitle,\n    requiredDocuments[] {\n      _key,\n      title,\n      description,\n      \"fileUrl\": file.asset->url,\n      \"fileName\": file.asset->originalFilename\n    }\n  }\n": MembershipInfoQueryResult;
+    "\n  *[_type == \"membershipInfo\"][0] {\n    whyJoinTitle,\n    whyJoinText,\n    \"whyJoinFileUrl\": whyJoinFile.asset->url,\n    \"whyJoinFileName\": whyJoinFile.asset->originalFilename,\n    benefitsTitle,\n    benefitsText,\n    \"benefitsFileUrl\": benefitsFile.asset->url,\n    \"benefitsFileName\": benefitsFile.asset->originalFilename,\n    feeTitle,\n    feeText,\n    \"feeImage\": feeImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    requiredDocumentsTitle,\n    requiredDocuments[] {\n      _key,\n      title,\n      description,\n      \"fileUrl\": file.asset->url,\n      \"fileName\": file.asset->originalFilename\n    }\n  }\n": MembershipInfoQueryResult;
   }
 }

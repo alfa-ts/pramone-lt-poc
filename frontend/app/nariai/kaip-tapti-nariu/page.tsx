@@ -1,5 +1,6 @@
 import { sanityFetch } from "@/sanity/lib/live";
 import { membershipInfoQuery } from "@/sanity/lib/queries";
+import Image from "next/image";
 
 export default async function KaipTaptiNariuPage() {
   const { data } = await sanityFetch({ query: membershipInfoQuery });
@@ -119,16 +120,16 @@ export default async function KaipTaptiNariuPage() {
             {data?.feeText && (
               <p className="leading-relaxed whitespace-pre-line">{data.feeText}</p>
             )}
-            {data?.feeFileUrl && (
-              <div className="mt-4">
-                <a
-                  href={data.feeFileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-amber-600 underline underline-offset-2 font-semibold"
-                >
-                  {data.feeFileName || "Atsisiųsti dokumentą"}
-                </a>
+            {data?.feeImage?.asset?.url && (
+              <div className="mt-6 relative w-full">
+                <Image
+                  src={data.feeImage.asset.url}
+                  alt={data.feeImage.alt || "Nario mokesčio informacija"}
+                  width={1200}
+                  height={800}
+                  className="rounded-lg shadow-md"
+                  style={{ width: '100%', height: 'auto' }}
+                />
               </div>
             )}
           </div>
