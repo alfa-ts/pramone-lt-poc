@@ -3,7 +3,7 @@ import { FaFacebook, FaLinkedin, FaInstagram } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="bg-primary text-white py-8">
+    <footer className="bg-black text-white py-8">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
           <h4 className="text-lg font-bold mb-4">KAUNO KRAŠTO ASOCIACIJA</h4>
@@ -18,17 +18,17 @@ export default function Footer() {
           <h4 className="text-lg font-bold mb-4">Puslapio struktūra</h4>
           <ul className="space-y-2 text-sm">
             <li>
-              <Link href="/apie" className="hover:text-accent">
+              <Link href="/apie" className="hover:text-white">
                 Apie mus
               </Link>
             </li>
             <li>
-              <Link href="/nariai" className="hover:text-accent">
+              <Link href="/nariai" className="hover:text-white">
                 Nariai
               </Link>
             </li>
             <li>
-              <Link href="/kontaktai" className="hover:text-accent">
+              <Link href="/kontaktai" className="hover:text-white">
                 Kontaktai
               </Link>
             </li>
@@ -37,13 +37,13 @@ export default function Footer() {
         <div>
           <h4 className="text-lg font-bold mb-4">Sekite mus</h4>
           <div className="flex space-x-4">
-            <Link href="#" className="hover:text-accent">
+            <Link href="#" className="hover:text-white">
               <FaFacebook className="text-white h-6 w-6" />
             </Link>
-            <Link href="#" className="hover:text-accent">
+            <Link href="#" className="hover:text-white">
               <FaLinkedin className="text-white h-6 w-6" />
             </Link>
-            <Link href="#" className="hover:text-accent">
+            <Link href="#" className="hover:text-white">
               <FaInstagram className="text-white h-6 w-6" />
             </Link>
           </div>

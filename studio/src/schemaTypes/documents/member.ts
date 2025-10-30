@@ -12,7 +12,6 @@ export const member = defineType({
       title: 'Asmuo',
       type: 'string',
       description: 'Nario vardas ir pavardė',
-      validation: (rule) => rule.required(),
     }),
     defineField({
       name: 'title',

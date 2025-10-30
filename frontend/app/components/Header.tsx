@@ -48,33 +48,7 @@ export default function Header() {
 
   return (
     <>
-      <div className="bg-blue-900 text-white text-xs md:text-sm py-2 px-4">
-        <div className="flex justify-between items-center max-w-7xl mx-auto">
-          <div className="flex items-center gap-2">
-            <span className="font-medium">
-              📍 Kaunas K. Donelaičio g. 2, I aukštas - 119 kabinetas
-            </span>
-          </div>
-          <div className="flex items-center gap-3">
-            <a
-              href="https://www.facebook.com/kaunokrastopramonininku"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white/10 p-2 rounded-full hover:bg-accent transition-colors cursor-pointer"
-            >
-              <FaFacebookF className="text-white" />
-            </a>
-            <a
-              href="https://www.linkedin.com/company/kkpda/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white/10 p-2 rounded-full hover:bg-accent transition-colors cursor-pointer"
-            >
-              <FaLinkedinIn className="text-white" />
-            </a>
-          </div>
-        </div>
-      </div>
+      {/* Top strip removed per design request */}
 
       {/* Main Navigation */}
       <header className="bg-white/95 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-gray-100">
