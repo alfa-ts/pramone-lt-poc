@@ -47,18 +47,18 @@
 
 /* Footer styling */
 footer {
-  background-color: #1e3a8a; /* same modern navy */
-  color: #ffffff;
+  background-color: #000000; /* black */
+  color: #ffffff; /* white text */
   padding: 40px 20px;
 }
 
 footer a {
-  color: #f4b400; /* subtle modern gold accent */
+  color: #ffffff; /* keep links white */
   text-decoration: underline;
 }
 
 footer a:hover {
-  color: #eab308; /* softer amber on hover */
+  color: #ffffff; /* no color change on hover */
 }
 
 /* Modern animations */
