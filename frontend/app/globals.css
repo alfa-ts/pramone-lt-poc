@@ -2,6 +2,51 @@
 
 @plugin "@tailwindcss/typography";
 
+/* Calibri webfont (uses local if present; falls back to bundled files if provided) */
+@font-face {
+  font-family: 'Calibri';
+  src: local('Calibri'), local('Calibri Regular'),
+       url('/fonts/calibri-regular.woff2') format('woff2'),
+       url('/fonts/calibri-regular.woff') format('woff'),
+       url('/fonts/calibri-regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Calibri';
+  src: local('Calibri Italic'),
+       url('/fonts/calibri-italic.woff2') format('woff2'),
+       url('/fonts/calibri-italic.woff') format('woff'),
+       url('/fonts/calibri-italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Calibri';
+  src: local('Calibri Bold'),
+       url('/fonts/calibri-bold.woff2') format('woff2'),
+       url('/fonts/calibri-bold.woff') format('woff'),
+       url('/fonts/calibri-bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Calibri';
+  src: local('Calibri Bold Italic'),
+       url('/fonts/calibri-bold-italic.woff2') format('woff2'),
+       url('/fonts/calibri-bold-italic.woff') format('woff'),
+       url('/fonts/calibri-bold-italic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
 @utility container {
   margin: 0 auto;
   padding: 0 2rem;
@@ -28,13 +73,16 @@
   --color-gray-900: #1b1d27;
   --color-gray-950: #13141b;
 
-  --font-display: "Inter", "sans-serif";
-  --font-sans: "Inter", "sans-serif";
+  --font-display: "Calibri", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --font-sans: "Calibri", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 
   --default-transition-duration: 250ms;
 }
 
 /* Section header styling */
+.calibri, body, html {
+  font-family: Calibri, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
 .section-header-container {
   background-color: #1e3a8a; /* deep modern navy blue */
   padding: 40px 20px;
