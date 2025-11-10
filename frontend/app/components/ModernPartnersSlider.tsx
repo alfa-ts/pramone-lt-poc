@@ -21,13 +21,9 @@ export function ModernPartnersSlider({ partners, title }: ModernPartnersSliderPr
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
-  if (!partners || partners.length === 0) {
-    return null;
-  }
-
   // Number of items to show at once (responsive)
   const itemsPerView = 4;
-  const maxIndex = Math.max(0, partners.length - itemsPerView);
+  const maxIndex = Math.max(0, (partners?.length || 0) - itemsPerView);
 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
@@ -39,14 +35,18 @@ export function ModernPartnersSlider({ partners, title }: ModernPartnersSliderPr
 
   // Auto-play functionality
   useEffect(() => {
-    if (!isAutoPlaying) return;
+    if (!isAutoPlaying || !partners || partners.length === 0) return;
     
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [isAutoPlaying, maxIndex]);
+  }, [isAutoPlaying, maxIndex, partners]);
+
+  if (!partners || partners.length === 0) {
+    return null;
+  }
 
   const handleMouseEnter = () => setIsAutoPlaying(false);
   const handleMouseLeave = () => setIsAutoPlaying(true);
