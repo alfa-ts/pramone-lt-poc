@@ -1555,7 +1555,7 @@
         "value": {
           "type": "string"
         },
-        "optional": false
+        "optional": true
       },
       "title": {
         "type": "objectAttribute",
