@@ -101,11 +101,13 @@ export const partnersQuery = defineQuery(`
     "cooperate": *[_type == "partner" && group == "cooperate"] | order(coalesce(sortOrder, 9999) asc, title asc) {
       _id,
       title,
+      "logo": logo.asset->url,
       extra
     },
     "agreements": *[_type == "partner" && group == "agreements"] | order(coalesce(sortOrder, 9999) asc, title asc) {
       _id,
       title,
+      "logo": logo.asset->url,
       extra
     }
   }
