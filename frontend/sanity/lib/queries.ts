@@ -104,13 +104,15 @@ export const partnersQuery = defineQuery(`
       _id,
       title,
       "logo": logo.asset->url,
-      extra
+      extra,
+      isMinistry
     },
     "agreements": *[_type == "partner" && group == "agreements"] | order(coalesce(sortOrder, 9999) asc, title asc) {
       _id,
       title,
       "logo": logo.asset->url,
-      extra
+      extra,
+      isMinistry
     }
   }
 `);
