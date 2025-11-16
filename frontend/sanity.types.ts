@@ -819,19 +819,21 @@ export type StrategicDirectionsQueryResult = Array<{
   sortOrder: number | null;
 }>;
 // Variable: partnersQuery
-// Query: {    "cooperate": *[_type == "partner" && group == "cooperate"] | order(coalesce(sortOrder, 9999) asc, title asc) {      _id,      title,      "logo": logo.asset->url,      extra    },    "agreements": *[_type == "partner" && group == "agreements"] | order(coalesce(sortOrder, 9999) asc, title asc) {      _id,      title,      "logo": logo.asset->url,      extra    }  }
+// Query: {    "cooperate": *[_type == "partner" && group == "cooperate"] | order(coalesce(sortOrder, 9999) asc, title asc) {      _id,      title,      "logo": logo.asset->url,      extra,      isMinistry    },    "agreements": *[_type == "partner" && group == "agreements"] | order(coalesce(sortOrder, 9999) asc, title asc) {      _id,      title,      "logo": logo.asset->url,      extra,      isMinistry    }  }
 export type PartnersQueryResult = {
   cooperate: Array<{
     _id: string;
     title: string;
     logo: null;
     extra: string | null;
+    isMinistry: null;
   }>;
   agreements: Array<{
     _id: string;
     title: string;
     logo: null;
     extra: string | null;
+    isMinistry: null;
   }>;
 };
 // Variable: contactInfoQuery
@@ -974,7 +976,7 @@ declare module "@sanity/client" {
     "\n  *[_type == \"pastPresident\"] | order(startYear asc) {\n    _id,\n    name,\n    startYear,\n    endYear\n  }\n": PastPresidentsQueryResult;
     "\n  count(*[_type == \"member\"])\n": MembersCountQueryResult;
     "\n  *[_type == \"strategicDirection\"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {\n    _id,\n    title,\n    sortOrder\n  }\n": StrategicDirectionsQueryResult;
-    "\n  {\n    \"cooperate\": *[_type == \"partner\" && group == \"cooperate\"] | order(coalesce(sortOrder, 9999) asc, title asc) {\n      _id,\n      title,\n      \"logo\": logo.asset->url,\n      extra\n    },\n    \"agreements\": *[_type == \"partner\" && group == \"agreements\"] | order(coalesce(sortOrder, 9999) asc, title asc) {\n      _id,\n      title,\n      \"logo\": logo.asset->url,\n      extra\n    }\n  }\n": PartnersQueryResult;
+    "\n  {\n    \"cooperate\": *[_type == \"partner\" && group == \"cooperate\"] | order(coalesce(sortOrder, 9999) asc, title asc) {\n      _id,\n      title,\n      \"logo\": logo.asset->url,\n      extra,\n      isMinistry\n    },\n    \"agreements\": *[_type == \"partner\" && group == \"agreements\"] | order(coalesce(sortOrder, 9999) asc, title asc) {\n      _id,\n      title,\n      \"logo\": logo.asset->url,\n      extra,\n      isMinistry\n    }\n  }\n": PartnersQueryResult;
     "\n  *[_type == \"contactInfo\"][0] {\n    address,\n    phone,\n    email,\n    googleAddress\n  }\n": ContactInfoQueryResult;
     "\n  *[_type == \"istatai\"][0] {\n    \"statutesUrl\": statutesFile.asset->url,\n    \"statutesName\": statutesFile.asset->originalFilename,\n    \"ethicsUrl\": ethicsFile.asset->url,\n    \"ethicsName\": ethicsFile.asset->originalFilename\n  }\n": LegalDocumentsQueryResult;
     "\n  *[_type == \"activityReport\"] | order(_createdAt asc) {\n    _id,\n    period,\n    \"fileUrl\": file.asset->url,\n    \"fileName\": file.asset->originalFilename,\n    _createdAt\n  }\n": ActivityReportsQueryResult;
