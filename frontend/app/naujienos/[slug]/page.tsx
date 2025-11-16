@@ -16,7 +16,7 @@ function formatDate(dateString: string) {
   });
 }
 
-function formatEventTime(startDate?: string, endDate?: string) {
+function formatEventTime(startDate?: string, endDate?: string | null) {
   if (!startDate) return null;
 
   const start = new Date(startDate);
@@ -68,22 +68,22 @@ export default async function NewsDetailPage({
   }
 
   // Type assertion to help TypeScript understand the news object structure
-  const typedNews = news as {
-    title: string;
-    type: "naujiena" | "renginys";
-    excerpt: string;
-    publishedAt: string;
-    content?: any;
-    coverImage?: {
-      asset?: { url: string };
-      alt?: string;
-    };
-    eventStartDate?: string;
-    eventEndDate?: string;
-    organizers?: string[];
-    location?: string;
-    googleMapsLocation?: string;
-  };
+  // const typedNews = news as {
+  //   title: string;
+  //   type: "naujiena" | "renginys" | null;
+  //   excerpt: string;
+  //   publishedAt: string;
+  //   content?: any;
+  //   coverImage?: {
+  //     asset?: { url: string };
+  //     alt?: string;
+  //   };
+  //   eventStartDate?: string;
+  //   eventEndDate?: string;
+  //   organizers?: string[];
+  //   location?: string;
+  //   googleMapsLocation?: string;
+  // };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
@@ -99,23 +99,23 @@ export default async function NewsDetailPage({
             <span className="mx-2">→</span>
             <span className="text-primary font-semibold">Naujienos</span>
             <span className="mx-2">→</span>
-            <span className="text-primary font-semibold">{typedNews.title}</span>
+            <span className="text-primary font-semibold">{news.title}</span>
           </div>
 
           <div className="text-center">
             <div className="inline-flex items-center px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full mb-4">
-              {typedNews.type === "renginys" ? "Renginys" : "Naujiena"}
+              {news.type === "renginys" ? "Renginys" : "Naujiena"}
             </div>
             <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
-              {typedNews.title}
+              {news.title}
             </h1>
             <p className="text-lg text-gray-600 mb-6 max-w-3xl mx-auto">
-              {typedNews.excerpt}
+              {news.excerpt}
             </p>
             <div className="text-sm text-gray-500">
-              {typedNews.type === "renginys" && typedNews.eventStartDate
-                ? formatEventTime(typedNews.eventStartDate, typedNews.eventEndDate)
-                : formatDate(typedNews.publishedAt)}
+              {news.type === "renginys" && news.eventStartDate
+                ? formatEventTime(news.eventStartDate, news.eventEndDate)
+                : formatDate(news.publishedAt)}
             </div>
           </div>
         </div>
@@ -124,11 +124,11 @@ export default async function NewsDetailPage({
       {/* Article Content */}
       <section className="py-12">
         <div className="max-w-4xl mx-auto px-6">
-          {typedNews.coverImage?.asset?.url && (
+          {news.coverImage?.asset?.url && (
             <div className="relative w-full h-96 mb-8 overflow-hidden rounded-lg shadow-lg">
               <Image
-                src={typedNews.coverImage.asset.url}
-                alt={typedNews.coverImage.alt || typedNews.title}
+                src={news.coverImage.asset.url}
+                alt={news.coverImage.alt || news.title}
                 fill
                 className="object-cover"
               />
@@ -136,50 +136,60 @@ export default async function NewsDetailPage({
           )}
 
           {/* Event Information */}
-          {typedNews.type === "renginys" && (
+          {news.type === "renginys" && (
             <div className="mb-8 bg-gradient-to-br from-orange-50 to-white border border-orange-100 rounded-2xl p-6">
               <h3 className="text-lg font-medium text-gray-900 mb-4">
                 Renginio informacija
               </h3>
               <div className="space-y-3">
-                {typedNews.eventStartDate && (
+                {news.eventStartDate && (
                   <div className="flex items-start gap-3">
                     <Calendar className="size-5 text-[#fe9a00] mt-0.5 shrink-0" />
                     <div>
-                      <div className="text-sm font-medium text-gray-700">Laikas</div>
+                      <div className="text-sm font-medium text-gray-700">
+                        Laikas
+                      </div>
                       <div className="text-gray-900">
-                        {formatEventTime(typedNews.eventStartDate, typedNews.eventEndDate)}
+                        {formatEventTime(
+                          news.eventStartDate,
+                          news.eventEndDate
+                        )}
                       </div>
                     </div>
                   </div>
                 )}
-                {typedNews.location && (
+                {news.location && (
                   <div className="flex items-start gap-3">
                     <MapPin className="size-5 text-[#fe9a00] mt-0.5 shrink-0" />
                     <div>
-                      <div className="text-sm font-medium text-gray-700">Vieta</div>
-                      <div className="text-gray-900">{typedNews.location}</div>
+                      <div className="text-sm font-medium text-gray-700">
+                        Vieta
+                      </div>
+                      <div className="text-gray-900">{news.location}</div>
                     </div>
                   </div>
                 )}
-                {typedNews.organizers && typedNews.organizers.length > 0 && (
-                  <div className="flex items-start gap-3">
-                    <Users className="size-5 text-[#fe9a00] mt-0.5 shrink-0" />
-                    <div>
-                      <div className="text-sm font-medium text-gray-700">Organizatoriai</div>
-                      <div className="text-gray-900">
-                        {typedNews.organizers.join(", ")}
+                {news.organizers &&
+                  (news.organizers as string[])?.length > 0 && (
+                    <div className="flex items-start gap-3">
+                      <Users className="size-5 text-[#fe9a00] mt-0.5 shrink-0" />
+                      <div>
+                        <div className="text-sm font-medium text-gray-700">
+                          Organizatoriai
+                        </div>
+                        <div className="text-gray-900">
+                          {(news.organizers as string[])?.join(", ")}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
               </div>
             </div>
           )}
 
-          {typedNews.content && (
+          {news.content && (
             <div className="prose prose-lg max-w-none">
-              <PortableText value={typedNews.content} />
+              <PortableText value={news.content as any} />
             </div>
           )}
 
@@ -195,15 +205,16 @@ export default async function NewsDetailPage({
       </section>
 
       {/* Google Map for Events */}
-      {typedNews.type === "renginys" && (typedNews.googleMapsLocation || typedNews.location) && (
-        <section className="bg-white pb-12">
-          <div className="max-w-7xl mx-auto px-6">
-            <GoogleMap
-              address={typedNews.googleMapsLocation || typedNews.location || ""}
-            />
-          </div>
-        </section>
-      )}
+      {news.type === "renginys" &&
+        (news.googleMapsLocation || news.location) && (
+          <section className="bg-white pb-12">
+            <div className="max-w-7xl mx-auto px-6">
+              <GoogleMap
+                address={news.googleMapsLocation || news.location || ""}
+              />
+            </div>
+          </section>
+        )}
     </div>
   );
 }

@@ -767,7 +767,7 @@ export type NewsQueryResult = Array<{
   publishedAt: string;
 }>;
 // Variable: allNewsQuery
-// Query: *[_type == "news"] | order(isFeatured desc, publishedAt desc) {    _id,    title,    slug,    type,    isFeatured,    excerpt,    "coverImage": coverImage{      asset->{        _id,        url      },      alt    },    publishedAt,    eventStartDate,    eventEndDate,    organizers,    location,    locationLat,    locationLng  }
+// Query: *[_type == "news"] | order(isFeatured desc, publishedAt desc) {    _id,    title,    slug,    type,    isFeatured,    excerpt,    "coverImage": coverImage{      asset->{        _id,        url      },      alt    },    publishedAt,    eventStartDate,    eventEndDate,    organizers,    location,    googleMapsLocation  }
 export type AllNewsQueryResult = Array<{
   _id: string;
   title: string;
@@ -787,11 +787,10 @@ export type AllNewsQueryResult = Array<{
   eventEndDate: null;
   organizers: null;
   location: null;
-  locationLat: null;
-  locationLng: null;
+  googleMapsLocation: null;
 }>;
 // Variable: singleNewsQuery
-// Query: *[_type == "news" && slug.current == $slug][0] {    _id,    title,    slug,    type,    excerpt,    content,    "coverImage": coverImage{      asset->{        _id,        url      },      alt    },    publishedAt,    eventStartDate,    eventEndDate,    organizers,    location,    locationLat,    locationLng  }
+// Query: *[_type == "news" && slug.current == $slug][0] {    _id,    title,    slug,    type,    excerpt,    content,    "coverImage": coverImage{      asset->{        _id,        url      },      alt    },    publishedAt,    eventStartDate,    eventEndDate,    organizers,    location,    googleMapsLocation  }
 export type SingleNewsQueryResult = {
   _id: string;
   title: string;
@@ -811,8 +810,7 @@ export type SingleNewsQueryResult = {
   eventEndDate: null;
   organizers: null;
   location: null;
-  locationLat: null;
-  locationLng: null;
+  googleMapsLocation: null;
 } | null;
 // Variable: pastPresidentsQuery
 // Query: *[_type == "pastPresident"] | order(startYear asc) {    _id,    name,    startYear,    endYear  }
@@ -985,8 +983,8 @@ declare module "@sanity/client" {
     "*[_type == \"settings\"][0]": SettingsQueryResult;
     "\n  *[_type == \"leadership\"] | order(role asc, sortOrder asc, name asc) {\n    _id,\n    name,\n    position,\n    role,\n    \"photo\": photo{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    sortOrder,\n    phone,\n    email\n  }\n": LeadershipQueryResult;
     "\n  *[_type == \"news\"] | order(publishedAt desc) [0...4] {\n    _id,\n    title,\n    slug,\n    type,\n    isFeatured,\n    excerpt,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt\n  }\n": NewsQueryResult;
-    "\n  *[_type == \"news\"] | order(isFeatured desc, publishedAt desc) {\n    _id,\n    title,\n    slug,\n    type,\n    isFeatured,\n    excerpt,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    locationLat,\n    locationLng\n  }\n": AllNewsQueryResult;
-    "\n  *[_type == \"news\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    type,\n    excerpt,\n    content,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    locationLat,\n    locationLng\n  }\n": SingleNewsQueryResult;
+    "\n  *[_type == \"news\"] | order(isFeatured desc, publishedAt desc) {\n    _id,\n    title,\n    slug,\n    type,\n    isFeatured,\n    excerpt,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    googleMapsLocation\n  }\n": AllNewsQueryResult;
+    "\n  *[_type == \"news\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    type,\n    excerpt,\n    content,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    googleMapsLocation\n  }\n": SingleNewsQueryResult;
     "\n  *[_type == \"pastPresident\"] | order(startYear asc) {\n    _id,\n    name,\n    startYear,\n    endYear\n  }\n": PastPresidentsQueryResult;
     "\n  count(*[_type == \"member\"])\n": MembersCountQueryResult;
     "\n  *[_type == \"strategicDirection\"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {\n    _id,\n    title,\n    sortOrder\n  }\n": StrategicDirectionsQueryResult;

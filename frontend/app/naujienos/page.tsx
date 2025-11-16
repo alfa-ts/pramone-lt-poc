@@ -2,6 +2,7 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { allNewsQuery } from "@/sanity/lib/queries";
 import Link from "next/link";
 import { NewsFilter } from "@/app/components/NewsFilter";
+import { AllNewsQueryResult } from "@/sanity.types";
 
 export default async function NaujienosPage() {
   const { data: newsData } = await sanityFetch({

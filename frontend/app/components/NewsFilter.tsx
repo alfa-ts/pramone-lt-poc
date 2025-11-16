@@ -10,6 +10,7 @@ import {
   Clock,
   Building2,
 } from "lucide-react";
+import { AllNewsQueryResult } from "@/sanity.types";
 
 interface NewsItem {
   _id: string;
@@ -51,7 +52,7 @@ function formatDate(dateString: string) {
   return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 }
 
-function formatEventTime(startDate?: string, endDate?: string) {
+function formatEventTime(startDate?: string, endDate?: string | null) {
   if (!startDate) return null;
 
   const start = new Date(startDate);
@@ -98,7 +99,7 @@ function formatEventTime(startDate?: string, endDate?: string) {
 }
 
 interface NewsFilterProps {
-  newsData: NewsItem[];
+  newsData: AllNewsQueryResult;
 }
 
 export function NewsFilter({ newsData }: NewsFilterProps) {
