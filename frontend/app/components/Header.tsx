@@ -22,7 +22,6 @@ export default function Header() {
 
   const isAboutUsActive = pathname.startsWith("/apie");
   const isNewsActive = pathname.startsWith("/naujienos");
-  const isEventsActive = pathname.startsWith("/renginiai");
   const isMembersActive = pathname.startsWith("/nariai");
   const isContactsActive = pathname.startsWith("/kontaktai");
   const isHomeActive = pathname === "/";
@@ -106,18 +105,7 @@ export default function Header() {
                   : 'text-gray-700 hover:bg-amber-50 hover:text-amber-600'
               }`}
             >
-              Naujienos
-            </Link>
-
-            <Link 
-              href="/renginiai" 
-              className={`px-4 py-2 rounded-lg transition-colors ${
-                isEventsActive 
-                  ? 'bg-amber-50 text-amber-600 font-medium' 
-                  : 'text-gray-700 hover:bg-amber-50 hover:text-amber-600'
-              }`}
-            >
-              Renginiai
+              Naujienos ir renginiai
             </Link>
 
             <div 
@@ -212,14 +200,7 @@ export default function Header() {
                 className="px-4 py-2 rounded-lg text-gray-700 hover:bg-amber-50"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Naujienos
-              </Link>
-              <Link 
-                href="/renginiai" 
-                className="px-4 py-2 rounded-lg text-gray-700 hover:bg-amber-50"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Renginiai
+                Naujienos ir renginiai
               </Link>
               <Link 
                 href="/nariai" 

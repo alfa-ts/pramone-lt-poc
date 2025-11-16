@@ -1,6 +1,7 @@
 import { sanityFetch } from "@/sanity/lib/live";
 import { contactInfoQuery } from "@/sanity/lib/queries";
 import { FaMapMarkerAlt, FaUser } from "react-icons/fa";
+import { GoogleMap } from "@/app/components/GoogleMap";
 
 export default async function KontaktaiPage() {
   const { data } = await sanityFetch({
@@ -10,13 +11,6 @@ export default async function KontaktaiPage() {
   const contactPhone: string = data?.phone || "";
   const contactEmail: string = data?.email || "";
   const searchText: string = data?.googleAddress || address;
-  const encodedAddress = encodeURIComponent(searchText || "");
-  const embedUrl = searchText
-    ? `https://www.google.com/maps?q=${encodedAddress}&output=embed`
-    : "";
-  const mapsUrl = searchText
-    ? `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`
-    : "";
 
   return (
     <div className="min-h-screen">
@@ -95,24 +89,7 @@ export default async function KontaktaiPage() {
       {searchText && (
         <section className="bg-white">
           <div className="max-w-7xl mx-auto px-6 py-12">
-            <div className="relative rounded-2xl overflow-hidden shadow-lg ring-1 ring-black/5">
-              <iframe
-                src={embedUrl}
-                title="Organizacijos žemėlapis"
-                className="w-full h-[420px] md:h-[560px] border-0"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-              <a
-                href={mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="absolute left-6 bottom-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 text-white px-5 py-3 shadow-lg hover:bg-emerald-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
-              >
-                <FaMapMarkerAlt />
-                <span>Rodyti maršrutą</span>
-              </a>
-            </div>
+            <GoogleMap address={searchText} />
           </div>
         </section>
       )}

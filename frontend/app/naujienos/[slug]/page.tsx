@@ -4,6 +4,8 @@ import PortableText from "@/app/components/PortableText";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { GoogleMap } from "@/app/components/GoogleMap";
+import { Calendar, MapPin, Users } from "lucide-react";
 
 function formatDate(dateString: string) {
   const date = new Date(dateString);
@@ -14,14 +16,40 @@ function formatDate(dateString: string) {
   });
 }
 
-function formatCategory(category: string) {
-  const categoryMap: { [key: string]: string } = {
-    bendros: "Bendros",
-    renginiai: "Renginiai",
-    projektai: "Projektai",
-    spaudai: "Pranešimai spaudai",
+function formatEventTime(startDate?: string, endDate?: string) {
+  if (!startDate) return null;
+
+  const start = new Date(startDate);
+  const end = endDate ? new Date(endDate) : null;
+
+  const formatTime = (date: Date) => {
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
   };
-  return categoryMap[category] || "Bendros";
+
+  const formatFullDate = (date: Date) => {
+    return date.toLocaleDateString("lt-LT", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  if (end) {
+    // Check if same day
+    if (
+      start.getDate() === end.getDate() &&
+      start.getMonth() === end.getMonth() &&
+      start.getFullYear() === end.getFullYear()
+    ) {
+      return `${formatFullDate(start)}, ${formatTime(start)} - ${formatTime(end)}`;
+    } else {
+      return `${formatFullDate(start)} ${formatTime(start)} - ${formatFullDate(end)} ${formatTime(end)}`;
+    }
+  }
+
+  return `${formatFullDate(start)}, ${formatTime(start)}`;
 }
 
 export default async function NewsDetailPage({
@@ -42,7 +70,7 @@ export default async function NewsDetailPage({
   // Type assertion to help TypeScript understand the news object structure
   const typedNews = news as {
     title: string;
-    category: string;
+    type: "naujiena" | "renginys";
     excerpt: string;
     publishedAt: string;
     content?: any;
@@ -50,6 +78,11 @@ export default async function NewsDetailPage({
       asset?: { url: string };
       alt?: string;
     };
+    eventStartDate?: string;
+    eventEndDate?: string;
+    organizers?: string[];
+    location?: string;
+    googleMapsLocation?: string;
   };
 
   return (
@@ -71,7 +104,7 @@ export default async function NewsDetailPage({
 
           <div className="text-center">
             <div className="inline-flex items-center px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full mb-4">
-              {formatCategory(typedNews.category)}
+              {typedNews.type === "renginys" ? "Renginys" : "Naujiena"}
             </div>
             <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
               {typedNews.title}
@@ -80,7 +113,9 @@ export default async function NewsDetailPage({
               {typedNews.excerpt}
             </p>
             <div className="text-sm text-gray-500">
-              {formatDate(typedNews.publishedAt)}
+              {typedNews.type === "renginys" && typedNews.eventStartDate
+                ? formatEventTime(typedNews.eventStartDate, typedNews.eventEndDate)
+                : formatDate(typedNews.publishedAt)}
             </div>
           </div>
         </div>
@@ -100,6 +135,48 @@ export default async function NewsDetailPage({
             </div>
           )}
 
+          {/* Event Information */}
+          {typedNews.type === "renginys" && (
+            <div className="mb-8 bg-gradient-to-br from-orange-50 to-white border border-orange-100 rounded-2xl p-6">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">
+                Renginio informacija
+              </h3>
+              <div className="space-y-3">
+                {typedNews.eventStartDate && (
+                  <div className="flex items-start gap-3">
+                    <Calendar className="size-5 text-[#fe9a00] mt-0.5 shrink-0" />
+                    <div>
+                      <div className="text-sm font-medium text-gray-700">Laikas</div>
+                      <div className="text-gray-900">
+                        {formatEventTime(typedNews.eventStartDate, typedNews.eventEndDate)}
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {typedNews.location && (
+                  <div className="flex items-start gap-3">
+                    <MapPin className="size-5 text-[#fe9a00] mt-0.5 shrink-0" />
+                    <div>
+                      <div className="text-sm font-medium text-gray-700">Vieta</div>
+                      <div className="text-gray-900">{typedNews.location}</div>
+                    </div>
+                  </div>
+                )}
+                {typedNews.organizers && typedNews.organizers.length > 0 && (
+                  <div className="flex items-start gap-3">
+                    <Users className="size-5 text-[#fe9a00] mt-0.5 shrink-0" />
+                    <div>
+                      <div className="text-sm font-medium text-gray-700">Organizatoriai</div>
+                      <div className="text-gray-900">
+                        {typedNews.organizers.join(", ")}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {typedNews.content && (
             <div className="prose prose-lg max-w-none">
               <PortableText value={typedNews.content} />
@@ -108,14 +185,25 @@ export default async function NewsDetailPage({
 
           <div className="mt-12 pt-8 border-t border-gray-200">
             <Link
-              href="/"
+              href="/naujienos"
               className="inline-flex items-center text-primary hover:text-primary/80 transition-colors"
             >
-              ← Grįžti į pradžią
+              ← Grįžti į naujienas
             </Link>
           </div>
         </div>
       </section>
+
+      {/* Google Map for Events */}
+      {typedNews.type === "renginys" && (typedNews.googleMapsLocation || typedNews.location) && (
+        <section className="bg-white pb-12">
+          <div className="max-w-7xl mx-auto px-6">
+            <GoogleMap
+              address={typedNews.googleMapsLocation || typedNews.location || ""}
+            />
+          </div>
+        </section>
+      )}
     </div>
   );
 }

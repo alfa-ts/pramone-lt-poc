@@ -56,7 +56,12 @@ export const allNewsQuery = defineQuery(`
       },
       alt
     },
-    publishedAt
+    publishedAt,
+    eventStartDate,
+    eventEndDate,
+    organizers,
+    location,
+    googleMapsLocation
   }
 `);
 
@@ -65,7 +70,7 @@ export const singleNewsQuery = defineQuery(`
     _id,
     title,
     slug,
-    category,
+    type,
     excerpt,
     content,
     "coverImage": coverImage{
@@ -75,7 +80,12 @@ export const singleNewsQuery = defineQuery(`
       },
       alt
     },
-    publishedAt
+    publishedAt,
+    eventStartDate,
+    eventEndDate,
+    organizers,
+    location,
+    googleMapsLocation
   }
 `);
 

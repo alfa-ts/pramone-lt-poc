@@ -119,6 +119,43 @@ export const news = defineType({
       initialValue: () => new Date().toISOString().split('T')[0],
       validation: (rule) => rule.required(),
     }),
+    // Event-specific fields (only relevant when type is 'renginys')
+    defineField({
+      name: 'eventStartDate',
+      title: 'Renginio pradžia',
+      type: 'datetime',
+      description: 'Renginio pradžios data ir laikas',
+      hidden: ({document}) => document?.type !== 'renginys',
+    }),
+    defineField({
+      name: 'eventEndDate',
+      title: 'Renginio pabaiga',
+      type: 'datetime',
+      description: 'Renginio pabaigos data ir laikas',
+      hidden: ({document}) => document?.type !== 'renginys',
+    }),
+    defineField({
+      name: 'organizers',
+      title: 'Organizatoriai',
+      type: 'array',
+      of: [{type: 'string'}],
+      description: 'Renginio organizatoriai (pridėkite po vieną)',
+      hidden: ({document}) => document?.type !== 'renginys',
+    }),
+    defineField({
+      name: 'location',
+      title: 'Vieta',
+      type: 'string',
+      description: 'Renginio vietos adresas (rodomas puslapyje)',
+      hidden: ({document}) => document?.type !== 'renginys',
+    }),
+    defineField({
+      name: 'googleMapsLocation',
+      title: 'Vieta Google žemėlapiui',
+      type: 'string',
+      description: 'Adresas arba vietos pavadinimas Google žemėlapiui (jei nenurodytas, bus naudojamas pagrindinis vietos laukas)',
+      hidden: ({document}) => document?.type !== 'renginys',
+    }),
   ],
   orderings: [
     {
