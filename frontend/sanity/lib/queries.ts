@@ -27,7 +27,8 @@ export const newsQuery = defineQuery(`
     _id,
     title,
     slug,
-    category,
+    type,
+    isFeatured,
     excerpt,
     "coverImage": coverImage{
       asset->{
@@ -41,11 +42,12 @@ export const newsQuery = defineQuery(`
 `);
 
 export const allNewsQuery = defineQuery(`
-  *[_type == "news"] | order(publishedAt desc) {
+  *[_type == "news"] | order(isFeatured desc, publishedAt desc) {
     _id,
     title,
     slug,
-    category,
+    type,
+    isFeatured,
     excerpt,
     "coverImage": coverImage{
       asset->{

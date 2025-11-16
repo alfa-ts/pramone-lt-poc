@@ -1,12 +1,6 @@
 import { sanityFetch } from "@/sanity/lib/live";
 import { partnersQuery } from "@/sanity/lib/queries";
-import {
-  Handshake,
-  FileCheck,
-  Building2,
-  Calendar,
-  Mail,
-} from "lucide-react";
+import { Handshake, FileCheck, Building2, Calendar, Mail } from "lucide-react";
 
 interface Partner {
   _id: string;
@@ -16,19 +10,13 @@ interface Partner {
   isMinistry?: boolean;
 }
 
-interface PartnersData {
-  cooperate: Partner[];
-  agreements: Partner[];
-}
-
 export default async function PartneriaiPage() {
   const { data } = await sanityFetch({
     query: partnersQuery,
   });
 
-  const partnersData = data as PartnersData;
-  const cooperate = partnersData?.cooperate || [];
-  const agreements = partnersData?.agreements || [];
+  const cooperate = data?.cooperate || [];
+  const agreements = data?.agreements || [];
 
   // Count ministries
   const ministryCount = cooperate.filter((p) => p.isMinistry).length;
@@ -178,7 +166,9 @@ export default async function PartneriaiPage() {
                         <div className="size-10 bg-white border border-orange-200 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-gradient-to-b group-hover:from-[#fe9a00] group-hover:to-[#e17100] transition-all">
                           <FileCheck className="size-5 text-[#fe9a00] group-hover:text-white transition-colors" />
                         </div>
-                        <p className="text-gray-900 flex-1">{agreement.title}</p>
+                        <p className="text-gray-900 flex-1">
+                          {agreement.title}
+                        </p>
                       </div>
                       {agreement.extra && (
                         <div className="flex items-center gap-2 shrink-0">

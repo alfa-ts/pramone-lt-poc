@@ -1,127 +1,283 @@
-import { sanityFetch } from "@/sanity/lib/live";
-import { allNewsQuery } from "@/sanity/lib/queries";
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  Calendar,
+  ArrowRight,
+  Tag,
+  Clock,
+  Building2,
+} from "lucide-react";
+
+interface NewsItem {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  type: "naujiena" | "renginys";
+  isFeatured?: boolean;
+  excerpt: string;
+  coverImage?: {
+    asset?: {
+      url: string;
+    };
+    alt?: string;
+  };
+  publishedAt: string;
+}
 
 function formatDate(dateString: string) {
   const date = new Date(dateString);
-  const months = ['Sau', 'Vas', 'Kov', 'Bal', 'Geg', 'Bir', 'Lie', 'Rug', 'Rgs', 'Spa', 'Lap', 'Grd'];
-  const month = months[date.getMonth()];
-  const day = date.getDate();
-  const year = date.getFullYear();
-  return `${month} • ${day} • ${year}`;
+  const months = [
+    "Sau",
+    "Vas",
+    "Kov",
+    "Bal",
+    "Geg",
+    "Bir",
+    "Lie",
+    "Rugp",
+    "Rugs",
+    "Spal",
+    "Lapk",
+    "Gruod",
+  ];
+  return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 }
 
-function formatCategory(category: string) {
-  const categoryMap: { [key: string]: string } = {
-    'bendros': 'Bendros',
-    'renginiai': 'Renginiai',
-    'projektai': 'Projektai',
-    'spaudai': 'Pranešimai spaudai'
-  };
-  return categoryMap[category] || 'Bendros';
-}
+export default function NaujienosPage() {
+  const [newsData, setNewsData] = useState<NewsItem[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState("Visos");
+  const [loading, setLoading] = useState(true);
 
-export default async function NewsListPage() {
-  const { data: newsData } = await sanityFetch({
-    query: allNewsQuery,
-  });
+  useEffect(() => {
+    async function fetchNews() {
+      try {
+        const response = await fetch("/api/news");
+        const data = await response.json();
+        setNewsData(data);
+      } catch (error) {
+        console.error("Error fetching news:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchNews();
+  }, []);
 
-  const news = newsData?.map((item: any) => ({
-    date: formatDate(item.publishedAt),
-    title: item.title,
-    category: formatCategory(item.category),
-    excerpt: item.excerpt,
-    image: item.coverImage?.asset?.url || "",
-    alt: item.coverImage?.alt || "",
-    slug: item.slug?.current || "",
-  })) || [];
+  const categories = ["Visos", "Renginiai", "Naujienos"];
+
+  // Filter articles based on selected category
+  const filteredArticles =
+    selectedCategory === "Visos"
+      ? newsData
+      : selectedCategory === "Renginiai"
+        ? newsData.filter((article) => article.type === "renginys")
+        : newsData.filter((article) => article.type === "naujiena");
+
+  // Featured article - always show if it exists, regardless of filter
+  const featuredArticle = newsData.find((article) => article.isFeatured);
+
+  // Regular articles - show all articles including featured
+  const regularArticles = filteredArticles;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-flex items-center justify-center size-20 bg-gray-100 rounded-full mb-4 animate-pulse">
+            <Building2 className="size-10 text-gray-400" />
+          </div>
+          <p className="text-gray-600">Kraunama...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
-      {/* Header */}
-      <section className="relative bg-gradient-to-br from-blue-50 via-gray-100 to-blue-100 py-12 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-accent/10"></div>
-        <div className="absolute inset-0 dotted-pattern opacity-20"></div>
-        <div className="relative max-w-7xl mx-auto px-6 text-center">
-          <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
-            Naujienos
-          </h1>
-          <p className="text-lg text-gray-600 mb-6 max-w-xl mx-auto">
-            Sužinokite paskutinius organizacijos įvykius ir naujienas
-          </p>
-          <div className="flex items-center justify-center text-gray-500 text-sm font-medium">
-            <Link href="/" className="hover:text-primary transition-colors">
+    <div className="min-h-screen bg-white">
+      {/* Header Section */}
+      <div className="bg-gradient-to-b from-gray-50 to-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-8 py-16">
+          <div className="flex items-center gap-2 text-sm mb-6">
+            <Link href="/" className="text-gray-500 hover:text-gray-700">
               Pradžia
             </Link>
-            <span className="mx-2">→</span>
-            <span className="text-primary font-semibold">Naujienos</span>
+            <svg
+              className="size-3.5 text-gray-400"
+              fill="none"
+              viewBox="0 0 14 14"
+            >
+              <path
+                d="M5.25 10.5L8.75 7L5.25 3.5"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.16667"
+              />
+            </svg>
+            <span className="text-gray-900">Naujienos</span>
+          </div>
+
+          <h1 className="mb-6 text-5xl text-gray-900">Naujienos</h1>
+          <p className="text-gray-600 max-w-3xl text-xl">
+            Sužinokite paskutinių organizacijos įvykių ir naujienas
+          </p>
+
+          <div className="mt-6 w-16 h-1 bg-gradient-to-r from-[#fe9a00] to-[#e17100] rounded-full" />
+        </div>
+      </div>
+
+      {/* Featured Article */}
+      {featuredArticle && (
+        <section className="py-12 bg-white border-b border-gray-100">
+          <div className="max-w-7xl mx-auto px-8">
+            <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl overflow-hidden border border-gray-200 hover:shadow-2xl transition-all duration-500 group">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                <div className="relative h-[400px] lg:h-auto overflow-hidden">
+                  {featuredArticle.coverImage?.asset?.url ? (
+                    <Image
+                      src={featuredArticle.coverImage.asset.url}
+                      alt={
+                        featuredArticle.coverImage.alt ||
+                        featuredArticle.title
+                      }
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300" />
+                  )}
+                  <div className="absolute top-4 left-4">
+                    <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-[#fe9a00] to-[#e17100] text-white px-4 py-1.5 rounded-full text-sm font-medium">
+                      <Tag className="size-3.5" />
+                      {featuredArticle.type === "renginys"
+                        ? "Renginiai"
+                        : "Naujienos"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-8 lg:p-12 flex flex-col justify-center">
+                  <div className="inline-flex items-center gap-2 text-sm text-gray-500 mb-4">
+                    <Calendar className="size-4 text-[#fe9a00]" />
+                    {formatDate(featuredArticle.publishedAt)}
+                  </div>
+
+                  <h2 className="text-2xl text-gray-900 mb-4">
+                    {featuredArticle.title}
+                  </h2>
+                  <p className="text-gray-600 mb-6 leading-relaxed">
+                    {featuredArticle.excerpt}
+                  </p>
+
+                  <Link
+                    href={`/naujienos/${featuredArticle.slug.current}`}
+                    className="inline-flex items-center gap-2 text-[#fe9a00] font-medium hover:gap-3 transition-all group/link"
+                  >
+                    Skaityti daugiau
+                    <ArrowRight className="size-5 group-hover/link:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Category Filter */}
+      <section className="py-8 bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-8">
+          <div className="flex items-center gap-3 overflow-x-auto pb-2">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-5 py-2.5 rounded-full whitespace-nowrap transition-all font-medium text-sm ${
+                  selectedCategory === category
+                    ? "bg-gradient-to-r from-[#fe9a00] to-[#e17100] text-white shadow-lg shadow-orange-200"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* News List */}
-      <section className="py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          {news.length > 0 ? (
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                             {news.map((item: any, index: number) => (
-                 <div
-                   key={index}
-                   className="flex flex-col"
-                 >
-                   <Link 
-                     href={item.slug ? `/naujienos/${item.slug}` : "#"}
-                     className="relative w-full h-56 mb-4 overflow-hidden rounded-lg shadow-lg block cursor-pointer group"
-                   >
-                     {item.image ? (
-                       <Image
-                         src={item.image}
-                         alt={item.alt || item.title}
-                         fill
-                         className="object-cover group-hover:scale-105 transition-transform duration-300"
-                       />
-                     ) : (
-                      <div className="w-full h-full bg-yellow-500 rounded-lg group-hover:scale-105 transition-transform duration-300" />
-                     )}
-                     <div className="absolute top-2 left-2 bg-white text-xs font-bold text-blue-900 px-2 py-1 rounded shadow">
-                       {item.date}
-                     </div>
-                   </Link>
-                  <div className="flex flex-col flex-grow">
-                    <h3 className="text-sm text-gray-500 mb-1">
-                      {item.category}
-                    </h3>
-                    <h4 className="font-bold text-blue-900 mb-2 text-lg">
-                      {item.title}
-                    </h4>
-                    <p className="text-gray-700 text-sm flex-grow">
-                      {item.excerpt}
-                    </p>
-                    <div className="mt-4">
-                      <Link
-                        href={item.slug ? `/naujienos/${item.slug}` : "#"}
-                        className="text-blue-900 text-sm font-bold hover:underline inline-flex items-center transition-colors"
-                      >
-                        Plačiau <span className="ml-1">→</span>
-                      </Link>
+      {/* News Grid */}
+      <section className="py-16 bg-gradient-to-b from-white to-gray-50">
+        <div className="max-w-7xl mx-auto px-8">
+          {regularArticles.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {regularArticles.map((article) => (
+                <article
+                  key={article._id}
+                  className="bg-white rounded-xl overflow-hidden border border-gray-200 hover:shadow-xl hover:border-[#fe9a00] transition-all duration-300 group flex flex-col"
+                >
+                  <div className="relative h-56 overflow-hidden">
+                    {article.coverImage?.asset?.url ? (
+                      <Image
+                        src={article.coverImage.asset.url}
+                        alt={article.coverImage.alt || article.title}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300" />
+                    )}
+                    <div className="absolute top-3 left-3">
+                      <span className="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-sm text-gray-900 px-3 py-1 rounded-full text-xs font-medium">
+                        <Tag className="size-3" />
+                        {article.type === "renginys" ? "Renginiai" : "Naujienos"}
+                      </span>
                     </div>
                   </div>
-                </div>
+
+                  <div className="p-6 flex flex-col flex-1">
+                    <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
+                      <Clock className="size-3.5 text-[#fe9a00]" />
+                      {formatDate(article.publishedAt)}
+                    </div>
+
+                    <h3 className="text-lg font-medium text-gray-900 mb-3 group-hover:text-[#fe9a00] transition-colors line-clamp-2">
+                      {article.title}
+                    </h3>
+
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-1">
+                      {article.excerpt}
+                    </p>
+
+                    <Link
+                      href={`/naujienos/${article.slug.current}`}
+                      className="inline-flex items-center gap-2 text-[#fe9a00] font-medium text-sm hover:gap-3 transition-all group/link mt-auto"
+                    >
+                      Plačiau
+                      <ArrowRight className="size-4 group-hover/link:translate-x-1 transition-transform" />
+                    </Link>
+                  </div>
+                </article>
               ))}
             </div>
           ) : (
-            <div className="text-center py-12">
-              <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                Naujienų kol kas nėra
+            <div className="text-center py-16">
+              <div className="inline-flex items-center justify-center size-20 bg-gray-100 rounded-full mb-4">
+                <Building2 className="size-10 text-gray-400" />
+              </div>
+              <h3 className="text-gray-900 mb-2 text-xl font-medium">
+                {selectedCategory === "Renginiai"
+                  ? "Renginių nėra"
+                  : "Naujienų nerasta"}
               </h3>
-              <p className="text-gray-500">
-                Grįžkite vėliau arba susisiekite su mumis dėl naujienų.
-              </p>
+              <p className="text-gray-600">{selectedCategory === "Renginiai"
+                  ? "Šioje kategorijoje renginių nėra"
+                  : "Šioje kategorijoje naujienų nėra"}</p>
             </div>
           )}
         </div>
       </section>
     </div>
   );
-} 
+}

@@ -24,20 +24,50 @@ export const news = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: 'category',
-      title: 'Kategorija',
+      name: 'type',
+      title: 'Tipas',
       type: 'string',
       options: {
         list: [
-          {title: 'Bendros', value: 'bendros'},
-          {title: 'Renginiai', value: 'renginiai'},
-          {title: 'Projektai', value: 'projektai'},
-          {title: 'Pranešimai spaudai', value: 'spaudai'},
+          {title: 'Naujiena', value: 'naujiena'},
+          {title: 'Renginys', value: 'renginys'},
         ],
-        layout: 'dropdown'
+        layout: 'radio',
       },
-      initialValue: 'bendros',
+      initialValue: 'naujiena',
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'isFeatured',
+      title: 'Rodomas viršuje',
+      type: 'boolean',
+      description: 'Pažymėkite, jei šis įrašas turėtų būti rodomas kaip pagrindinis viršuje puslapio. Tik vienas įrašas gali būti pažymėtas vienu metu.',
+      initialValue: false,
+      validation: (rule) =>
+        rule.custom(async (isFeatured, context) => {
+          if (!isFeatured) return true;
+
+          const {document, getClient} = context;
+          const client = getClient({apiVersion: '2023-01-01'});
+
+          // Get the current document ID (without 'drafts.' prefix)
+          const currentId = document?._id?.replace('drafts.', '');
+
+          // Check if there's another document with isFeatured = true
+          const existingFeatured = await client.fetch(
+            `*[_type == "news" && isFeatured == true && !(_id in [$draftId, $publishedId])][0]`,
+            {
+              draftId: `drafts.${currentId}`,
+              publishedId: currentId
+            }
+          );
+
+          if (existingFeatured) {
+            return 'Jau yra kitas įrašas pažymėtas kaip rodomas viršuje. Pirmiausia atžymėkite tą įrašą.';
+          }
+
+          return true;
+        }),
     }),
     defineField({
       name: 'excerpt',
@@ -102,21 +132,23 @@ export const news = defineType({
   preview: {
     select: {
       title: 'title',
-      subtitle: 'category',
+      type: 'type',
+      isFeatured: 'isFeatured',
       media: 'coverImage',
       publishedAt: 'publishedAt',
     },
-    prepare({title, subtitle, media, publishedAt}) {
-      const categoryTitle = subtitle === 'bendros' ? 'Bendros' : 
-                           subtitle === 'renginiai' ? 'Renginiai' :
-                           subtitle === 'projektai' ? 'Projektai' :
-                           subtitle === 'spaudai' ? 'Pranešimai spaudai' : subtitle;
-      
+    prepare({title, type, isFeatured, media, publishedAt}) {
+      const typeLabel = type === 'naujiena' ? 'Naujiena' : type === 'renginys' ? 'Renginys' : 'Nenurodyta';
+      const featuredLabel = isFeatured ? '⭐ Viršuje' : '';
       const date = publishedAt ? new Date(publishedAt).toLocaleDateString('lt-LT') : '';
+      
+      const subtitle = featuredLabel 
+        ? `${typeLabel} • ${featuredLabel} • ${date}`
+        : `${typeLabel} • ${date}`;
       
       return {
         title,
-        subtitle: `${categoryTitle} • ${date}`,
+        subtitle,
         media,
       }
     },
