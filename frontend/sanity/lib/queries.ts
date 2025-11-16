@@ -16,7 +16,9 @@ export const leadershipQuery = defineQuery(`
       },
       alt
     },
-    sortOrder
+    sortOrder,
+    phone,
+    email
   }
 `);
 

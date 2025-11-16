@@ -731,7 +731,7 @@ export type SettingsQueryResult = {
   };
 } | null;
 // Variable: leadershipQuery
-// Query: *[_type == "leadership"] | order(role asc, sortOrder asc, name asc) {    _id,    name,    position,    role,    "photo": photo{      asset->{        _id,        url      },      alt    },    sortOrder  }
+// Query: *[_type == "leadership"] | order(role asc, sortOrder asc, name asc) {    _id,    name,    position,    role,    "photo": photo{      asset->{        _id,        url      },      alt    },    sortOrder,    phone,    email  }
 export type LeadershipQueryResult = Array<{
   _id: string;
   name: string;
@@ -745,6 +745,8 @@ export type LeadershipQueryResult = Array<{
     alt: string | null;
   };
   sortOrder: number | null;
+  phone: null;
+  email: null;
 }>;
 // Variable: newsQuery
 // Query: *[_type == "news"] | order(publishedAt desc) [0...4] {    _id,    title,    slug,    category,    excerpt,    "coverImage": coverImage{      asset->{        _id,        url      },      alt    },    publishedAt  }
@@ -965,7 +967,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"settings\"][0]": SettingsQueryResult;
-    "\n  *[_type == \"leadership\"] | order(role asc, sortOrder asc, name asc) {\n    _id,\n    name,\n    position,\n    role,\n    \"photo\": photo{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    sortOrder\n  }\n": LeadershipQueryResult;
+    "\n  *[_type == \"leadership\"] | order(role asc, sortOrder asc, name asc) {\n    _id,\n    name,\n    position,\n    role,\n    \"photo\": photo{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    sortOrder,\n    phone,\n    email\n  }\n": LeadershipQueryResult;
     "\n  *[_type == \"news\"] | order(publishedAt desc) [0...4] {\n    _id,\n    title,\n    slug,\n    category,\n    excerpt,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt\n  }\n": NewsQueryResult;
     "\n  *[_type == \"news\"] | order(publishedAt desc) {\n    _id,\n    title,\n    slug,\n    category,\n    excerpt,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt\n  }\n": AllNewsQueryResult;
     "\n  *[_type == \"news\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    category,\n    excerpt,\n    content,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt\n  }\n": SingleNewsQueryResult;

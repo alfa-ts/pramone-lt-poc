@@ -63,6 +63,23 @@ export const leadership = defineType({
       description: 'Mažesnis skaičius = aukštesnė pozicija sąraše',
       initialValue: 0,
     }),
+    defineField({
+      name: 'phone',
+      title: 'Telefono numeris',
+      type: 'string',
+      description: 'Kontaktinis telefono numeris (pvz., +370 600 12345)',
+      validation: (rule) => rule.regex(/^\+?[0-9\s\-()]+$/, {
+        name: 'phone',
+        invert: false,
+      }).error('Neteisingas telefono numerio formatas'),
+    }),
+    defineField({
+      name: 'email',
+      title: 'El. paštas',
+      type: 'string',
+      description: 'Kontaktinis el. pašto adresas',
+      validation: (rule) => rule.email().error('Neteisingas el. pašto formatas'),
+    }),
   ],
   orderings: [
     {
