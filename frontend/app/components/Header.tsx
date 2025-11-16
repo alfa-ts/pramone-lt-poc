@@ -13,12 +13,11 @@ export default function Header() {
   const [isMembersDropdownOpen, setIsMembersDropdownOpen] = useState(false);
 
   const aboutUsMenuItems = [
-    { href: "/apie/struktura", label: "Struktūra" },
+    { href: "/apie/valdymas", label: "Valdymas" },
     { href: "/apie/istorija", label: "Istorija" },
     { href: "/apie/istatai", label: "Įstatai" },
     { href: "/apie/veikla", label: "Veikla" },
     { href: "/apie/partneriai", label: "Partneriai" },
-    { href: "/apie/valdymas", label: "Valdymas" },
   ];
 
   const isAboutUsActive = pathname.startsWith("/apie");
