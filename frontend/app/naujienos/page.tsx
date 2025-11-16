@@ -1,6 +1,7 @@
 import { sanityFetch } from "@/sanity/lib/live";
 import { allNewsQuery } from "@/sanity/lib/queries";
 import Link from "next/link";
+import { Suspense } from "react";
 import { NewsFilter } from "@/app/components/NewsFilter";
 import { AllNewsQueryResult } from "@/sanity.types";
 
@@ -44,7 +45,9 @@ export default async function NaujienosPage() {
       </div>
 
       {/* News Filter and Grid */}
-      <NewsFilter newsData={newsData || []} />
+      <Suspense fallback={<div className="py-16 text-center">Kraunama...</div>}>
+        <NewsFilter newsData={newsData || []} />
+      </Suspense>
     </div>
   );
 }

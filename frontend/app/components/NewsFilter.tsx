@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -103,9 +104,38 @@ interface NewsFilterProps {
 }
 
 export function NewsFilter({ newsData }: NewsFilterProps) {
-  const [selectedCategory, setSelectedCategory] = useState("Visos");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  // Get initial values from URL or defaults
+  const categoryParam = searchParams.get("kategorija") || "Visos";
+  const pageParam = searchParams.get("puslapis");
+  
+  const [selectedCategory, setSelectedCategory] = useState(categoryParam);
+  const [currentPage, setCurrentPage] = useState(
+    pageParam ? parseInt(pageParam, 10) : 1
+  );
+  const itemsPerPage = 9;
 
   const categories = ["Visos", "Renginiai", "Naujienos"];
+
+  // Update URL when filters change
+  useEffect(() => {
+    const params = new URLSearchParams();
+    
+    if (selectedCategory !== "Visos") {
+      params.set("kategorija", selectedCategory);
+    }
+    
+    if (currentPage > 1) {
+      params.set("puslapis", currentPage.toString());
+    }
+    
+    const queryString = params.toString();
+    const newUrl = queryString ? `/naujienos?${queryString}` : "/naujienos";
+    
+    router.replace(newUrl, { scroll: false });
+  }, [selectedCategory, currentPage, router]);
 
   // Filter articles based on selected category
   const filteredArticles =
@@ -118,8 +148,17 @@ export function NewsFilter({ newsData }: NewsFilterProps) {
   // Featured article - always show if it exists, regardless of filter
   const featuredArticle = newsData.find((article) => article.isFeatured);
 
-  // Regular articles - show all articles including featured
-  const regularArticles = filteredArticles;
+  // Pagination
+  const totalPages = Math.ceil(filteredArticles.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const regularArticles = filteredArticles.slice(startIndex, endIndex);
+
+  // Reset to page 1 when category changes
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    setCurrentPage(1);
+  };
 
   return (
     <>
@@ -193,7 +232,7 @@ export function NewsFilter({ newsData }: NewsFilterProps) {
             {categories.map((category) => (
               <button
                 key={category}
-                onClick={() => setSelectedCategory(category)}
+                onClick={() => handleCategoryChange(category)}
                 className={`px-5 py-2.5 rounded-full whitespace-nowrap transition-all font-medium text-sm ${
                   selectedCategory === category
                     ? "bg-gradient-to-r from-[#fe9a00] to-[#e17100] text-white shadow-lg shadow-orange-200"
@@ -281,6 +320,55 @@ export function NewsFilter({ newsData }: NewsFilterProps) {
                   ? "Šioje kategorijoje renginių nėra"
                   : "Šioje kategorijoje naujienų nėra"}
               </p>
+            </div>
+          )}
+
+          {/* Pagination */}
+          {totalPages > 1 && regularArticles.length > 0 && (
+            <div className="flex items-center justify-center gap-2 mt-12">
+              <button
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                  currentPage === 1
+                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                    : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200"
+                }`}
+              >
+                Ankstesnis
+              </button>
+
+              <div className="flex items-center gap-2">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`size-10 rounded-lg font-medium transition-all ${
+                        currentPage === page
+                          ? "bg-gradient-to-r from-[#fe9a00] to-[#e17100] text-white shadow-lg shadow-orange-200"
+                          : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  )
+                )}
+              </div>
+
+              <button
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
+                disabled={currentPage === totalPages}
+                className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                  currentPage === totalPages
+                    ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                    : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200"
+                }`}
+              >
+                Kitas
+              </button>
             </div>
           )}
         </div>

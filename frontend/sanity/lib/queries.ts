@@ -65,6 +65,16 @@ export const allNewsQuery = defineQuery(`
   }
 `);
 
+export const recentNewsQuery = defineQuery(`
+  *[_type == "news"] | order(publishedAt desc) [0...5] {
+    _id,
+    title,
+    slug,
+    type,
+    publishedAt
+  }
+`);
+
 export const singleNewsQuery = defineQuery(`
   *[_type == "news" && slug.current == $slug][0] {
     _id,
