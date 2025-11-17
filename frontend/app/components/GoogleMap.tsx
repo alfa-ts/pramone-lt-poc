@@ -6,9 +6,8 @@ interface GoogleMapProps {
 
 export function GoogleMap({ address }: GoogleMapProps) {
   const encodedQuery = encodeURIComponent(address);
-  
+
   const embedUrl = `https://www.google.com/maps?q=${encodedQuery}&output=embed`;
-  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedQuery}`;
 
   if (!address) {
     return null;
@@ -23,16 +22,6 @@ export function GoogleMap({ address }: GoogleMapProps) {
         loading="lazy"
         referrerPolicy="no-referrer-when-downgrade"
       />
-      <a
-        href={mapsUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="absolute left-6 bottom-6 inline-flex items-center gap-2 rounded-full bg-emerald-600 text-white px-5 py-3 shadow-lg hover:bg-emerald-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
-      >
-        <FaMapMarkerAlt />
-        <span>Rodyti maršrutą</span>
-      </a>
     </div>
   );
 }
-

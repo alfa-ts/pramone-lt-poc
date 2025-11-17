@@ -54,7 +54,11 @@ export function NewsSidebar({ recentNews, currentNewsId }: NewsSidebarProps) {
           {filteredRecentNews.slice(0, 4).map((news) => (
             <Link
               key={news._id}
-              href={`/naujienos/${news.slug.current}`}
+              href={
+                news.type === "renginys"
+                  ? `/renginiai/${news.slug.current}`
+                  : `/naujienos/${news.slug.current}`
+              }
               className="block group"
             >
               <div className="flex items-start gap-3 pb-4 border-b border-gray-100 last:border-0 last:pb-0">

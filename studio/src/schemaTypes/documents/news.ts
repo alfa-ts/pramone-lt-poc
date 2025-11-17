@@ -156,6 +156,159 @@ export const news = defineType({
       description: 'Adresas arba vietos pavadinimas Google žemėlapiui (jei nenurodytas, bus naudojamas pagrindinis vietos laukas)',
       hidden: ({document}) => document?.type !== 'renginys',
     }),
+    defineField({
+      name: 'entrance',
+      title: 'Įėjimas',
+      type: 'string',
+      description: 'Įėjimo informacija (pvz., "Nemokamas", "10 EUR", "Registracija privaloma")',
+      hidden: ({document}) => document?.type !== 'renginys',
+    }),
+    defineField({
+      name: 'timeSlots',
+      title: 'Laiko intervalai',
+      type: 'array',
+      description: 'Skirtingi laiko intervalai skirtingoms dienoms (pvz., "10:00 - 18:00 (pirmosios dvi dienos)")',
+      of: [{type: 'string'}],
+      hidden: ({document}) => document?.type !== 'renginys',
+    }),
+    defineField({
+      name: 'program',
+      title: 'Renginio programa',
+      type: 'array',
+      description: 'Renginio programos punktai pagal dienas',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'date',
+              title: 'Data',
+              type: 'date',
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'title',
+              title: 'Pavadinimas',
+              type: 'string',
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'time',
+              title: 'Laikas',
+              type: 'string',
+              description: 'Pvz., "10:00 - 18:00"',
+            }),
+            defineField({
+              name: 'description',
+              title: 'Aprašymas',
+              type: 'text',
+              rows: 2,
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'title',
+              date: 'date',
+              time: 'time',
+            },
+            prepare({title, date, time}) {
+              const dateStr = date ? new Date(date).toLocaleDateString('lt-LT') : '';
+              return {
+                title: title,
+                subtitle: `${dateStr} ${time ? `• ${time}` : ''}`,
+              }
+            },
+          },
+        },
+      ],
+      hidden: ({document}) => document?.type !== 'renginys',
+    }),
+    defineField({
+      name: 'documents',
+      title: 'Dokumentai ir nuotraukos',
+      type: 'array',
+      description: 'Atsisiųstini dokumentai ir nuotraukos',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'title',
+              title: 'Pavadinimas',
+              type: 'string',
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'file',
+              title: 'Failas',
+              type: 'file',
+              options: {
+                accept: '.pdf,.doc,.docx,.jpg,.jpeg,.png,.gif',
+              },
+              validation: (rule) => rule.required(),
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'title',
+              file: 'file',
+            },
+            prepare({title, file}) {
+              return {
+                title: title,
+                subtitle: file?.asset ? 'Failas įkeltas' : 'Failas neįkeltas',
+              }
+            },
+          },
+        },
+      ],
+      hidden: ({document}) => document?.type !== 'renginys',
+    }),
+    defineField({
+      name: 'additionalInfo',
+      title: 'Papildoma informacija',
+      type: 'array',
+      description: 'Papildomi informacijos blokai (pvz., "Dalyviai", "Organizatoriai")',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'title',
+              title: 'Pavadinimas',
+              type: 'string',
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'description',
+              title: 'Aprašymas',
+              type: 'text',
+              rows: 2,
+            }),
+            defineField({
+              name: 'items',
+              title: 'Punktai',
+              type: 'array',
+              of: [{type: 'string'}],
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'title',
+              items: 'items',
+            },
+            prepare({title, items}) {
+              const count = items?.length || 0;
+              return {
+                title: title,
+                subtitle: `${count} punktai(-ų)`,
+              }
+            },
+          },
+        },
+      ],
+      hidden: ({document}) => document?.type !== 'renginys',
+    }),
   ],
   orderings: [
     {

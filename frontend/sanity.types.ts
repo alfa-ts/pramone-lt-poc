@@ -789,6 +789,15 @@ export type AllNewsQueryResult = Array<{
   location: null;
   googleMapsLocation: null;
 }>;
+// Variable: recentNewsQuery
+// Query: *[_type == "news"] | order(publishedAt desc) [0...5] {    _id,    title,    slug,    type,    publishedAt  }
+export type RecentNewsQueryResult = Array<{
+  _id: string;
+  title: string;
+  slug: Slug;
+  type: null;
+  publishedAt: string;
+}>;
 // Variable: singleNewsQuery
 // Query: *[_type == "news" && slug.current == $slug][0] {    _id,    title,    slug,    type,    excerpt,    content,    "coverImage": coverImage{      asset->{        _id,        url      },      alt    },    publishedAt,    eventStartDate,    eventEndDate,    organizers,    location,    googleMapsLocation  }
 export type SingleNewsQueryResult = {
@@ -984,6 +993,7 @@ declare module "@sanity/client" {
     "\n  *[_type == \"leadership\"] | order(role asc, sortOrder asc, name asc) {\n    _id,\n    name,\n    position,\n    role,\n    \"photo\": photo{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    sortOrder,\n    phone,\n    email\n  }\n": LeadershipQueryResult;
     "\n  *[_type == \"news\"] | order(publishedAt desc) [0...4] {\n    _id,\n    title,\n    slug,\n    type,\n    isFeatured,\n    excerpt,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt\n  }\n": NewsQueryResult;
     "\n  *[_type == \"news\"] | order(isFeatured desc, publishedAt desc) {\n    _id,\n    title,\n    slug,\n    type,\n    isFeatured,\n    excerpt,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    googleMapsLocation\n  }\n": AllNewsQueryResult;
+    "\n  *[_type == \"news\"] | order(publishedAt desc) [0...5] {\n    _id,\n    title,\n    slug,\n    type,\n    publishedAt\n  }\n": RecentNewsQueryResult;
     "\n  *[_type == \"news\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    type,\n    excerpt,\n    content,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    googleMapsLocation\n  }\n": SingleNewsQueryResult;
     "\n  *[_type == \"pastPresident\"] | order(startYear asc) {\n    _id,\n    name,\n    startYear,\n    endYear\n  }\n": PastPresidentsQueryResult;
     "\n  count(*[_type == \"member\"])\n": MembersCountQueryResult;

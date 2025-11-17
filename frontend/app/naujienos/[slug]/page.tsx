@@ -82,24 +82,6 @@ export default async function NewsDetailPage({
     notFound();
   }
 
-  // Type assertion to help TypeScript understand the news object structure
-  // const typedNews = news as {
-  //   title: string;
-  //   type: "naujiena" | "renginys" | null;
-  //   excerpt: string;
-  //   publishedAt: string;
-  //   content?: any;
-  //   coverImage?: {
-  //     asset?: { url: string };
-  //     alt?: string;
-  //   };
-  //   eventStartDate?: string;
-  //   eventEndDate?: string;
-  //   organizers?: string[];
-  //   location?: string;
-  //   googleMapsLocation?: string;
-  // };
-
   return (
     <div className="min-h-screen bg-white">
       {/* Breadcrumb */}

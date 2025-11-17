@@ -212,7 +212,11 @@ export function NewsFilter({ newsData }: NewsFilterProps) {
                   </p>
 
                   <Link
-                    href={`/naujienos/${featuredArticle.slug.current}`}
+                    href={
+                      featuredArticle.type === "renginys"
+                        ? `/renginiai/${featuredArticle.slug.current}`
+                        : `/naujienos/${featuredArticle.slug.current}`
+                    }
                     className="inline-flex items-center gap-2 text-[#fe9a00] font-medium hover:gap-3 transition-all group/link"
                   >
                     Skaityti daugiau
@@ -295,7 +299,11 @@ export function NewsFilter({ newsData }: NewsFilterProps) {
                     </p>
 
                     <Link
-                      href={`/naujienos/${article.slug.current}`}
+                      href={
+                        article.type === "renginys"
+                          ? `/renginiai/${article.slug.current}`
+                          : `/naujienos/${article.slug.current}`
+                      }
                       className="inline-flex items-center gap-2 text-[#fe9a00] font-medium text-sm hover:gap-3 transition-all group/link mt-auto"
                     >
                       Plačiau

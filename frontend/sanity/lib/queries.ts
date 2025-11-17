@@ -95,7 +95,20 @@ export const singleNewsQuery = defineQuery(`
     eventEndDate,
     organizers,
     location,
-    googleMapsLocation
+    googleMapsLocation,
+    entrance,
+    timeSlots,
+    program,
+    "documents": documents[]{
+      title,
+      "file": file.asset->{
+        _id,
+        url,
+        originalFilename,
+        size
+      }
+    },
+    additionalInfo
   }
 `);
 
