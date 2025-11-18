@@ -179,10 +179,17 @@ export default async function EventDetailPage({
             </div>
 
             <div className="flex flex-wrap items-center gap-4 mt-8">
-              <button className="bg-gradient-to-r from-[#fe9a00] to-[#e17100] text-white px-8 py-3 rounded-lg font-medium hover:shadow-lg hover:shadow-orange-500/50 transition-all flex items-center gap-2">
-                Registruotis
-                <ArrowRight className="size-5" />
-              </button>
+              {event.registrationUrl && (
+                <a
+                  href={event.registrationUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-gradient-to-r from-[#fe9a00] to-[#e17100] text-white px-8 py-3 rounded-lg font-medium hover:shadow-lg hover:shadow-orange-500/50 transition-all flex items-center gap-2"
+                >
+                  Registruotis
+                  <ArrowRight className="size-5" />
+                </a>
+              )}
               <div className="flex items-center gap-2">
                 <span className="text-gray-400 text-sm">Dalintis:</span>
                 <button className="size-10 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg flex items-center justify-center hover:bg-[#1877f2] hover:border-[#1877f2] transition-all">
@@ -198,17 +205,6 @@ export default async function EventDetailPage({
             </div>
           </div>
         </div>
-
-        {/* Decorative SVG */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg
-            className="w-full h-16 fill-white"
-            viewBox="0 0 1200 60"
-            preserveAspectRatio="none"
-          >
-            <path d="M0,56.586L0,56.586L1200,56.586L1200,0L0,0Z" />
-          </svg>
-        </div>
       </section>
 
       {/* Main Content */}
@@ -220,7 +216,7 @@ export default async function EventDetailPage({
               {/* Event Description */}
               {event.content && (
                 <div>
-                  <h2 className="mb-6">Apie renginį</h2>
+                  <h2 className="text-3xl font-bold mb-6">Apie renginį</h2>
                   <article className="prose prose-lg max-w-none">
                     <PortableText value={event.content as any} />
                   </article>
@@ -449,10 +445,17 @@ export default async function EventDetailPage({
                       </div>
                     )}
                   </div>
-                  <button className="w-full mt-6 bg-white text-[#fe9a00] px-6 py-3 rounded-lg font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2">
-                    Registruotis dabar
-                    <ArrowRight className="size-5" />
-                  </button>
+                  {event.registrationUrl && (
+                    <a
+                      href={event.registrationUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full mt-6 bg-white text-[#fe9a00] px-6 py-3 rounded-lg font-medium hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                    >
+                      Registruotis dabar
+                      <ArrowRight className="size-5" />
+                    </a>
+                  )}
                 </div>
 
                 {/* Recent Events */}

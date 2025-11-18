@@ -3,7 +3,7 @@ import {defineField, defineType} from 'sanity'
 
 export const news = defineType({
   name: 'news',
-  title: 'Naujienos',
+  title: 'Naujienos ir Renginiai',
   icon: DocumentTextIcon,
   type: 'document',
   fields: [
@@ -161,6 +161,13 @@ export const news = defineType({
       title: 'Įėjimas',
       type: 'string',
       description: 'Įėjimo informacija (pvz., "Nemokamas", "10 EUR", "Registracija privaloma")',
+      hidden: ({document}) => document?.type !== 'renginys',
+    }),
+    defineField({
+      name: 'registrationUrl',
+      title: 'Registracijos nuoroda',
+      type: 'url',
+      description: 'Nuoroda į registracijos formą ar puslapį',
       hidden: ({document}) => document?.type !== 'renginys',
     }),
     defineField({

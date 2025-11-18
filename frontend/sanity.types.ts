@@ -750,7 +750,7 @@ export type RecentNewsQueryResult = Array<{
   publishedAt: string;
 }>;
 // Variable: singleNewsQuery
-// Query: *[_type == "news" && slug.current == $slug][0] {    _id,    title,    slug,    type,    excerpt,    content,    "coverImage": coverImage{      asset->{        _id,        url      },      alt    },    publishedAt,    eventStartDate,    eventEndDate,    organizers,    location,    googleMapsLocation,    entrance,    timeSlots,    program,    "documents": documents[]{      title,      "file": file.asset->{        _id,        url,        originalFilename,        size      }    },    additionalInfo  }
+// Query: *[_type == "news" && slug.current == $slug][0] {    _id,    title,    slug,    type,    excerpt,    content,    "coverImage": coverImage{      asset->{        _id,        url      },      alt    },    publishedAt,    eventStartDate,    eventEndDate,    organizers,    location,    googleMapsLocation,    entrance,    registrationUrl,    timeSlots,    program,    "documents": documents[]{      title,      "file": file.asset->{        _id,        url,        originalFilename,        size      }    },    additionalInfo  }
 export type SingleNewsQueryResult = {
   _id: string;
   title: string;
@@ -772,6 +772,7 @@ export type SingleNewsQueryResult = {
   location: string | null;
   googleMapsLocation: string | null;
   entrance: string | null;
+  registrationUrl: null;
   timeSlots: Array<string> | null;
   program: Array<{
     date: string;
@@ -807,6 +808,23 @@ export type PastPresidentsQueryResult = Array<{
 // Variable: membersCountQuery
 // Query: count(*[_type == "member"])
 export type MembersCountQueryResult = number;
+// Variable: membersQuery
+// Query: *[_type == "member"] | order(company asc) {    _id,    person,    title,    company,    address,    activity,    "logo": logo{      asset->{        _id,        url      },      alt    }  }
+export type MembersQueryResult = Array<{
+  _id: string;
+  person: string | null;
+  title: string | null;
+  company: string;
+  address: string | null;
+  activity: string | null;
+  logo: {
+    asset: {
+      _id: string;
+      url: string | null;
+    } | null;
+    alt: string | null;
+  } | null;
+}>;
 // Variable: strategicDirectionsQuery
 // Query: *[_type == "strategicDirection"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {    _id,    title,    sortOrder  }
 export type StrategicDirectionsQueryResult = Array<{
@@ -902,9 +920,10 @@ declare module "@sanity/client" {
     "\n  *[_type == \"news\"] | order(publishedAt desc) [0...4] {\n    _id,\n    title,\n    slug,\n    type,\n    isFeatured,\n    excerpt,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt\n  }\n": NewsQueryResult;
     "\n  *[_type == \"news\"] | order(isFeatured desc, publishedAt desc) {\n    _id,\n    title,\n    slug,\n    type,\n    isFeatured,\n    excerpt,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    googleMapsLocation\n  }\n": AllNewsQueryResult;
     "\n  *[_type == \"news\"] | order(publishedAt desc) [0...5] {\n    _id,\n    title,\n    slug,\n    type,\n    publishedAt\n  }\n": RecentNewsQueryResult;
-    "\n  *[_type == \"news\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    type,\n    excerpt,\n    content,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    googleMapsLocation,\n    entrance,\n    timeSlots,\n    program,\n    \"documents\": documents[]{\n      title,\n      \"file\": file.asset->{\n        _id,\n        url,\n        originalFilename,\n        size\n      }\n    },\n    additionalInfo\n  }\n": SingleNewsQueryResult;
+    "\n  *[_type == \"news\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    type,\n    excerpt,\n    content,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    googleMapsLocation,\n    entrance,\n    registrationUrl,\n    timeSlots,\n    program,\n    \"documents\": documents[]{\n      title,\n      \"file\": file.asset->{\n        _id,\n        url,\n        originalFilename,\n        size\n      }\n    },\n    additionalInfo\n  }\n": SingleNewsQueryResult;
     "\n  *[_type == \"pastPresident\"] | order(startYear asc) {\n    _id,\n    name,\n    startYear,\n    endYear\n  }\n": PastPresidentsQueryResult;
     "\n  count(*[_type == \"member\"])\n": MembersCountQueryResult;
+    "\n  *[_type == \"member\"] | order(company asc) {\n    _id,\n    person,\n    title,\n    company,\n    address,\n    activity,\n    \"logo\": logo{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    }\n  }\n": MembersQueryResult;
     "\n  *[_type == \"strategicDirection\"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {\n    _id,\n    title,\n    sortOrder\n  }\n": StrategicDirectionsQueryResult;
     "\n  {\n    \"cooperate\": *[_type == \"partner\" && group == \"cooperate\"] | order(coalesce(sortOrder, 9999) asc, title asc) {\n      _id,\n      title,\n      \"logo\": logo.asset->url,\n      extra,\n      isMinistry\n    },\n    \"agreements\": *[_type == \"partner\" && group == \"agreements\"] | order(coalesce(sortOrder, 9999) asc, title asc) {\n      _id,\n      title,\n      \"logo\": logo.asset->url,\n      extra,\n      isMinistry\n    }\n  }\n": PartnersQueryResult;
     "\n  *[_type == \"contactInfo\"][0] {\n    address,\n    phone,\n    email,\n    googleAddress\n  }\n": ContactInfoQueryResult;

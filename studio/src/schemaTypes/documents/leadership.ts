@@ -3,7 +3,7 @@ import {defineField, defineType} from 'sanity'
 
 export const leadership = defineType({
   name: 'leadership',
-  title: 'Vadovybė',
+  title: 'Valdymas',
   icon: UsersIcon,
   type: 'document',
   fields: [

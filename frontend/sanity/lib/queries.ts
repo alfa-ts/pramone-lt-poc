@@ -97,6 +97,7 @@ export const singleNewsQuery = defineQuery(`
     location,
     googleMapsLocation,
     entrance,
+    registrationUrl,
     timeSlots,
     program,
     "documents": documents[]{
@@ -123,6 +124,24 @@ export const pastPresidentsQuery = defineQuery(`
 
 export const membersCountQuery = defineQuery(`
   count(*[_type == "member"])
+`);
+
+export const membersQuery = defineQuery(`
+  *[_type == "member"] | order(company asc) {
+    _id,
+    person,
+    title,
+    company,
+    address,
+    activity,
+    "logo": logo{
+      asset->{
+        _id,
+        url
+      },
+      alt
+    }
+  }
 `);
 
 export const strategicDirectionsQuery = defineQuery(`
