@@ -414,7 +414,9 @@ export default async function EventDetailPage({
                         <div className="flex items-start gap-3">
                           <Clock className="size-5 shrink-0 mt-0.5 opacity-90" />
                           <div>
-                            <div className="text-sm opacity-90 mb-1">Laikas</div>
+                            <div className="text-sm opacity-90 mb-1">
+                              Laikas
+                            </div>
                             {event.timeSlots.map((slot: string, i: number) => (
                               <div key={i} className="font-medium">
                                 {slot}
@@ -521,4 +523,3 @@ export default async function EventDetailPage({
     </div>
   );
 }
-

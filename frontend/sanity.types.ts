@@ -13,14 +13,6 @@
  */
 
 // Source: schema.json
-export type CallToAction = {
-  _type: "callToAction";
-  heading: string;
-  text?: string;
-  buttonText?: string;
-  link?: Link;
-};
-
 export type Link = {
   _type: "link";
   linkType?: "href" | "news";
@@ -34,36 +26,19 @@ export type Link = {
   openInNewTab?: boolean;
 };
 
+export type CallToAction = {
+  _type: "callToAction";
+  heading: string;
+  text?: string;
+  buttonText?: string;
+  link?: Link;
+};
+
 export type InfoSection = {
   _type: "infoSection";
   heading?: string;
   subheading?: string;
-  content?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      linkType?: "href" | "news";
-      href?: string;
-      news?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "news";
-      };
-      openInNewTab?: boolean;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
+  content?: BlockContent;
 };
 
 export type BlockContent = Array<{
@@ -112,68 +87,6 @@ export type ActivityReport = {
   };
 };
 
-export type Event = {
-  _id: string;
-  _type: "event";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  slug: Slug;
-  date?: string;
-  startAt?: string;
-  endAt?: string;
-  time?: string;
-  location?: string;
-  locationLat?: number;
-  locationLng?: number;
-  organizers?: string;
-  images?: Array<{
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-    _key: string;
-  }>;
-  excerpt?: string;
-  content?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  } | {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-    _key: string;
-  }>;
-};
-
 export type Partner = {
   _id: string;
   _type: "partner";
@@ -183,6 +96,7 @@ export type Partner = {
   group: "cooperate" | "agreements";
   title: string;
   extra?: string;
+  isMinistry?: boolean;
   sortOrder?: number;
 };
 
@@ -230,6 +144,24 @@ export type Leadership = {
     _type: "image";
   };
   sortOrder?: number;
+  phone?: string;
+  email?: string;
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x: number;
+  y: number;
+  height: number;
+  width: number;
 };
 
 export type Member = {
@@ -419,7 +351,8 @@ export type News = {
   _rev: string;
   title: string;
   slug: Slug;
-  category: "bendros" | "renginiai" | "projektai" | "spaudai";
+  type: "naujiena" | "renginys";
+  isFeatured?: boolean;
   excerpt: string;
   content?: BlockContent;
   coverImage?: {
@@ -436,6 +369,46 @@ export type News = {
     _type: "image";
   };
   publishedAt: string;
+  eventStartDate?: string;
+  eventEndDate?: string;
+  organizers?: Array<string>;
+  location?: string;
+  googleMapsLocation?: string;
+  entrance?: string;
+  timeSlots?: Array<string>;
+  program?: Array<{
+    date: string;
+    title: string;
+    time?: string;
+    description?: string;
+    _key: string;
+  }>;
+  documents?: Array<{
+    title: string;
+    file: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+      };
+      media?: unknown;
+      _type: "file";
+    };
+    _key: string;
+  }>;
+  additionalInfo?: Array<{
+    title: string;
+    description?: string;
+    items?: Array<string>;
+    _key: string;
+  }>;
+};
+
+export type Slug = {
+  _type: "slug";
+  current: string;
+  source?: string;
 };
 
 export type SanityAssistInstructionTask = {
@@ -585,20 +558,15 @@ export type SanityImageDimensions = {
   aspectRatio: number;
 };
 
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x: number;
-  y: number;
-  height: number;
-  width: number;
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
+export type SanityImageMetadata = {
+  _type: "sanity.imageMetadata";
+  location?: Geopoint;
+  dimensions?: SanityImageDimensions;
+  palette?: SanityImagePalette;
+  lqip?: string;
+  blurHash?: string;
+  hasAlpha?: boolean;
+  isOpaque?: boolean;
 };
 
 export type SanityFileAsset = {
@@ -621,6 +589,13 @@ export type SanityFileAsset = {
   path?: string;
   url?: string;
   source?: SanityAssetSourceData;
+};
+
+export type SanityAssetSourceData = {
+  _type: "sanity.assetSourceData";
+  name?: string;
+  id?: string;
+  url?: string;
 };
 
 export type SanityImageAsset = {
@@ -646,17 +621,6 @@ export type SanityImageAsset = {
   source?: SanityAssetSourceData;
 };
 
-export type SanityImageMetadata = {
-  _type: "sanity.imageMetadata";
-  location?: Geopoint;
-  dimensions?: SanityImageDimensions;
-  palette?: SanityImagePalette;
-  lqip?: string;
-  blurHash?: string;
-  hasAlpha?: boolean;
-  isOpaque?: boolean;
-};
-
 export type Geopoint = {
   _type: "geopoint";
   lat?: number;
@@ -664,20 +628,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type Slug = {
-  _type: "slug";
-  current: string;
-  source?: string;
-};
-
-export type SanityAssetSourceData = {
-  _type: "sanity.assetSourceData";
-  name?: string;
-  id?: string;
-  url?: string;
-};
-
-export type AllSanitySchemaTypes = CallToAction | Link | InfoSection | BlockContent | ActivityReport | Event | Partner | StrategicDirection | PastPresident | Leadership | Member | MembershipInfo | Istatai | ContactInfo | Settings | News | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = Link | CallToAction | InfoSection | BlockContent | ActivityReport | Partner | StrategicDirection | PastPresident | Leadership | SanityImageCrop | SanityImageHotspot | Member | MembershipInfo | Istatai | ContactInfo | Settings | News | Slug | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: settingsQuery
@@ -745,8 +696,8 @@ export type LeadershipQueryResult = Array<{
     alt: string | null;
   };
   sortOrder: number | null;
-  phone: null;
-  email: null;
+  phone: string | null;
+  email: string | null;
 }>;
 // Variable: newsQuery
 // Query: *[_type == "news"] | order(publishedAt desc) [0...4] {    _id,    title,    slug,    type,    isFeatured,    excerpt,    "coverImage": coverImage{      asset->{        _id,        url      },      alt    },    publishedAt  }
@@ -754,8 +705,8 @@ export type NewsQueryResult = Array<{
   _id: string;
   title: string;
   slug: Slug;
-  type: null;
-  isFeatured: null;
+  type: "naujiena" | "renginys";
+  isFeatured: boolean | null;
   excerpt: string;
   coverImage: {
     asset: {
@@ -772,8 +723,8 @@ export type AllNewsQueryResult = Array<{
   _id: string;
   title: string;
   slug: Slug;
-  type: null;
-  isFeatured: null;
+  type: "naujiena" | "renginys";
+  isFeatured: boolean | null;
   excerpt: string;
   coverImage: {
     asset: {
@@ -783,11 +734,11 @@ export type AllNewsQueryResult = Array<{
     alt: string | null;
   } | null;
   publishedAt: string;
-  eventStartDate: null;
-  eventEndDate: null;
-  organizers: null;
-  location: null;
-  googleMapsLocation: null;
+  eventStartDate: string | null;
+  eventEndDate: string | null;
+  organizers: Array<string> | null;
+  location: string | null;
+  googleMapsLocation: string | null;
 }>;
 // Variable: recentNewsQuery
 // Query: *[_type == "news"] | order(publishedAt desc) [0...5] {    _id,    title,    slug,    type,    publishedAt  }
@@ -795,16 +746,16 @@ export type RecentNewsQueryResult = Array<{
   _id: string;
   title: string;
   slug: Slug;
-  type: null;
+  type: "naujiena" | "renginys";
   publishedAt: string;
 }>;
 // Variable: singleNewsQuery
-// Query: *[_type == "news" && slug.current == $slug][0] {    _id,    title,    slug,    type,    excerpt,    content,    "coverImage": coverImage{      asset->{        _id,        url      },      alt    },    publishedAt,    eventStartDate,    eventEndDate,    organizers,    location,    googleMapsLocation  }
+// Query: *[_type == "news" && slug.current == $slug][0] {    _id,    title,    slug,    type,    excerpt,    content,    "coverImage": coverImage{      asset->{        _id,        url      },      alt    },    publishedAt,    eventStartDate,    eventEndDate,    organizers,    location,    googleMapsLocation,    entrance,    timeSlots,    program,    "documents": documents[]{      title,      "file": file.asset->{        _id,        url,        originalFilename,        size      }    },    additionalInfo  }
 export type SingleNewsQueryResult = {
   _id: string;
   title: string;
   slug: Slug;
-  type: null;
+  type: "naujiena" | "renginys";
   excerpt: string;
   content: BlockContent | null;
   coverImage: {
@@ -815,11 +766,35 @@ export type SingleNewsQueryResult = {
     alt: string | null;
   } | null;
   publishedAt: string;
-  eventStartDate: null;
-  eventEndDate: null;
-  organizers: null;
-  location: null;
-  googleMapsLocation: null;
+  eventStartDate: string | null;
+  eventEndDate: string | null;
+  organizers: Array<string> | null;
+  location: string | null;
+  googleMapsLocation: string | null;
+  entrance: string | null;
+  timeSlots: Array<string> | null;
+  program: Array<{
+    date: string;
+    title: string;
+    time?: string;
+    description?: string;
+    _key: string;
+  }> | null;
+  documents: Array<{
+    title: string;
+    file: {
+      _id: string;
+      url: string | null;
+      originalFilename: string | null;
+      size: number | null;
+    } | null;
+  }> | null;
+  additionalInfo: Array<{
+    title: string;
+    description?: string;
+    items?: Array<string>;
+    _key: string;
+  }> | null;
 } | null;
 // Variable: pastPresidentsQuery
 // Query: *[_type == "pastPresident"] | order(startYear asc) {    _id,    name,    startYear,    endYear  }
@@ -847,14 +822,14 @@ export type PartnersQueryResult = {
     title: string;
     logo: null;
     extra: string | null;
-    isMinistry: null;
+    isMinistry: boolean | null;
   }>;
   agreements: Array<{
     _id: string;
     title: string;
     logo: null;
     extra: string | null;
-    isMinistry: null;
+    isMinistry: boolean | null;
   }>;
 };
 // Variable: contactInfoQuery
@@ -884,77 +859,10 @@ export type ActivityReportsQueryResult = Array<{
 }>;
 // Variable: eventsListQuery
 // Query: *[_type == "event" &&    (!defined($from) || $from == null || coalesce(startAt, dateTime(date)) >= dateTime($from)) &&    (!defined($to) || $to == null || coalesce(startAt, dateTime(date)) <= dateTime($to))  ] | order(coalesce(startAt, dateTime(date)) desc) {    _id,    title,    slug,    date,    startAt,    endAt,    time,    location,    organizers,    excerpt,    "plainContent": pt::text(content),    "cover": images[0]{ asset->{ _id, url } }  }
-export type EventsListQueryResult = Array<{
-  _id: string;
-  title: string;
-  slug: Slug;
-  date: string | null;
-  startAt: string | null;
-  endAt: string | null;
-  time: string | null;
-  location: string | null;
-  organizers: string | null;
-  excerpt: string | null;
-  plainContent: string;
-  cover: {
-    asset: {
-      _id: string;
-      url: string | null;
-    } | null;
-  } | null;
-}>;
+export type EventsListQueryResult = Array<never>;
 // Variable: singleEventQuery
 // Query: *[_type == "event" && slug.current == $slug][0] {    _id,    title,    slug,    date,    startAt,    endAt,    time,    location,    locationLat,    locationLng,    organizers,    excerpt,    content,    images[]{ asset->{ _id, url } }  }
-export type SingleEventQueryResult = {
-  _id: string;
-  title: string;
-  slug: Slug;
-  date: string | null;
-  startAt: string | null;
-  endAt: string | null;
-  time: string | null;
-  location: string | null;
-  locationLat: number | null;
-  locationLng: number | null;
-  organizers: string | null;
-  excerpt: string | null;
-  content: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  } | {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-    _key: string;
-  }> | null;
-  images: Array<{
-    asset: {
-      _id: string;
-      url: string | null;
-    } | null;
-  }> | null;
-} | null;
+export type SingleEventQueryResult = null;
 // Variable: membershipInfoQuery
 // Query: *[_type == "membershipInfo"][0] {    whyJoinTitle,    whyJoinText,    "whyJoinFileUrl": whyJoinFile.asset->url,    "whyJoinFileName": whyJoinFile.asset->originalFilename,    benefitsTitle,    benefitsText,    "benefitsFileUrl": benefitsFile.asset->url,    "benefitsFileName": benefitsFile.asset->originalFilename,    feeTitle,    feeText,    "feeImage": feeImage{      asset->{        _id,        url      },      alt    },    requiredDocumentsTitle,    requiredDocuments[] {      _key,      title,      description,      "fileUrl": file.asset->url,      "fileName": file.asset->originalFilename    }  }
 export type MembershipInfoQueryResult = {
@@ -994,7 +902,7 @@ declare module "@sanity/client" {
     "\n  *[_type == \"news\"] | order(publishedAt desc) [0...4] {\n    _id,\n    title,\n    slug,\n    type,\n    isFeatured,\n    excerpt,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt\n  }\n": NewsQueryResult;
     "\n  *[_type == \"news\"] | order(isFeatured desc, publishedAt desc) {\n    _id,\n    title,\n    slug,\n    type,\n    isFeatured,\n    excerpt,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    googleMapsLocation\n  }\n": AllNewsQueryResult;
     "\n  *[_type == \"news\"] | order(publishedAt desc) [0...5] {\n    _id,\n    title,\n    slug,\n    type,\n    publishedAt\n  }\n": RecentNewsQueryResult;
-    "\n  *[_type == \"news\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    type,\n    excerpt,\n    content,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    googleMapsLocation\n  }\n": SingleNewsQueryResult;
+    "\n  *[_type == \"news\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    type,\n    excerpt,\n    content,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    googleMapsLocation,\n    entrance,\n    timeSlots,\n    program,\n    \"documents\": documents[]{\n      title,\n      \"file\": file.asset->{\n        _id,\n        url,\n        originalFilename,\n        size\n      }\n    },\n    additionalInfo\n  }\n": SingleNewsQueryResult;
     "\n  *[_type == \"pastPresident\"] | order(startYear asc) {\n    _id,\n    name,\n    startYear,\n    endYear\n  }\n": PastPresidentsQueryResult;
     "\n  count(*[_type == \"member\"])\n": MembersCountQueryResult;
     "\n  *[_type == \"strategicDirection\"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {\n    _id,\n    title,\n    sortOrder\n  }\n": StrategicDirectionsQueryResult;
