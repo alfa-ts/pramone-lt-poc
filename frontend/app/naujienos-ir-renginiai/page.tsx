@@ -51,3 +51,4 @@ export default async function NaujienosPage() {
     </div>
   );
 }
+

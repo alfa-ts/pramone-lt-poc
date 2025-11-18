@@ -56,7 +56,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/naujienos"
+                  href="/naujienos-ir-renginiai"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Naujienos

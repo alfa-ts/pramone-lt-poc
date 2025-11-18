@@ -113,7 +113,7 @@ export default async function EventDetailPage({
             </Link>
             <ChevronRight className="size-4 text-gray-400" />
             <Link
-              href="/naujienos?kategorija=Renginiai"
+              href="/naujienos-ir-renginiai?kategorija=Renginiai"
               className="text-gray-500 hover:text-gray-700"
             >
               Renginiai

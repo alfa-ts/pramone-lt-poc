@@ -88,7 +88,7 @@ export function NewsSidebar({ recentNews, currentNewsId }: NewsSidebarProps) {
           {categories.map((category) => (
             <Link
               key={category.type}
-              href={`/naujienos?kategorija=${category.param}`}
+              href={`/naujienos-ir-renginiai?kategorija=${category.param}`}
               className="flex items-center justify-between p-3 rounded-lg hover:bg-white hover:shadow-sm transition-all group"
             >
               <div className="flex items-center gap-2">

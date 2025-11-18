@@ -132,7 +132,7 @@ export function NewsFilter({ newsData }: NewsFilterProps) {
     }
     
     const queryString = params.toString();
-    const newUrl = queryString ? `/naujienos?${queryString}` : "/naujienos";
+    const newUrl = queryString ? `/naujienos-ir-renginiai?${queryString}` : "/naujienos-ir-renginiai";
     
     router.replace(newUrl, { scroll: false });
   }, [selectedCategory, currentPage, router]);

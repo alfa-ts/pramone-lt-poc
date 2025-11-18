@@ -62,7 +62,7 @@ export function NewsCarousel({ news }: NewsCarouselProps) {
                     Plačiau
                   </Button>
                 </Link>
-                <Link href="/naujienos">
+                <Link href="/naujienos-ir-renginiai">
                   <Button variant="outline" className="border-gray-300 text-gray-700 hover:bg-gray-50">
                     Visos naujienos
                   </Button>

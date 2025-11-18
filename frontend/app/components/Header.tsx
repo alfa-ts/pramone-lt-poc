@@ -21,7 +21,7 @@ export default function Header() {
   ];
 
   const isAboutUsActive = pathname.startsWith("/apie");
-  const isNewsActive = pathname.startsWith("/naujienos");
+  const isNewsActive = pathname.startsWith("/naujienos-ir-renginiai") || pathname.startsWith("/naujienos/");
   const isMembersActive = pathname.startsWith("/nariai");
   const isContactsActive = pathname.startsWith("/kontaktai");
   const isHomeActive = pathname === "/";
@@ -98,7 +98,7 @@ export default function Header() {
             </div>
 
             <Link 
-              href="/naujienos" 
+              href="/naujienos-ir-renginiai" 
               className={`px-4 py-2 rounded-lg transition-colors ${
                 isNewsActive 
                   ? 'bg-amber-50 text-amber-600 font-medium' 
@@ -196,7 +196,7 @@ export default function Header() {
                 Apie mus
               </Link>
               <Link 
-                href="/naujienos" 
+                href="/naujienos-ir-renginiai" 
                 className="px-4 py-2 rounded-lg text-gray-700 hover:bg-amber-50"
                 onClick={() => setIsMenuOpen(false)}
               >

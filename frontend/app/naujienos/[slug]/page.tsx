@@ -93,7 +93,7 @@ export default async function NewsDetailPage({
             </Link>
             <ChevronRight className="size-4 text-gray-400" />
             <Link
-              href="/naujienos"
+              href="/naujienos-ir-renginiai"
               className="text-gray-500 hover:text-gray-700"
             >
               Naujienos
@@ -237,7 +237,7 @@ export default async function NewsDetailPage({
 
               <div className="mt-12 pt-8 border-t border-gray-200">
                 <Link
-                  href="/naujienos"
+                  href="/naujienos-ir-renginiai"
                   className="inline-flex items-center text-[#fe9a00] hover:text-[#e17100] transition-colors font-medium"
                 >
                   ← Grįžti į naujienas
