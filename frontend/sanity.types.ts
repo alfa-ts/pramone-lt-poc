@@ -375,6 +375,7 @@ export type News = {
   location?: string;
   googleMapsLocation?: string;
   entrance?: string;
+  registrationUrl?: string;
   timeSlots?: Array<string>;
   program?: Array<{
     date: string;
@@ -772,7 +773,7 @@ export type SingleNewsQueryResult = {
   location: string | null;
   googleMapsLocation: string | null;
   entrance: string | null;
-  registrationUrl: null;
+  registrationUrl: string | null;
   timeSlots: Array<string> | null;
   program: Array<{
     date: string;
