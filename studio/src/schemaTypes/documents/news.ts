@@ -41,32 +41,33 @@ export const news = defineType({
       name: 'isFeatured',
       title: 'Rodomas viršuje',
       type: 'boolean',
-      description: 'Pažymėkite, jei šis įrašas turėtų būti rodomas kaip pagrindinis viršuje puslapio. Tik vienas įrašas gali būti pažymėtas vienu metu.',
+      description:
+        'Pažymėkite, jei šis įrašas turėtų būti rodomas kaip pagrindinis viršuje puslapio. Tik vienas įrašas gali būti pažymėtas vienu metu.',
       initialValue: false,
       validation: (rule) =>
         rule.custom(async (isFeatured, context) => {
-          if (!isFeatured) return true;
+          if (!isFeatured) return true
 
-          const {document, getClient} = context;
-          const client = getClient({apiVersion: '2023-01-01'});
+          const {document, getClient} = context
+          const client = getClient({apiVersion: '2023-01-01'})
 
           // Get the current document ID (without 'drafts.' prefix)
-          const currentId = document?._id?.replace('drafts.', '');
+          const currentId = document?._id?.replace('drafts.', '')
 
           // Check if there's another document with isFeatured = true
           const existingFeatured = await client.fetch(
             `*[_type == "news" && isFeatured == true && !(_id in [$draftId, $publishedId])][0]`,
             {
               draftId: `drafts.${currentId}`,
-              publishedId: currentId
-            }
-          );
+              publishedId: currentId,
+            },
+          )
 
           if (existingFeatured) {
-            return 'Jau yra kitas įrašas pažymėtas kaip rodomas viršuje. Pirmiausia atžymėkite tą įrašą.';
+            return 'Jau yra kitas įrašas pažymėtas kaip rodomas viršuje. Pirmiausia atžymėkite tą įrašą.'
           }
 
-          return true;
+          return true
         }),
     }),
     defineField({
@@ -87,23 +88,20 @@ export const news = defineType({
       type: 'image',
       options: {
         hotspot: true,
-        aiAssist: {
-          imageDescriptionField: 'alt',
-        },
       },
       fields: [
         defineField({
           name: 'alt',
           type: 'string',
           title: 'Alternatyvus tekstas',
-          description: 'Aprašo nuotrauką. Palikus tuščią, Sanity AI automatiškai sugeneruos aprašymą.',
+          description: 'Aprašo nuotrauką.',
           placeholder: 'Pvz: Nuotrauka apie...',
           validation: (rule) => {
             return rule.custom((alt, context) => {
               if ((context.document?.coverImage as any)?.asset?._ref && !alt) {
                 return {
                   message: 'Rekomenduojama nurodyti alternatyvų tekstą geresniam prieinamumui',
-                  level: 'warning'
+                  level: 'warning',
                 }
               }
               return true
@@ -153,7 +151,8 @@ export const news = defineType({
       name: 'googleMapsLocation',
       title: 'Vieta Google žemėlapiui',
       type: 'string',
-      description: 'Adresas arba vietos pavadinimas Google žemėlapiui (jei nenurodytas, bus naudojamas pagrindinis vietos laukas)',
+      description:
+        'Adresas arba vietos pavadinimas Google žemėlapiui (jei nenurodytas, bus naudojamas pagrindinis vietos laukas)',
       hidden: ({document}) => document?.type !== 'renginys',
     }),
     defineField({
@@ -174,7 +173,8 @@ export const news = defineType({
       name: 'timeSlots',
       title: 'Laiko intervalai',
       type: 'array',
-      description: 'Skirtingi laiko intervalai skirtingoms dienoms (pvz., "10:00 - 18:00 (pirmosios dvi dienos)")',
+      description:
+        'Skirtingi laiko intervalai skirtingoms dienoms (pvz., "10:00 - 18:00 (pirmosios dvi dienos)")',
       of: [{type: 'string'}],
       hidden: ({document}) => document?.type !== 'renginys',
     }),
@@ -219,7 +219,7 @@ export const news = defineType({
               time: 'time',
             },
             prepare({title, date, time}) {
-              const dateStr = date ? new Date(date).toLocaleDateString('lt-LT') : '';
+              const dateStr = date ? new Date(date).toLocaleDateString('lt-LT') : ''
               return {
                 title: title,
                 subtitle: `${dateStr} ${time ? `• ${time}` : ''}`,
@@ -305,7 +305,7 @@ export const news = defineType({
               items: 'items',
             },
             prepare({title, items}) {
-              const count = items?.length || 0;
+              const count = items?.length || 0
               return {
                 title: title,
                 subtitle: `${count} punktai(-ų)`,
@@ -321,10 +321,8 @@ export const news = defineType({
     {
       title: 'Pagal publikavimo datą (naujausios pirmos)',
       name: 'publishedAtDesc',
-      by: [
-        {field: 'publishedAt', direction: 'desc'}
-      ]
-    }
+      by: [{field: 'publishedAt', direction: 'desc'}],
+    },
   ],
   preview: {
     select: {
@@ -335,14 +333,15 @@ export const news = defineType({
       publishedAt: 'publishedAt',
     },
     prepare({title, type, isFeatured, media, publishedAt}) {
-      const typeLabel = type === 'naujiena' ? 'Naujiena' : type === 'renginys' ? 'Renginys' : 'Nenurodyta';
-      const featuredLabel = isFeatured ? '⭐ Viršuje' : '';
-      const date = publishedAt ? new Date(publishedAt).toLocaleDateString('lt-LT') : '';
-      
-      const subtitle = featuredLabel 
+      const typeLabel =
+        type === 'naujiena' ? 'Naujiena' : type === 'renginys' ? 'Renginys' : 'Nenurodyta'
+      const featuredLabel = isFeatured ? '⭐ Viršuje' : ''
+      const date = publishedAt ? new Date(publishedAt).toLocaleDateString('lt-LT') : ''
+
+      const subtitle = featuredLabel
         ? `${typeLabel} • ${featuredLabel} • ${date}`
-        : `${typeLabel} • ${date}`;
-      
+        : `${typeLabel} • ${date}`
+
       return {
         title,
         subtitle,
@@ -350,4 +349,4 @@ export const news = defineType({
       }
     },
   },
-}) 
+})
