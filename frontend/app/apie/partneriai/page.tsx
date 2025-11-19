@@ -27,7 +27,23 @@ export default async function PartneriaiPage() {
       <div className="bg-gradient-to-b from-gray-50 to-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-8 py-16">
           <div className="flex items-center gap-2 text-sm mb-6">
-            <a href="/apie" className="text-gray-500 hover:text-gray-700">
+            <a href="/" className="text-gray-500 hover:text-gray-700">
+              Pradžia
+            </a>
+            <svg
+              className="size-3.5 text-gray-400"
+              fill="none"
+              viewBox="0 0 14 14"
+            >
+              <path
+                d="M5.25 10.5L8.75 7L5.25 3.5"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.16667"
+              />
+            </svg>
+            <a href="/apie/istorija" className="text-gray-500 hover:text-gray-700">
               Apie mus
             </a>
             <svg
