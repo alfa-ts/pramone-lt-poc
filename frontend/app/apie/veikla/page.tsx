@@ -5,8 +5,6 @@ import {
   strategicDirectionsQuery,
 } from "@/sanity/lib/queries";
 import {
-  Heart,
-  Eye,
   Sparkles,
   GraduationCap,
   Handshake,
@@ -18,18 +16,16 @@ import {
   MapPin,
   TrendingUp,
   FileText,
-  Download,
   Globe,
   MapPinned,
+  ExternalLink,
 } from "lucide-react";
 
 export default async function VeiklaPage() {
-  const [{ data: reports }, { data: strategicDirections }] = await Promise.all(
-    [
-      sanityFetch({ query: activityReportsQuery }),
-      sanityFetch({ query: strategicDirectionsQuery }),
-    ]
-  );
+  const [{ data: reports }, { data: strategicDirections }] = await Promise.all([
+    sanityFetch({ query: activityReportsQuery }),
+    sanityFetch({ query: strategicDirectionsQuery }),
+  ]);
 
   const nationalActivities = [
     {
@@ -181,12 +177,7 @@ export default async function VeiklaPage() {
 
             <div className="space-y-8">
               <div>
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="size-12 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl flex items-center justify-center">
-                    <Heart className="size-6 text-[#fe9a00]" />
-                  </div>
-                  <h2 className="text-2xl text-gray-900">Misija</h2>
-                </div>
+                <h2 className="text-2xl text-gray-900 mb-3">Misija</h2>
                 <p className="text-gray-600 text-lg leading-relaxed">
                   Atstovauti nariams, vienijant verslo, mokslo ir visuomenės
                   interesus.
@@ -196,12 +187,7 @@ export default async function VeiklaPage() {
               <div className="h-px bg-gray-200" />
 
               <div>
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="size-12 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl flex items-center justify-center">
-                    <Eye className="size-6 text-blue-600" />
-                  </div>
-                  <h2 className="text-2xl text-gray-900">Vizija</h2>
-                </div>
+                <h2 className="text-2xl text-gray-900 mb-3">Vizija</h2>
                 <p className="text-gray-600 text-lg leading-relaxed">
                   Vedanti ir atvira verslo organizacija, kurioje narystė yra
                   vertinga ir garbinga.
@@ -371,7 +357,7 @@ export default async function VeiklaPage() {
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 bg-white border border-[#fe9a00] text-[#fe9a00] px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#fe9a00] hover:text-white transition-colors"
                       >
-                        <Download className="size-4" />
+                        <ExternalLink className="size-4" />
                         Atidaryti dokumentą
                       </a>
                     ) : (

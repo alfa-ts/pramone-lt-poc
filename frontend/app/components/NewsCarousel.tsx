@@ -50,12 +50,14 @@ export function NewsCarousel({ news }: NewsCarouselProps) {
               <div className="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full mb-4 ml-2 text-sm">
                 {news[currentSlide].category}
               </div>
-              <h1 className="text-5xl text-gray-900 mb-6 line-clamp-2">
-                {news[currentSlide].title}
-              </h1>
-              <p className="text-gray-600 text-lg mb-8 leading-relaxed">
-                {news[currentSlide].excerpt}
-              </p>
+              <div className="min-h-[280px]">
+                <h1 className="text-5xl text-gray-900 mb-6 line-clamp-2 leading-tight">
+                  {news[currentSlide].title}
+                </h1>
+                <p className="text-gray-600 text-lg mb-8 leading-relaxed line-clamp-3">
+                  {news[currentSlide].excerpt}
+                </p>
+              </div>
               <div className="flex gap-4">
                 <Link href={`/naujienos/${news[currentSlide].slug}`}>
                   <Button className="bg-amber-500 hover:bg-amber-600 text-white px-8">
@@ -74,8 +76,8 @@ export function NewsCarousel({ news }: NewsCarouselProps) {
             <div className="relative">
               <div className="rounded-3xl overflow-hidden shadow-2xl">
                 <ImageWithFallback
-                  src={news[currentSlide].image || '/images/placeholder.jpg'}
-                  alt={news[currentSlide].alt}
+                  src={news[currentSlide].image || '/images/placeholder.svg'}
+                  alt={news[currentSlide].alt || 'Nuotrauka'}
                   className="w-full h-[400px] object-cover"
                 />
               </div>
