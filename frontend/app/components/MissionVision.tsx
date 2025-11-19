@@ -103,7 +103,7 @@ export function MissionVision({ strategicDirections }: MissionVisionProps) {
           <div className="flex flex-wrap justify-center items-center gap-6 lg:gap-10 max-w-6xl mx-auto">
             {strategic.map((item, index) => (
               <div
-                key={item._id || index}
+                key={item.title || index}
                 className="group relative flex-shrink-0"
               >
                 {/* Glow effect */}
