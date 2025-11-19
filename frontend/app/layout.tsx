@@ -2,7 +2,7 @@ import "./globals.css";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Arimo } from "next/font/google";
 import { draftMode } from "next/headers";
 import { VisualEditing, toPlainText } from "next-sanity";
 import { Toaster } from "sonner";
@@ -45,15 +45,54 @@ export async function generateMetadata(): Promise<Metadata> {
       default: title,
     },
     description: toPlainText(description),
+    keywords: [
+      "KKPDA",
+      "Kauno krašto pramonininkų asociacija",
+      "Kauno darbdavių asociacija",
+      "verslo asociacija",
+      "pramonininkų asociacija",
+      "Kaunas",
+      "verslas",
+      "pramonė",
+      "darbdaviai",
+      "verslo organizacija",
+      "Lietuvos pramonė",
+    ],
+    authors: [{ name: "KKPDA" }],
+    creator: "KKPDA",
+    publisher: "KKPDA",
     openGraph: {
+      type: "website",
+      locale: "lt_LT",
+      title: title,
+      description: toPlainText(description),
+      siteName: title,
       images: ogImage ? [ogImage] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: title,
+      description: toPlainText(description),
+      images: ogImage ? [ogImage] : [],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
   };
 }
 
-const inter = Inter({
-  variable: "--font-inter",
+const arimo = Arimo({
+  variable: "--font-arimo",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -65,8 +104,8 @@ export default async function RootLayout({
   const { isEnabled: isDraftMode } = await draftMode();
 
   return (
-    <html lang="en" className={`${inter.variable} bg-white text-black`}>
-      <body>
+    <html lang="lt" className={`${arimo.variable} bg-white text-black`}>
+      <body className={arimo.className}>
         <section className="min-h-screen flex flex-col">
           {/* The <Toaster> component is responsible for rendering toast notifications used in /app/client-utils.ts and /app/components/DraftModeToast.tsx */}
           <Toaster />

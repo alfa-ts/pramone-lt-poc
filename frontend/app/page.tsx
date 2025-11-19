@@ -1,5 +1,5 @@
 import { sanityFetch } from "@/sanity/lib/live";
-import { newsQuery, membersCountQuery, strategicDirectionsQuery, partnersQuery, membershipInfoQuery } from "@/sanity/lib/queries";
+import { newsQuery, membersCountQuery, strategicDirectionsQuery, partnersQuery, membershipInfoQuery, contactInfoQuery } from "@/sanity/lib/queries";
 import { NewsCarousel } from "./components/NewsCarousel";
 import { OrganizationFacts } from "./components/OrganizationFacts";
 import { MissionVision } from "./components/MissionVision";
@@ -28,14 +28,12 @@ function formatDate(dateString: string) {
   return `${month} • ${day} • ${year}`;
 }
 
-function formatCategory(category: string) {
+function formatCategory(type: string) {
   const categoryMap: { [key: string]: string } = {
-    bendros: "Bendros",
-    renginiai: "Renginiai",
-    projektai: "Projektai",
-    spaudai: "Pranešimai spaudai",
+    naujiena: "Naujiena",
+    renginys: "Renginys",
   };
-  return categoryMap[category] || "Bendros";
+  return categoryMap[type] || "Naujiena";
 }
 
 export default async function Page() {
@@ -44,13 +42,15 @@ export default async function Page() {
     { data: membersCount },
     { data: directions },
     { data: partners },
-    { data: membership }
+    { data: membership },
+    { data: contactInfo }
   ] = await Promise.all([
     sanityFetch({ query: newsQuery }),
     sanityFetch({ query: membersCountQuery }),
     sanityFetch({ query: strategicDirectionsQuery }),
     sanityFetch({ query: partnersQuery }),
     sanityFetch({ query: membershipInfoQuery }),
+    sanityFetch({ query: contactInfoQuery }),
   ]);
 
   // Calculate full years of activity since 1989-12-22
@@ -73,7 +73,7 @@ export default async function Page() {
     newsData?.slice(0, 5).map((item: any) => ({
       date: formatDate(item.publishedAt),
       title: item.title,
-      category: formatCategory(item.category),
+      category: formatCategory(item.type),
       excerpt: item.excerpt,
       image: item.coverImage?.asset?.url || "",
       alt: item.coverImage?.alt || item.title,
@@ -100,7 +100,8 @@ export default async function Page() {
       {/* Membership CTA */}
       <MembershipCTA 
         membersCount={membersCount || 0} 
-        yearsOfActivity={yearsOfActivity} 
+        yearsOfActivity={yearsOfActivity}
+        contactInfo={contactInfo}
       />
     </div>
   );

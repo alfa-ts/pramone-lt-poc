@@ -8,9 +8,15 @@ import Link from 'next/link';
 interface MembershipCTAProps {
   membersCount: number;
   yearsOfActivity: number;
+  contactInfo?: {
+    email?: string | null;
+    phone?: string | null;
+    address?: string | null;
+    googleAddress?: string | null;
+  } | null;
 }
 
-export function MembershipCTA({ membersCount, yearsOfActivity }: MembershipCTAProps) {
+export function MembershipCTA({ membersCount, yearsOfActivity, contactInfo }: MembershipCTAProps) {
   const benefits = [
     `Prisijunkite prie ${membersCount}+ verslo lyderių bendruomenės`,
     'Gaukite ekspertų konsultacijas ir palaikymą',
@@ -68,11 +74,20 @@ export function MembershipCTA({ membersCount, yearsOfActivity }: MembershipCTAPr
               </Link>
             </div>
 
-            <div className="mt-8 pt-8 border-t border-amber-400/30">
-              <p className="text-amber-100 text-sm">
-                Turite klausimų? Susisiekite su mumis: <a href="mailto:info@kkpda.lt" className="underline hover:text-white">info@kkpda.lt</a> arba tel. +370 37 409 578
-              </p>
-            </div>
+            {contactInfo && (contactInfo.email || contactInfo.phone) && (
+              <div className="mt-8 pt-8 border-t border-amber-400/30">
+                <p className="text-amber-100 text-sm">
+                  Turite klausimų? Susisiekite su mumis:{' '}
+                  {contactInfo.email && (
+                    <a href={`mailto:${contactInfo.email}`} className="underline hover:text-white">
+                      {contactInfo.email}
+                    </a>
+                  )}
+                  {contactInfo.email && contactInfo.phone && ' arba tel. '}
+                  {contactInfo.phone && contactInfo.phone}
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Right: Image/Visual */}

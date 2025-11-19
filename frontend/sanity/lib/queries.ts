@@ -16,16 +16,19 @@ export const leadershipQuery = defineQuery(`
       },
       alt
     },
-    sortOrder
+    sortOrder,
+    phone,
+    email
   }
 `);
 
 export const newsQuery = defineQuery(`
-  *[_type == "news"] | order(publishedAt desc) [0...4] {
+  *[_type == "news"] | order(publishedAt desc) [0...5] {
     _id,
     title,
     slug,
-    category,
+    type,
+    isFeatured,
     excerpt,
     "coverImage": coverImage{
       asset->{
@@ -39,11 +42,12 @@ export const newsQuery = defineQuery(`
 `);
 
 export const allNewsQuery = defineQuery(`
-  *[_type == "news"] | order(publishedAt desc) {
+  *[_type == "news"] | order(isFeatured desc, publishedAt desc) {
     _id,
     title,
     slug,
-    category,
+    type,
+    isFeatured,
     excerpt,
     "coverImage": coverImage{
       asset->{
@@ -52,6 +56,21 @@ export const allNewsQuery = defineQuery(`
       },
       alt
     },
+    publishedAt,
+    eventStartDate,
+    eventEndDate,
+    organizers,
+    location,
+    googleMapsLocation
+  }
+`);
+
+export const recentNewsQuery = defineQuery(`
+  *[_type == "news"] | order(publishedAt desc) [0...5] {
+    _id,
+    title,
+    slug,
+    type,
     publishedAt
   }
 `);
@@ -61,7 +80,7 @@ export const singleNewsQuery = defineQuery(`
     _id,
     title,
     slug,
-    category,
+    type,
     excerpt,
     content,
     "coverImage": coverImage{
@@ -71,7 +90,26 @@ export const singleNewsQuery = defineQuery(`
       },
       alt
     },
-    publishedAt
+    publishedAt,
+    eventStartDate,
+    eventEndDate,
+    organizers,
+    location,
+    googleMapsLocation,
+    entrance,
+    registrationUrl,
+    timeSlots,
+    program,
+    "documents": documents[]{
+      title,
+      "file": file.asset->{
+        _id,
+        url,
+        originalFilename,
+        size
+      }
+    },
+    additionalInfo
   }
 `);
 
@@ -88,6 +126,24 @@ export const membersCountQuery = defineQuery(`
   count(*[_type == "member"])
 `);
 
+export const membersQuery = defineQuery(`
+  *[_type == "member"] | order(company asc) {
+    _id,
+    person,
+    title,
+    company,
+    address,
+    activity,
+    "logo": logo{
+      asset->{
+        _id,
+        url
+      },
+      alt
+    }
+  }
+`);
+
 export const strategicDirectionsQuery = defineQuery(`
   *[_type == "strategicDirection"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {
     _id,
@@ -102,13 +158,15 @@ export const partnersQuery = defineQuery(`
       _id,
       title,
       "logo": logo.asset->url,
-      extra
+      extra,
+      isMinistry
     },
     "agreements": *[_type == "partner" && group == "agreements"] | order(coalesce(sortOrder, 9999) asc, title asc) {
       _id,
       title,
       "logo": logo.asset->url,
-      extra
+      extra,
+      isMinistry
     }
   }
 `);

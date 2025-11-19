@@ -36,7 +36,7 @@ export function OrganizationFacts({ yearsOfActivity, membersCount }: Organizatio
       icon: Calendar,
       title: '500+ renginių',
       description: 'Kasmet organizuojame daugiau nei 500 renginių, kuriuose dalyvauja verslo lyderiai ir ekspertai.',
-      link: '/renginiai',
+      link: '/naujienos-ir-renginiai',
       linkText: 'Plačiau',
     },
     {

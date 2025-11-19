@@ -1,6 +1,25 @@
-import Image from "next/image";
+import Link from "next/link";
 import { sanityFetch } from "@/sanity/lib/live";
 import { leadershipQuery } from "@/sanity/lib/queries";
+import { GovernanceStructureCard } from "@/app/components/GovernanceStructureCard";
+import { LeadershipMemberCard } from "@/app/components/LeadershipMemberCard";
+import { User, Users, UsersRound } from "lucide-react";
+
+interface LeadershipMember {
+  _id: string;
+  name: string;
+  position: string | null;
+  role: "prezidentas" | "viceprezidentas" | "prezidiumoNarys" | "prezidiumoGarbesNarys";
+  photo: {
+    asset: {
+      url: string | null;
+    } | null;
+    alt: string | null;
+  };
+  phone?: string | null;
+  email?: string | null;
+  sortOrder: number | null;
+}
 
 export default async function ValdymasPage() {
   const { data: leadershipData } = await sanityFetch({
@@ -8,116 +27,211 @@ export default async function ValdymasPage() {
   });
 
   // Group leadership data by role
-  const groupedLeadership =
-    leadershipData?.reduce((acc: any, member: any) => {
-      // Clean the role value by trimming whitespace and removing invisible characters
-      const cleanRole =
-        member.role?.trim().replace(/[\u200B-\u200D\uFEFF]/g, "") || "";
+  const president = leadershipData?.filter(
+    (member: LeadershipMember) => member.role === "prezidentas"
+  )[0];
 
-      let roleKey: string;
-      if (cleanRole === "prezidentas") {
-        roleKey = "Prezidentas";
-      } else if (cleanRole === "viceprezidentas") {
-        roleKey = "Viceprezidentai";
-      } else if (cleanRole === "prezidiumoNarys") {
-        roleKey = "Prezidiumo nariai";
-      } else if (cleanRole === "prezidiumoGarbesNarys") {
-        roleKey = "Prezidiumo garbės nariai";
-      } else {
-        roleKey = "Kita"; // fallback
-      }
+  const vicePresidents = leadershipData?.filter(
+    (member: LeadershipMember) => member.role === "viceprezidentas"
+  );
 
-      if (!acc[roleKey]) {
-        acc[roleKey] = [];
-      }
+  const presidiumMembers = leadershipData?.filter(
+    (member: LeadershipMember) => member.role === "prezidiumoNarys"
+  );
 
-      acc[roleKey].push({
-        name: member.name,
-        position: member.position,
-        image: member.photo?.asset?.url || "/placeholder.jpg",
-        alt: member.photo?.alt || "",
-      });
-
-      return acc;
-    }, {}) || {};
-
-  // Convert to the expected format
-  const desiredOrder = [
-    "Prezidentas",
-    "Viceprezidentai",
-    "Prezidiumo nariai",
-    "Prezidiumo garbės nariai",
-  ];
-
-  const people = desiredOrder
-    .filter((role) => groupedLeadership[role])
-    .map((role) => ({ role, members: groupedLeadership[role] as any[] }));
+  const honoraryMembers = leadershipData?.filter(
+    (member: LeadershipMember) => member.role === "prezidiumoGarbesNarys"
+  );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
-      {/* Page Header */}
-      <section className="relative bg-gradient-to-br from-blue-50 via-gray-100 to-blue-100 py-16 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-accent/10"></div>
-        <div className="absolute inset-0 dotted-pattern opacity-20"></div>
-        <div className="relative max-w-7xl mx-auto px-6">
-          <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
-            Valdymas
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl">
-            Asociacijos vadovybė ir valdymo struktūra
+    <div className="min-h-screen bg-white">
+      {/* Header Section */}
+      <div className="bg-gradient-to-b from-gray-50 to-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-8 py-16">
+          <div className="flex items-center gap-2 text-sm mb-6">
+            <Link href="/" className="text-gray-500 hover:text-gray-700">
+              Pradžia
+            </Link>
+            <svg
+              className="size-3.5 text-gray-400"
+              fill="none"
+              viewBox="0 0 14 14"
+            >
+              <path
+                d="M5.25 10.5L8.75 7L5.25 3.5"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.16667"
+              />
+            </svg>
+            <Link href="/apie/istorija" className="text-gray-500 hover:text-gray-700">
+              Apie mus
+            </Link>
+            <svg
+              className="size-3.5 text-gray-400"
+              fill="none"
+              viewBox="0 0 14 14"
+            >
+              <path
+                d="M5.25 10.5L8.75 7L5.25 3.5"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.16667"
+              />
+            </svg>
+            <span className="text-gray-900">Valdymas</span>
+          </div>
+
+          <h1 className="mb-6 text-5xl text-gray-900">Valdymas</h1>
+          <p className="text-gray-600 max-w-3xl text-xl">
+            Asociacijos valdymo struktūra ir pagrindiniai sprendimų priėmimo
+            organai
+          </p>
+
+          <div className="mt-6 w-16 h-1 bg-gradient-to-r from-[#fe9a00] to-[#e17100] rounded-full" />
+        </div>
+      </div>
+
+      {/* Governance Structure Overview */}
+      <section className="max-w-7xl mx-auto px-8 py-20">
+        <div className="mb-12 text-center max-w-4xl mx-auto">
+          <h2 className="mb-4 text-2xl text-gray-900">
+            Visuotinė narių konferencija – aukščiausias valdymo organas
+          </h2>
+          <p className="text-gray-600 text-lg">
+            Ji šaukiama ne rečiau kaip kartą per dvejus metus. Konferencija
+            nustato pagrindinius asociacijos tikslus ir uždavinius, renka ir
+            atšaukia asociacijos Prezidiumą, vertina Prezidiumo veiklos
+            rezultatus.
           </p>
         </div>
       </section>
 
-      {/* Leadership Section */}
-      {people.length > 0 && (
-        <section className="bg-white py-12">
-          <div className="max-w-5xl mx-auto px-4 space-y-16">
-            {people.map((group) => (
-              <div key={group.role}>
-                <div className="flex items-center justify-center mb-8">
-                  <hr className="flex-grow border-gray-300" />
-                  <h2 className="text-xl md:text-2xl font-bold text-yellow-500 mx-4 uppercase text-center">
-                    {group.role}
-                  </h2>
-                  <hr className="flex-grow border-gray-300" />
-                </div>
-                <div
-                  className={`flex ${
-                    group.members.length > 1
-                      ? "flex-wrap justify-center gap-8"
-                      : "justify-center"
-                  }`}
-                >
-                  {group.members.map((member: any) => (
-                    <div
-                      key={member.name}
-                      className="flex flex-col items-center text-center max-w-xs"
-                    >
-                      <div className="w-40 h-40 rounded-full overflow-hidden mb-4 shadow-lg">
-                        <Image
-                          src={member.image}
-                          alt={member.alt || member.name}
-                          width={160}
-                          height={160}
-                          className="object-cover w-full h-full"
-                        />
-                      </div>
-                      <h3 className="font-bold text-blue-900 text-lg uppercase">
-                        {member.name}
-                      </h3>
-                      <p className="text-blue-900 text-sm mt-1">
-                        {member.position}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+      {/* President Section */}
+      {president && (
+        <section className="max-w-7xl mx-auto px-8 pb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            {/* President Info Card */}
+            <div className="lg:sticky lg:top-24">
+              <GovernanceStructureCard
+                title="Prezidentas"
+                description="Atstovauja asociaciją valstybinėse valdžios institucijose, savarankiškai vykdo Prezidiumo pavestas funkcijas, sprendžia organizacinius asociacijos klausimus."
+                icon={
+                  <User className="size-6 text-white" strokeWidth={2} />
+                }
+                variant="blue"
+              />
+            </div>
+
+            {/* President Card */}
+            <div className="max-w-sm mx-auto lg:mx-0">
+              <LeadershipMemberCard
+                name={president.name}
+                position={president.position || ""}
+                image={president.photo?.asset?.url || "/placeholder.jpg"}
+                alt={president.photo?.alt || president.name}
+                phone={president.phone || undefined}
+                email={president.email || undefined}
+              />
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Vice Presidents Section */}
+      {vicePresidents && vicePresidents.length > 0 && (
+        <section className="bg-gray-50 py-20">
+          <div className="max-w-7xl mx-auto px-8">
+            <div className="mb-12 max-w-4xl mx-auto">
+              <GovernanceStructureCard
+                title="Viceprezidentai"
+                description="Vykdo Prezidiumo ir Prezidento apibrėžtas veiklos funkcijas. Padeda prezidentui vadovauti asociacijai ir atstovauja strateginėms veiklos kryptims."
+                icon={
+                  <Users className="size-6 text-white" strokeWidth={2} />
+                }
+                variant="orange"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {vicePresidents.map((member: LeadershipMember) => (
+                <LeadershipMemberCard
+                  key={member._id}
+                  name={member.name}
+                  position={member.position || ""}
+                  image={member.photo?.asset?.url || "/placeholder.jpg"}
+                  alt={member.photo?.alt || member.name}
+                  phone={member.phone || undefined}
+                  email={member.email || undefined}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Presidium Members Section */}
+      {presidiumMembers && presidiumMembers.length > 0 && (
+        <section className="max-w-7xl mx-auto px-8 py-20">
+          <div className="mb-12 max-w-4xl mx-auto">
+            <GovernanceStructureCard
+              title="Prezidiumas – kolegialus valdymo organas"
+              description="Prezidiumas renkamas visuotinėje narių konferencijoje 4 metams. Jis priima strateginius veiklos sprendimus, susijusius su asociacijos nuostatomis ir tikslais, tarp asociacijos narių konferencijų svarsto ir tvirtina asociacijos metinę finansinę atskaitomybę, priima bei šalina asociacijos narius, skiria ir atleidžia asociacijos administracijos vadovą ir vyriausiąjį finansininką, tvirtina administracijos etatus, vadovo darbo reglamentą, priima sprendimus dėl nario mokesčio."
+              icon={
+                <UsersRound className="size-6 text-white" strokeWidth={2} />
+              }
+              variant="blue"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {presidiumMembers.map((member: LeadershipMember) => (
+              <LeadershipMemberCard
+                key={member._id}
+                name={member.name}
+                position={member.position || ""}
+                image={member.photo?.asset?.url || "/placeholder.jpg"}
+                alt={member.photo?.alt || member.name}
+                phone={member.phone || undefined}
+                email={member.email || undefined}
+              />
             ))}
+          </div>
+        </section>
+      )}
+
+      {/* Honorary Presidium Members Section */}
+      {honoraryMembers && honoraryMembers.length > 0 && (
+        <section className="bg-gray-50 py-20">
+          <div className="max-w-7xl mx-auto px-8">
+            <div className="mb-12">
+              <h2 className="text-2xl text-gray-900 mb-2">
+                Prezidiumo garbės nariai
+              </h2>
+              <p className="text-gray-600 text-lg">
+                Asmenys, įnešę ypatingą indėlį į asociacijos veiklą ir verslo
+                bendruomenės plėtrą
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {honoraryMembers.map((member: LeadershipMember) => (
+                <LeadershipMemberCard
+                  key={member._id}
+                  name={member.name}
+                  position={member.position || ""}
+                  image={member.photo?.asset?.url || "/placeholder.jpg"}
+                  alt={member.photo?.alt || member.name}
+                  phone={member.phone || undefined}
+                  email={member.email || undefined}
+                />
+              ))}
+            </div>
           </div>
         </section>
       )}
     </div>
   );
 }
-

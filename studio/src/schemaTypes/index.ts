@@ -9,7 +9,6 @@ import { news } from './documents/news'
 import { pastPresident } from './documents/pastPresident'
 import { strategicDirection } from './documents/strategicDirection'
 import { partner } from './documents/partner'
-import { event } from './documents/event'
 import { activityReport } from './documents/activityReport'
 import { contactInfo } from './singletons/contactInfo'
 import { legalDocuments } from './singletons/legalDocuments'
@@ -31,7 +30,6 @@ export const schemaTypes = [
   pastPresident,
   strategicDirection,
   partner,
-  event,
   activityReport,
   // Objects
   blockContent,

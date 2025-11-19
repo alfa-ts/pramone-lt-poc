@@ -1,103 +1,170 @@
-import { settingsQuery } from "@/sanity/lib/queries";
 import { sanityFetch } from "@/sanity/lib/live";
-import imageUrlBuilder from "@sanity/image-url";
-import { client } from "@/sanity/lib/client";
+import { membersQuery } from "@/sanity/lib/queries";
+import Link from "next/link";
 import Image from "next/image";
-import { Member } from "../components/MemberItem";
+import { Award } from "lucide-react";
+import { Suspense } from "react";
+import { MembersGrid } from "@/app/components/MembersGrid";
 
-const builder = imageUrlBuilder(client);
-
-function urlFor(source: any) {
-  return builder.image(source);
-}
-
-export default async function Page() {
-  const { data: settings } = await sanityFetch({
-    query: settingsQuery,
+export default async function NariaiPage() {
+  const { data: members } = await sanityFetch({
+    query: membersQuery,
   });
 
-  const query = `*[_type == "member"] | order(company asc) {
-    _id,
-    person,
-    title,
-    company,
-    address,
-    activity,
-    "logo": logo{
-      asset->{
-        _id,
-        url
-      },
-      alt
-    }
-  }`;
-  const results = await client.fetch(query);
-
-  const members: Member[] = results.map((m: any) => ({
-    _id: m._id,
-    person: m.person,
-    title: m.title,
-    company: m.company,
-    address: m.address,
-    activity: m.activity,
-    logo: m.logo?.asset?.url ? urlFor(m.logo).width(200).url() : undefined,
-    logoAlt: m.logo?.alt || "",
-  }));
-
   return (
-    <>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-blue-50 via-gray-100 to-blue-100 py-12 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-accent/10"></div>
-          <div className="absolute inset-0 dotted-pattern opacity-20"></div>
-          <div className="relative max-w-7xl mx-auto px-6">
-            <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-2 tracking-tight">
-              Organizacijos nariai
-            </h1>
+    <div className="min-h-screen bg-white">
+      {/* Header Section */}
+      <div className="bg-gradient-to-b from-gray-50 to-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-8 py-16">
+          <div className="flex items-center gap-2 text-sm mb-6">
+            <Link href="/" className="text-gray-500 hover:text-gray-700">
+              Pradžia
+            </Link>
+            <svg
+              className="size-3.5 text-gray-400"
+              fill="none"
+              viewBox="0 0 14 14"
+            >
+              <path
+                d="M5.25 10.5L8.75 7L5.25 3.5"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.16667"
+              />
+            </svg>
+            <span className="text-gray-900">Nariai</span>
           </div>
-        </section>
 
-        {/* Members Grid Section */}
-        <section className="relative py-12 bg-white">
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-50/30 to-transparent"></div>
-          <div className="relative max-w-7xl mx-auto px-6">
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-0">
-              {members.map((member, index) => (
-                <div
-                  key={member._id}
-                  className="group relative bg-white overflow-hidden flex items-center justify-center h-36 sm:h-40 md:h-48 border-x border-b border-gray-200"
-                  style={{
-                    animationDelay: `${index * 60}ms`,
-                    animationFillMode: "forwards",
-                  }}
-                >
-                  {/* Logo */}
-                  <div className="relative w-[70%] h-20 sm:h-24 md:h-28">
-                    <Image
-                      src={member.logo || "/images/default-logo.png"}
-                      alt={member.logoAlt || member.company}
-                      fill
-                      sizes="(max-width: 768px) 70vw, 300px"
-                      className="object-contain transition duration-300"
-                    />
+          <h1 className="mb-6 text-5xl text-gray-900">Organizacijos nariai</h1>
+          <p className="text-gray-600 max-w-3xl text-xl">
+            KKPDA vienija įvairių sektorių įmones, kurios kartu kuria stiprią
+            verslo bendruomenę Kauno regione ir visoje Lietuvoje
+          </p>
+
+          <div className="mt-6 w-16 h-1 bg-gradient-to-r from-[#fe9a00] to-[#e17100] rounded-full" />
+        </div>
+      </div>
+
+      {/* Members Grid Section */}
+      <Suspense
+        fallback={<div className="py-16 text-center">Kraunama...</div>}
+      >
+        <MembersGrid members={members || []} />
+      </Suspense>
+
+      {/* Benefits Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="relative h-[400px] rounded-2xl overflow-hidden">
+              <Image
+                src="https://images.unsplash.com/photo-1601509876296-aba16d4c10a4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHRlYW0lMjBjb2xsYWJvcmF0aW9ufGVufDF8fHx8MTc2MzQxMjg1M3ww&ixlib=rb-4.1.0&q=80&w=1080"
+                alt="Business collaboration"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+            </div>
+
+            <div>
+              <div className="inline-flex items-center gap-2 bg-orange-50 rounded-full px-4 py-2 mb-6">
+                <Award className="size-5 text-[#fe9a00]" />
+                <span className="text-[#fe9a00] font-medium text-sm">
+                  Narystės privalumai
+                </span>
+              </div>
+
+              <h2 className="text-xl text-gray-900 font-medium mb-6">
+                Kodėl verta tapti nariu?
+              </h2>
+
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="size-8 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg flex items-center justify-center shrink-0 mt-1">
+                    <div className="size-2 bg-[#fe9a00] rounded-full" />
                   </div>
-
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center text-center px-4">
-                    <div className="text-gray-900 font-semibold leading-tight">
-                      {member.company}
-                    </div>
-                    <div className="text-gray-600 text-sm mt-1 line-clamp-2">
-                      {member.activity}
-                    </div>
+                  <div>
+                    <h4 className="text-gray-900 mb-1">
+                      Atstovavimas interesams
+                    </h4>
+                    <p className="text-gray-600 text-sm">
+                      Aktyvus dalyvavimas formuojant verslo aplinką regione
+                    </p>
                   </div>
                 </div>
-              ))}
+
+                <div className="flex items-start gap-3">
+                  <div className="size-8 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg flex items-center justify-center shrink-0 mt-1">
+                    <div className="size-2 bg-[#fe9a00] rounded-full" />
+                  </div>
+                  <div>
+                    <h4 className="text-gray-900 mb-1">
+                      Verslo tinklas
+                    </h4>
+                    <p className="text-gray-600 text-sm">
+                      Bendradarbiavimo galimybės su kitais nariais
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="size-8 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg flex items-center justify-center shrink-0 mt-1">
+                    <div className="size-2 bg-[#fe9a00] rounded-full" />
+                  </div>
+                  <div>
+                    <h4 className="text-gray-900 mb-1">
+                      Konsultacijos
+                    </h4>
+                    <p className="text-gray-600 text-sm">
+                      Profesionali pagalba teisės, mokesčių ir darbo santykių
+                      klausimais
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <div className="size-8 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg flex items-center justify-center shrink-0 mt-1">
+                    <div className="size-2 bg-[#fe9a00] rounded-full" />
+                  </div>
+                  <div>
+                    <h4 className="text-gray-900 mb-1">
+                      Mokymai ir renginiai
+                    </h4>
+                    <p className="text-gray-600 text-sm">
+                      Specializuoti mokymai ir verslo forumų organizavimas
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </section>
-      </div>
-    </>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-gradient-to-br from-[#fe9a00] to-[#e17100] py-16">
+        <div className="max-w-7xl mx-auto px-8">
+          <div className="text-center max-w-3xl mx-auto">
+            <h2 className="text-white text-xl font-medium mb-4">
+              Norite prisijungti prie KKPDA?
+            </h2>
+            <p className="text-amber-50 text-lg mb-8">
+              Tapkite mūsų organizacijos nariu ir prisidėkite prie stiprios
+              verslo bendruomenės kūrimo
+            </p>
+            <div className="flex items-center justify-center">
+              <Link
+                href="/nariai/kaip-tapti-nariu"
+                className="bg-white/10 backdrop-blur-sm text-white border border-white/30 px-8 py-3 rounded-lg font-medium hover:bg-white/20 transition-colors"
+              >
+                Narystės sąlygos
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 } 

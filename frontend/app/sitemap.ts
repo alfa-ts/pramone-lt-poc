@@ -32,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   });
 
   sitemap.push({
-    url: `https://${domain}/naujienos`,
+    url: `https://${domain}/naujienos-ir-renginiai`,
     lastModified: new Date(),
     priority: 0.8,
     changeFrequency: "weekly",

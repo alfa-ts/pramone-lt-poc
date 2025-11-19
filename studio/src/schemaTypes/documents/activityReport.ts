@@ -17,9 +17,20 @@ export const activityReport = defineType({
       name: 'file',
       title: 'Ataskaitos failas (PDF)',
       type: 'file',
-      options: {storeOriginalFilename: true},
-      validation: (Rule) => Rule.required(),
-      description: 'Įkelkite veiklos ataskaitą (pageidautina PDF formatu).',
+      options: {
+        storeOriginalFilename: true,
+        accept: '.pdf,application/pdf',
+      },
+      validation: (Rule) =>
+        Rule.required().custom((file: any) => {
+          if (!file?.asset) return true
+          const fileName = file.asset.originalFilename || ''
+          if (!fileName.toLowerCase().endsWith('.pdf')) {
+            return 'Prašome įkelti PDF formato failą'
+          }
+          return true
+        }),
+      description: 'Įkelkite veiklos ataskaitą PDF formatu.',
     }),
   ],
   preview: {
