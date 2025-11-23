@@ -8,7 +8,6 @@ interface Partner {
   title: string;
   logo?: string;
   extra?: string;
-  isMinistry?: boolean;
 }
 
 export default async function PartneriaiPage() {
@@ -18,9 +17,6 @@ export default async function PartneriaiPage() {
 
   const cooperate = data?.cooperate || [];
   const agreements = data?.agreements || [];
-
-  // Count ministries
-  const ministryCount = cooperate.filter((p) => p.isMinistry).length;
 
   return (
     <div className="min-h-screen bg-white">
@@ -44,7 +40,10 @@ export default async function PartneriaiPage() {
                 strokeWidth="1.16667"
               />
             </svg>
-            <Link href="/apie/istorija" className="text-gray-500 hover:text-gray-700">
+            <Link
+              href="/apie/istorija"
+              className="text-gray-500 hover:text-gray-700"
+            >
               Apie mus
             </Link>
             <svg
@@ -77,35 +76,25 @@ export default async function PartneriaiPage() {
       {/* Partnership Stats Section */}
       <section className="py-16 bg-white border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
             <div className="text-center">
-              <div className="inline-flex items-center justify-center size-16 bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl mb-4">
-                <Handshake className="size-8 text-[#fe9a00]" />
+              <div className="inline-flex items-center justify-center size-20 bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl mb-4">
+                <Handshake className="size-10 text-[#fe9a00]" />
               </div>
-              <div className="text-4xl mb-2 bg-gradient-to-r from-[#fe9a00] to-[#e17100] bg-clip-text text-transparent font-bold">
+              <div className="text-5xl mb-2 bg-gradient-to-r from-[#fe9a00] to-[#e17100] bg-clip-text text-transparent">
                 {cooperate.length}
               </div>
-              <p className="text-gray-600">Aktyvūs partneriai</p>
+              <p className="text-gray-600 text-lg">Aktyvūs partneriai</p>
             </div>
 
             <div className="text-center">
-              <div className="inline-flex items-center justify-center size-16 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl mb-4">
-                <FileCheck className="size-8 text-blue-600" />
+              <div className="inline-flex items-center justify-center size-20 bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl mb-4">
+                <FileCheck className="size-10 text-blue-600" />
               </div>
-              <div className="text-4xl mb-2 text-blue-600 font-bold">
+              <div className="text-5xl mb-2 text-blue-600">
                 {agreements.length}
               </div>
-              <p className="text-gray-600">Pasirašytos sutartys</p>
-            </div>
-
-            <div className="text-center">
-              <div className="inline-flex items-center justify-center size-16 bg-gradient-to-br from-green-50 to-green-100 rounded-2xl mb-4">
-                <Building2 className="size-8 text-green-600" />
-              </div>
-              <div className="text-4xl mb-2 text-green-600 font-bold">
-                {ministryCount}
-              </div>
-              <p className="text-gray-600">Ministerijos</p>
+              <p className="text-gray-600 text-lg">Pasirašytos sutartys</p>
             </div>
           </div>
         </div>

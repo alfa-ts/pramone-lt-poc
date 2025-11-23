@@ -33,13 +33,6 @@ export const partner = defineType({
       type: 'string',
     }),
     defineField({
-      name: 'isMinistry',
-      title: 'Ar tai ministerija?',
-      type: 'boolean',
-      description: 'Pažymėkite, jei partneris yra ministerija',
-      initialValue: false,
-    }),
-    defineField({
       name: 'sortOrder',
       title: 'Rikiavimo tvarka',
       type: 'number',

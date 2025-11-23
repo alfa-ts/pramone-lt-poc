@@ -129,17 +129,12 @@ export const membersCountQuery = defineQuery(`
 export const membersQuery = defineQuery(`
   *[_type == "member"] | order(company asc) {
     _id,
-    person,
-    title,
     company,
-    address,
-    activity,
     "logo": logo{
       asset->{
         _id,
         url
-      },
-      alt
+      }
     }
   }
 `);
@@ -158,15 +153,13 @@ export const partnersQuery = defineQuery(`
       _id,
       title,
       "logo": logo.asset->url,
-      extra,
-      isMinistry
+      extra
     },
     "agreements": *[_type == "partner" && group == "agreements"] | order(coalesce(sortOrder, 9999) asc, title asc) {
       _id,
       title,
       "logo": logo.asset->url,
-      extra,
-      isMinistry
+      extra
     }
   }
 `);
@@ -239,25 +232,16 @@ export const singleEventQuery = defineQuery(`
 `);
 
 export const membershipInfoQuery = defineQuery(`
-  *[_type == "membershipInfo"][0] {
-    whyJoinTitle,
+  *[_id == "membershipInfo"][0] {
     whyJoinText,
-    "whyJoinFileUrl": whyJoinFile.asset->url,
-    "whyJoinFileName": whyJoinFile.asset->originalFilename,
-    benefitsTitle,
     benefitsText,
-    "benefitsFileUrl": benefitsFile.asset->url,
-    "benefitsFileName": benefitsFile.asset->originalFilename,
-    feeTitle,
     feeText,
     "feeImage": feeImage{
       asset->{
         _id,
         url
-      },
-      alt
+      }
     },
-    requiredDocumentsTitle,
     requiredDocuments[] {
       _key,
       title,

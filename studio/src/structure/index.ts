@@ -17,13 +17,17 @@ export const structure: StructureResolver = (S: StructureBuilder) =>
       S.listItem()
         .title('Kontaktai')
         .child(S.document().schemaType('contactInfo').documentId('contactInfo')),
-      // Įstatai singleton
+      // Legal Documents singleton
       S.listItem()
         .title('Įstatai')
         .child(S.document().schemaType('istatai').documentId('istatai')),
-      // Rest of types excluding disabled ones and the explicitly added contact list
+      // Membership Info singleton
+      S.listItem()
+        .title('Narystė – Kaip tapti nariu')
+        .child(S.document().schemaType('membershipInfo').documentId('membershipInfo')),
+      // Rest of types excluding disabled ones and the explicitly added singletons
       ...S.documentTypeListItems()
-        .filter((listItem: any) => !DISABLED_TYPES.includes(listItem.getId()) && listItem.getId() !== 'contact' && listItem.getId() !== 'contactsSettings' && listItem.getId() !== 'contactsPage' && listItem.getId() !== 'contactInfo' && listItem.getId() !== 'istatai'),
+        .filter((listItem: any) => !DISABLED_TYPES.includes(listItem.getId()) && listItem.getId() !== 'contact' && listItem.getId() !== 'contactsSettings' && listItem.getId() !== 'contactsPage' && listItem.getId() !== 'contactInfo' && listItem.getId() !== 'istatai' && listItem.getId() !== 'membershipInfo'),
       // Settings Singleton
       S.listItem()
         .title('Site Settings')

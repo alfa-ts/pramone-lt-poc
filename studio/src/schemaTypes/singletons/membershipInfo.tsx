@@ -6,55 +6,22 @@ export const membershipInfo = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'whyJoinTitle',
-      title: 'Kodėl verta tapti KKPDA nariu? – pavadinimas',
-      type: 'string',
-      initialValue: 'Kodėl verta tapti KKPDA nariu?',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: 'whyJoinText',
-      title: 'Kodėl verta – tekstas',
+      title: 'Kodėl verta tapti KKPDA nariu? – tekstas',
       type: 'text',
       rows: 5,
     }),
-    defineField({
-      name: 'whyJoinFile',
-      title: 'Kodėl verta – papildomas failas (nebūtina)',
-      type: 'file',
-      options: {storeOriginalFilename: true},
-    }),
 
     defineField({
-      name: 'benefitsTitle',
-      title: 'Narystės privalumai – pavadinimas',
-      type: 'string',
-      initialValue: 'Narystės Kauno krašto pramoninkų ir darbdavių asociacijoje privalumai',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: 'benefitsText',
-      title: 'Privalumai – tekstas',
+      title: 'Narystės privalumai – tekstas',
       type: 'text',
       rows: 8,
     }),
-    defineField({
-      name: 'benefitsFile',
-      title: 'Privalumai – papildomas failas (nebūtina)',
-      type: 'file',
-      options: {storeOriginalFilename: true},
-    }),
 
     defineField({
-      name: 'feeTitle',
-      title: 'Koks yra nario mokestis? – pavadinimas',
-      type: 'string',
-      initialValue: 'Koks yra KKPDA nario mokestis?',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: 'feeText',
-      title: 'Nario mokestis – tekstas',
+      title: 'Koks yra nario mokestis? – tekstas',
       type: 'text',
     }),
     defineField({
@@ -64,26 +31,11 @@ export const membershipInfo = defineType({
       options: {
         hotspot: true,
       },
-      fields: [
-        {
-          name: 'alt',
-          type: 'string',
-          title: 'Alternative text',
-          description: 'Svarbu SEO ir prieinamumui',
-        }
-      ]
     }),
 
     defineField({
-      name: 'requiredDocumentsTitle',
-      title: 'Kokie dokumentai reikalingi? – pavadinimas',
-      type: 'string',
-      initialValue: 'Kokie dokumentai reikalingi?',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
       name: 'requiredDocuments',
-      title: 'Dokumentų sąrašas',
+      title: 'Kokie dokumentai reikalingi? – dokumentų sąrašas',
       type: 'array',
       of: [
         {
