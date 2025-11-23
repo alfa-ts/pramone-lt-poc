@@ -8,15 +8,11 @@ import {
 } from "@/sanity/lib/queries";
 import { HistoryTimeline } from "@/app/components/HistoryTimeline";
 import { ServiceCard } from "@/app/components/ServiceCard";
+import PortableText from "@/app/components/PortableText";
 import {
   Users,
   TrendingUp,
   Calendar as CalendarIcon,
-  Award,
-  FileText,
-  Briefcase,
-  MessageSquare,
-  Target,
   Building2,
   Globe,
   Handshake,
@@ -25,13 +21,17 @@ import {
 export default async function IstorijaPage() {
   const [
     { data: leadershipData },
-    { data: pastPresidents },
+    { data: istorijaData },
     { data: membersCount },
   ] = await Promise.all([
     sanityFetch({ query: leadershipQuery }),
     sanityFetch({ query: pastPresidentsQuery }),
     sanityFetch({ query: membersCountQuery }),
   ]);
+
+  const pastPresidents = istorijaData?.pastPresidents || [];
+  const presidentMessage = istorijaData?.presidentMessage;
+  const services = istorijaData?.services || [];
 
   // Find the current president
   const president = leadershipData?.find(
@@ -44,46 +44,6 @@ export default async function IstorijaPage() {
   const foundingYear = 1989;
   const currentYear = new Date().getFullYear();
   const yearsOfActivity = currentYear - foundingYear;
-
-  // Services data
-  const services = [
-    {
-      icon: <Award className="w-8 h-8" />,
-      title: "Narių interesų atstovavimas valdžios institucijose",
-      description:
-        "Dėka ilgametės veiklos ir sukuptos patirties KKPDA turi užmezgusi gerus ryšius su įvairiomis vietos ir valstybinės valdžios institucijomis, todėl nuolat efektyviai atstovauja savo narių interesus jose.",
-    },
-    {
-      icon: <FileText className="w-8 h-8" />,
-      title: "Konsultacijos",
-      description:
-        "Tikslinės konsultacijos verslininkų pageidaujamais aktualiais klausimais.",
-    },
-    {
-      icon: <Briefcase className="w-8 h-8" />,
-      title: "Tarptautinės verslo misijos",
-      description:
-        "Nariai turi galimybę dalyvauti Lietuvos pramonininkų konfederacijos organizuojamose verslo forumuose, tarptautinėse verslo kelionėse ir lydėti Vyriausybės vadovus į Europos ir kitas pasaulio šalis.",
-    },
-    {
-      icon: <MessageSquare className="w-8 h-8" />,
-      title: "Ryšiai su žiniasklaida",
-      description:
-        "Ryšiai su žiniasklaida, sudarant galimybę viešai pareikšti verslininkų nuomonę bei stiprinti gerą verslo įvaizdį.",
-    },
-    {
-      icon: <Globe className="w-8 h-8" />,
-      title: "Ekonominė diplomatija",
-      description:
-        "Ryšiai su Lietuvos, Europos Sąjungos ir pasaulio šalių ambasadomis, jų komercijos atašė, per kuriuos teikiami komerciniai pasiūlymai verslininkams.",
-    },
-    {
-      icon: <Target className="w-8 h-8" />,
-      title: "Projektų valdymas ir partnerių paieška",
-      description:
-        "Padedame nariams vykdyti partnerių paiešką ir dalyvauti nacionaliniuose bei tarptautiniuose projektuose.",
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-white">
@@ -107,7 +67,10 @@ export default async function IstorijaPage() {
                 strokeWidth="1.16667"
               />
             </svg>
-            <Link href="/apie/istorija" className="text-gray-500 hover:text-gray-700">
+            <Link
+              href="/apie/istorija"
+              className="text-gray-500 hover:text-gray-700"
+            >
               Apie mus
             </Link>
             <svg
@@ -328,7 +291,7 @@ export default async function IstorijaPage() {
               <div>
                 <Image
                   src={president.photo?.asset?.url || "/placeholder.jpg"}
-                  alt={president.photo?.alt || president.name}
+                  alt={`${president.name} nuotrauka`}
                   width={600}
                   height={750}
                   className="rounded-2xl shadow-2xl w-full aspect-[4/5] object-cover"
@@ -345,31 +308,11 @@ export default async function IstorijaPage() {
                   </p>
                 </div>
 
-                <div className="space-y-6 text-lg text-[#4a5565] leading-[1.7]">
-                  <p>
-                    Keičiasi verslo karta ir ateina jauni verslininkai. Norime
-                    kalbėti apie Kauno krašto pramonę, darbdavius ir
-                    transformaciją. Transformuojame pramonę, o mūsų, verslo
-                    atstovų, niekas neklausia kaip tą daryti, kokie iššūkiai
-                    laukia ir kokių sprendimų reikia.
-                  </p>
-
-                  <p>
-                    Regioninė asociacija turi būti regiono visuomenės dalis.
-                    Matau norą sukurti tokią aplinką, kad verslas ir toliau
-                    sėkmingai dirbtų, o darbuotojai liktų patenkinti. Kartu
-                    turėtų bendradarbiauti verslo, savivaldybių ir mokslo
-                    atstovai.
-                  </p>
-
-                  <p className="italic">
-                    Po penkerių metų norėtųsi, kad verslas matytų asociacijos
-                    teikiamą naudą, vadovai tarpusavyje bendrautų ir
-                    bendradarbiautų, regiono verslo aplinka įgautų didesnį
-                    tvarumą. Kiekvienas iš mūsų galėtų atsakyti į klausimą kuo
-                    aš galėčiau būti naudingas asociacijai.
-                  </p>
-                </div>
+                {presidentMessage && (
+                  <article className="prose prose-lg max-w-none text-[#4a5565]">
+                    <PortableText value={presidentMessage as any} />
+                  </article>
+                )}
               </div>
             </div>
           </div>
@@ -377,31 +320,33 @@ export default async function IstorijaPage() {
       )}
 
       {/* Services Section */}
-      <div className="py-20 bg-gray-50 border-t border-gray-100">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-[#101828] mb-4">
-              Teikiamos paslaugos
-            </h2>
-            <p className="text-lg text-[#4a5565] leading-[1.7] max-w-2xl mx-auto">
-              Siūlome platų paslaugų spektrą, padedantį nariams augti ir
-              sėkmingai plėtoti verslą
-            </p>
-            <div className="w-16 h-1 bg-gradient-to-r from-[#FE9A00] to-[#E17100] mx-auto mt-6 rounded-full"></div>
-          </div>
+      {services.length > 0 && (
+        <div className="py-20 bg-gray-50 border-t border-gray-100">
+          <div className="max-w-7xl mx-auto px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold text-[#101828] mb-4">
+                Teikiamos paslaugos
+              </h2>
+              <p className="text-lg text-[#4a5565] leading-[1.7] max-w-2xl mx-auto">
+                Siūlome platų paslaugų spektrą, padedantį nariams augti ir
+                sėkmingai plėtoti verslą
+              </p>
+              <div className="w-16 h-1 bg-gradient-to-r from-[#FE9A00] to-[#E17100] mx-auto mt-6 rounded-full"></div>
+            </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <ServiceCard
-                key={index}
-                icon={service.icon}
-                title={service.title}
-                description={service.description}
-              />
-            ))}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {services.map((service, index) => (
+                <ServiceCard
+                  key={service._key}
+                  number={index + 1}
+                  title={service.title}
+                  description={service.description || ""}
+                />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

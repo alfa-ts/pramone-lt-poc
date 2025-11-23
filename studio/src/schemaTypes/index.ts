@@ -6,14 +6,14 @@ import {blockContent} from './objects/blockContent'
 import { member } from './documents/member'
 import { leadership } from './documents/leadership'
 import { news } from './documents/news'
-import { pastPresident } from './documents/pastPresident'
 import { strategicDirection } from './documents/strategicDirection'
-import { partner } from './documents/partner'
 import { activityReport } from './documents/activityReport'
 import { contactInfo } from './singletons/contactInfo'
 import { legalDocuments } from './singletons/legalDocuments'
 import { membershipInfo } from './singletons/membershipInfo'
-// Removed contactsSettings singleton
+import { istorija } from './singletons/istorija'
+import { partneriai } from './singletons/partneriai'
+// Removed contactsSettings singleton, pastPresident document, and partner document (replaced by partneriai singleton)
 
 // Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
 
@@ -23,13 +23,13 @@ export const schemaTypes = [
   contactInfo,
   legalDocuments,
   membershipInfo,
+  istorija,
+  partneriai,
   // Documents
   member,
   leadership,
   news,
-  pastPresident,
   strategicDirection,
-  partner,
   activityReport,
   // Objects
   blockContent,

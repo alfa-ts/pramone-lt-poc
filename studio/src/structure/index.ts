@@ -25,9 +25,17 @@ export const structure: StructureResolver = (S: StructureBuilder) =>
       S.listItem()
         .title('Narystė – Kaip tapti nariu')
         .child(S.document().schemaType('membershipInfo').documentId('membershipInfo')),
+      // Istorija singleton
+      S.listItem()
+        .title('Istorija')
+        .child(S.document().schemaType('istorija').documentId('istorija')),
+      // Partneriai singleton
+      S.listItem()
+        .title('Partneriai')
+        .child(S.document().schemaType('partneriai').documentId('partneriai')),
       // Rest of types excluding disabled ones and the explicitly added singletons
       ...S.documentTypeListItems()
-        .filter((listItem: any) => !DISABLED_TYPES.includes(listItem.getId()) && listItem.getId() !== 'contact' && listItem.getId() !== 'contactsSettings' && listItem.getId() !== 'contactsPage' && listItem.getId() !== 'contactInfo' && listItem.getId() !== 'istatai' && listItem.getId() !== 'membershipInfo'),
+        .filter((listItem: any) => !DISABLED_TYPES.includes(listItem.getId()) && listItem.getId() !== 'contact' && listItem.getId() !== 'contactsSettings' && listItem.getId() !== 'contactsPage' && listItem.getId() !== 'contactInfo' && listItem.getId() !== 'istatai' && listItem.getId() !== 'membershipInfo' && listItem.getId() !== 'istorija' && listItem.getId() !== 'pastPresident' && listItem.getId() !== 'partneriai'),
       // Settings Singleton
       S.listItem()
         .title('Site Settings')

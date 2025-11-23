@@ -40,28 +40,8 @@ export const leadership = defineType({
       type: 'image',
       options: {
         hotspot: true,
-        aiAssist: {
-          imageDescriptionField: 'alt',
-        },
       },
-      fields: [
-        defineField({
-          name: 'alt',
-          type: 'string',
-          title: 'Alternatyvus tekstas',
-          description: 'Aprašo asmens nuotrauką. Sanity AI gali automatiškai sugeneruoti aprašymą.',
-          placeholder: 'Pvz: Asociacijos prezidento nuotrauka',
-          // Optional alt text
-        }),
-      ],
       validation: (rule) => rule.required(),
-    }),
-    defineField({
-      name: 'sortOrder',
-      title: 'Rikiavimo tvarka',
-      type: 'number',
-      description: 'Mažesnis skaičius = aukštesnė pozicija sąraše',
-      initialValue: 0,
     }),
     defineField({
       name: 'phone',
@@ -83,11 +63,10 @@ export const leadership = defineType({
   ],
   orderings: [
     {
-      title: 'Pagal vaidmenį ir tvarką',
-      name: 'roleAndOrder',
+      title: 'Pagal vaidmenį ir vardą',
+      name: 'roleAndName',
       by: [
         {field: 'role', direction: 'asc'},
-        {field: 'sortOrder', direction: 'asc'},
         {field: 'name', direction: 'asc'}
       ]
     }

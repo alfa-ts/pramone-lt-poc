@@ -1,7 +1,7 @@
 import { Calendar } from 'lucide-react';
 
 interface TimelineEvent {
-  _id: string;
+  _key: string;
   name: string;
   startYear: number;
   endYear?: number | null;
@@ -15,7 +15,7 @@ export function HistoryTimeline({ events }: HistoryTimelineProps) {
   return (
     <div className="space-y-6">
       {events.map((event, index) => (
-        <div key={event._id} className="flex gap-6 group">
+        <div key={event._key} className="flex gap-6 group">
           {/* Timeline dot and line */}
           <div className="flex flex-col items-center">
             <div className="bg-[#FE9A00] rounded-full p-3 shadow-lg group-hover:scale-110 transition-transform">

@@ -11,6 +11,7 @@ import {
   Phone,
   MapPin,
 } from "lucide-react";
+import PortableText from "@/app/components/PortableText";
 
 export default async function KaipTaptiNariuPage() {
   const { data } = await sanityFetch({ query: membershipInfoQuery });
@@ -62,23 +63,24 @@ export default async function KaipTaptiNariuPage() {
         </div>
       </div>
 
-      {/* Main Content */}
+      {/* Section 1: Why become a member - Full Width */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-8">
-          {/* Section 1: Why become a member */}
-          <div className="mb-16">
-            <h2 className="text-[32px] leading-[40px] text-[#2c3e5a] mb-6">
-              Kodėl verta tapti KKPDA nariu?
-            </h2>
+          <h2 className="text-[32px] leading-[40px] text-[#2c3e5a] mb-6">
+            Kodėl verta tapti KKPDA nariu?
+          </h2>
 
-            <div className="space-y-4 text-base leading-relaxed text-gray-600">
-              {data?.whyJoinText && (
-                <div className="whitespace-pre-line">{data.whyJoinText}</div>
-              )}
-            </div>
-          </div>
+          {data?.whyJoinText && (
+            <article className="prose prose-lg max-w-none">
+              <PortableText value={data.whyJoinText as any} />
+            </article>
+          )}
+        </div>
+      </section>
 
-          {/* Section 2: Membership Benefits */}
+      {/* Section 2: Membership Benefits */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-8">
           <div className="mb-16">
             <h2 className="text-[32px] leading-[40px] text-[#2c3e5a] mb-6">
               Narystės Kauno krašto pramonininkų ir darbdavių asociacijoje privalumai

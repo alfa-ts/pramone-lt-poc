@@ -14,11 +14,9 @@ interface LeadershipMember {
     asset: {
       url: string | null;
     } | null;
-    alt: string | null;
   };
   phone?: string | null;
   email?: string | null;
-  sortOrder: number | null;
 }
 
 export default async function ValdymasPage() {
@@ -131,7 +129,7 @@ export default async function ValdymasPage() {
                 name={president.name}
                 position={president.position || ""}
                 image={president.photo?.asset?.url || "/placeholder.jpg"}
-                alt={president.photo?.alt || president.name}
+                alt={`${president.name} nuotrauka`}
                 phone={president.phone || undefined}
                 email={president.email || undefined}
               />
@@ -162,7 +160,7 @@ export default async function ValdymasPage() {
                   name={member.name}
                   position={member.position || ""}
                   image={member.photo?.asset?.url || "/placeholder.jpg"}
-                  alt={member.photo?.alt || member.name}
+                  alt={`${member.name} nuotrauka`}
                   phone={member.phone || undefined}
                   email={member.email || undefined}
                 />
@@ -193,7 +191,7 @@ export default async function ValdymasPage() {
                 name={member.name}
                 position={member.position || ""}
                 image={member.photo?.asset?.url || "/placeholder.jpg"}
-                alt={member.photo?.alt || member.name}
+                alt={`${member.name} nuotrauka`}
                 phone={member.phone || undefined}
                 email={member.email || undefined}
               />
@@ -223,7 +221,7 @@ export default async function ValdymasPage() {
                   name={member.name}
                   position={member.position || ""}
                   image={member.photo?.asset?.url || "/placeholder.jpg"}
-                  alt={member.photo?.alt || member.name}
+                  alt={`${member.name} nuotrauka`}
                   phone={member.phone || undefined}
                   email={member.email || undefined}
                 />

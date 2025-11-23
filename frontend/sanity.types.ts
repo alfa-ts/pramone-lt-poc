@@ -87,18 +87,6 @@ export type ActivityReport = {
   };
 };
 
-export type Partner = {
-  _id: string;
-  _type: "partner";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  group: "cooperate" | "agreements";
-  title: string;
-  extra?: string;
-  sortOrder?: number;
-};
-
 export type StrategicDirection = {
   _id: string;
   _type: "strategicDirection";
@@ -107,17 +95,6 @@ export type StrategicDirection = {
   _rev: string;
   title: string;
   sortOrder?: number;
-};
-
-export type PastPresident = {
-  _id: string;
-  _type: "pastPresident";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name: string;
-  startYear: number;
-  endYear?: number;
 };
 
 export type Leadership = {
@@ -139,10 +116,8 @@ export type Leadership = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    alt?: string;
     _type: "image";
   };
-  sortOrder?: number;
   phone?: string;
   email?: string;
 };
@@ -184,13 +159,79 @@ export type Member = {
   };
 };
 
+export type Partneriai = {
+  _id: string;
+  _type: "partneriai";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  partnersCooperate?: Array<{
+    title: string;
+    extra?: string;
+    logo?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    _type: "partner";
+    _key: string;
+  }>;
+  partnersAgreements?: Array<{
+    title: string;
+    extra?: string;
+    logo?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    _type: "agreement";
+    _key: string;
+  }>;
+};
+
+export type Istorija = {
+  _id: string;
+  _type: "istorija";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  presidentMessage?: BlockContent;
+  services?: Array<{
+    title: string;
+    description?: string;
+    _type: "service";
+    _key: string;
+  }>;
+  pastPresidents?: Array<{
+    name: string;
+    startYear: number;
+    endYear?: number;
+    _type: "pastPresident";
+    _key: string;
+  }>;
+};
+
 export type MembershipInfo = {
   _id: string;
   _type: "membershipInfo";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  whyJoinText?: string;
+  whyJoinText?: BlockContent;
   benefitsText?: string;
   feeText?: string;
   feeImage?: {
@@ -598,7 +639,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = Link | CallToAction | InfoSection | BlockContent | ActivityReport | Partner | StrategicDirection | PastPresident | Leadership | SanityImageCrop | SanityImageHotspot | Member | MembershipInfo | Istatai | ContactInfo | Settings | News | Slug | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = Link | CallToAction | InfoSection | BlockContent | ActivityReport | StrategicDirection | Leadership | SanityImageCrop | SanityImageHotspot | Member | Partneriai | Istorija | MembershipInfo | Istatai | ContactInfo | Settings | News | Slug | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: settingsQuery
@@ -652,7 +693,7 @@ export type SettingsQueryResult = {
   };
 } | null;
 // Variable: leadershipQuery
-// Query: *[_type == "leadership"] | order(role asc, sortOrder asc, name asc) {    _id,    name,    position,    role,    "photo": photo{      asset->{        _id,        url      },      alt    },    sortOrder,    phone,    email  }
+// Query: *[_type == "leadership"] | order(role asc, name asc) {    _id,    name,    position,    role,    "photo": photo{      asset->{        _id,        url      }    },    phone,    email  }
 export type LeadershipQueryResult = Array<{
   _id: string;
   name: string;
@@ -663,9 +704,7 @@ export type LeadershipQueryResult = Array<{
       _id: string;
       url: string | null;
     } | null;
-    alt: string | null;
   };
-  sortOrder: number | null;
   phone: string | null;
   email: string | null;
 }>;
@@ -767,14 +806,26 @@ export type SingleNewsQueryResult = {
     _key: string;
   }> | null;
 } | null;
-// Variable: pastPresidentsQuery
-// Query: *[_type == "pastPresident"] | order(startYear asc) {    _id,    name,    startYear,    endYear  }
-export type PastPresidentsQueryResult = Array<{
-  _id: string;
-  name: string;
-  startYear: number;
-  endYear: number | null;
-}>;
+// Variable: istorijaQuery
+// Query: *[_id == "istorija"][0] {    presidentMessage,    "services": services[] {      _key,      title,      description    },    "pastPresidents": pastPresidents[] {      _key,      name,      startYear,      endYear    }  }
+export type IstorijaQueryResult = {
+  presidentMessage: null;
+  services: null;
+  pastPresidents: null;
+} | {
+  presidentMessage: BlockContent | null;
+  services: Array<{
+    _key: string;
+    title: string;
+    description: string | null;
+  }> | null;
+  pastPresidents: Array<{
+    _key: string;
+    name: string;
+    startYear: number;
+    endYear: number | null;
+  }> | null;
+} | null;
 // Variable: membersCountQuery
 // Query: count(*[_type == "member"])
 export type MembersCountQueryResult = number;
@@ -798,21 +849,24 @@ export type StrategicDirectionsQueryResult = Array<{
   sortOrder: number | null;
 }>;
 // Variable: partnersQuery
-// Query: {    "cooperate": *[_type == "partner" && group == "cooperate"] | order(coalesce(sortOrder, 9999) asc, title asc) {      _id,      title,      "logo": logo.asset->url,      extra    },    "agreements": *[_type == "partner" && group == "agreements"] | order(coalesce(sortOrder, 9999) asc, title asc) {      _id,      title,      "logo": logo.asset->url,      extra    }  }
+// Query: *[_id == "partneriai"][0] {    "cooperate": partnersCooperate[] {      _key,      title,      "logo": logo.asset->url,      extra    },    "agreements": partnersAgreements[] {      _key,      title,      "logo": logo.asset->url,      extra    }  }
 export type PartnersQueryResult = {
+  cooperate: null;
+  agreements: null;
+} | {
   cooperate: Array<{
-    _id: string;
+    _key: string;
     title: string;
-    logo: null;
+    logo: string | null;
     extra: string | null;
-  }>;
+  }> | null;
   agreements: Array<{
-    _id: string;
+    _key: string;
     title: string;
-    logo: null;
+    logo: string | null;
     extra: string | null;
-  }>;
-};
+  }> | null;
+} | null;
 // Variable: contactInfoQuery
 // Query: *[_type == "contactInfo"][0] {    address,    phone,    email,    googleAddress  }
 export type ContactInfoQueryResult = {
@@ -853,7 +907,7 @@ export type MembershipInfoQueryResult = {
   feeImage: null;
   requiredDocuments: null;
 } | {
-  whyJoinText: string | null;
+  whyJoinText: BlockContent | null;
   benefitsText: string | null;
   feeText: string | null;
   feeImage: {
@@ -876,16 +930,16 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"settings\"][0]": SettingsQueryResult;
-    "\n  *[_type == \"leadership\"] | order(role asc, sortOrder asc, name asc) {\n    _id,\n    name,\n    position,\n    role,\n    \"photo\": photo{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    sortOrder,\n    phone,\n    email\n  }\n": LeadershipQueryResult;
+    "\n  *[_type == \"leadership\"] | order(role asc, name asc) {\n    _id,\n    name,\n    position,\n    role,\n    \"photo\": photo{\n      asset->{\n        _id,\n        url\n      }\n    },\n    phone,\n    email\n  }\n": LeadershipQueryResult;
     "\n  *[_type == \"news\"] | order(publishedAt desc) [0...5] {\n    _id,\n    title,\n    slug,\n    type,\n    isFeatured,\n    excerpt,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt\n  }\n": NewsQueryResult;
     "\n  *[_type == \"news\"] | order(isFeatured desc, publishedAt desc) {\n    _id,\n    title,\n    slug,\n    type,\n    isFeatured,\n    excerpt,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    googleMapsLocation\n  }\n": AllNewsQueryResult;
     "\n  *[_type == \"news\"] | order(publishedAt desc) [0...5] {\n    _id,\n    title,\n    slug,\n    type,\n    publishedAt\n  }\n": RecentNewsQueryResult;
     "\n  *[_type == \"news\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    type,\n    excerpt,\n    content,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    googleMapsLocation,\n    entrance,\n    registrationUrl,\n    timeSlots,\n    program,\n    \"documents\": documents[]{\n      title,\n      \"file\": file.asset->{\n        _id,\n        url,\n        originalFilename,\n        size\n      }\n    },\n    additionalInfo\n  }\n": SingleNewsQueryResult;
-    "\n  *[_type == \"pastPresident\"] | order(startYear asc) {\n    _id,\n    name,\n    startYear,\n    endYear\n  }\n": PastPresidentsQueryResult;
+    "\n  *[_id == \"istorija\"][0] {\n    presidentMessage,\n    \"services\": services[] {\n      _key,\n      title,\n      description\n    },\n    \"pastPresidents\": pastPresidents[] {\n      _key,\n      name,\n      startYear,\n      endYear\n    }\n  }\n": IstorijaQueryResult;
     "\n  count(*[_type == \"member\"])\n": MembersCountQueryResult;
     "\n  *[_type == \"member\"] | order(company asc) {\n    _id,\n    company,\n    \"logo\": logo{\n      asset->{\n        _id,\n        url\n      }\n    }\n  }\n": MembersQueryResult;
     "\n  *[_type == \"strategicDirection\"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {\n    _id,\n    title,\n    sortOrder\n  }\n": StrategicDirectionsQueryResult;
-    "\n  {\n    \"cooperate\": *[_type == \"partner\" && group == \"cooperate\"] | order(coalesce(sortOrder, 9999) asc, title asc) {\n      _id,\n      title,\n      \"logo\": logo.asset->url,\n      extra\n    },\n    \"agreements\": *[_type == \"partner\" && group == \"agreements\"] | order(coalesce(sortOrder, 9999) asc, title asc) {\n      _id,\n      title,\n      \"logo\": logo.asset->url,\n      extra\n    }\n  }\n": PartnersQueryResult;
+    "\n  *[_id == \"partneriai\"][0] {\n    \"cooperate\": partnersCooperate[] {\n      _key,\n      title,\n      \"logo\": logo.asset->url,\n      extra\n    },\n    \"agreements\": partnersAgreements[] {\n      _key,\n      title,\n      \"logo\": logo.asset->url,\n      extra\n    }\n  }\n": PartnersQueryResult;
     "\n  *[_type == \"contactInfo\"][0] {\n    address,\n    phone,\n    email,\n    googleAddress\n  }\n": ContactInfoQueryResult;
     "\n  *[_type == \"istatai\"][0] {\n    \"statutesUrl\": statutesFile.asset->url,\n    \"statutesName\": statutesFile.asset->originalFilename,\n    \"ethicsUrl\": ethicsFile.asset->url,\n    \"ethicsName\": ethicsFile.asset->originalFilename\n  }\n": LegalDocumentsQueryResult;
     "\n  *[_type == \"activityReport\"] | order(_createdAt asc) {\n    _id,\n    period,\n    \"fileUrl\": file.asset->url,\n    \"fileName\": file.asset->originalFilename,\n    _createdAt\n  }\n": ActivityReportsQueryResult;

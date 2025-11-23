@@ -3,8 +3,10 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { partnersQuery } from "@/sanity/lib/queries";
 import { Handshake, FileCheck, Building2, Calendar, Mail } from "lucide-react";
 
+export const revalidate = 60;
+
 interface Partner {
-  _id: string;
+  _key: string;
   title: string;
   logo?: string;
   extra?: string;
@@ -120,7 +122,7 @@ export default async function PartneriaiPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {cooperate.map((partner) => (
               <div
-                key={partner._id}
+                key={partner._key}
                 className="group bg-white border border-gray-200 rounded-xl p-5 hover:border-[#fe9a00] hover:shadow-lg transition-all duration-300 relative overflow-hidden"
               >
                 {/* Gradient overlay on hover */}
@@ -164,7 +166,7 @@ export default async function PartneriaiPage() {
               <div className="grid grid-cols-1 gap-3">
                 {agreements.map((agreement) => (
                   <div
-                    key={agreement._id}
+                    key={agreement._key}
                     className="bg-gradient-to-r from-orange-50 to-white border border-orange-100 rounded-xl p-5 hover:shadow-md transition-all group"
                   >
                     <div className="flex items-center justify-between gap-4">

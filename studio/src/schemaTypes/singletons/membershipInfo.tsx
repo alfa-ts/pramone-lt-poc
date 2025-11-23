@@ -8,8 +8,7 @@ export const membershipInfo = defineType({
     defineField({
       name: 'whyJoinText',
       title: 'Kodėl verta tapti KKPDA nariu? – tekstas',
-      type: 'text',
-      rows: 5,
+      type: 'blockContent',
     }),
 
     defineField({

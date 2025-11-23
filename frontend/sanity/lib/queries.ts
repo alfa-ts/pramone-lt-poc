@@ -4,7 +4,7 @@ export const settingsQuery = defineQuery(`*[_type == "settings"][0]`);
 // Removed: contacts settings singleton no longer used
 
 export const leadershipQuery = defineQuery(`
-  *[_type == "leadership"] | order(role asc, sortOrder asc, name asc) {
+  *[_type == "leadership"] | order(role asc, name asc) {
     _id,
     name,
     position,
@@ -13,10 +13,8 @@ export const leadershipQuery = defineQuery(`
       asset->{
         _id,
         url
-      },
-      alt
+      }
     },
-    sortOrder,
     phone,
     email
   }
@@ -113,14 +111,25 @@ export const singleNewsQuery = defineQuery(`
   }
 `);
 
-export const pastPresidentsQuery = defineQuery(`
-  *[_type == "pastPresident"] | order(startYear asc) {
-    _id,
-    name,
-    startYear,
-    endYear
+export const istorijaQuery = defineQuery(`
+  *[_id == "istorija"][0] {
+    presidentMessage,
+    "services": services[] {
+      _key,
+      title,
+      description
+    },
+    "pastPresidents": pastPresidents[] {
+      _key,
+      name,
+      startYear,
+      endYear
+    }
   }
 `);
+
+// Backwards compatibility alias
+export const pastPresidentsQuery = istorijaQuery;
 
 export const membersCountQuery = defineQuery(`
   count(*[_type == "member"])
@@ -148,15 +157,15 @@ export const strategicDirectionsQuery = defineQuery(`
 `);
 
 export const partnersQuery = defineQuery(`
-  {
-    "cooperate": *[_type == "partner" && group == "cooperate"] | order(coalesce(sortOrder, 9999) asc, title asc) {
-      _id,
+  *[_id == "partneriai"][0] {
+    "cooperate": partnersCooperate[] {
+      _key,
       title,
       "logo": logo.asset->url,
       extra
     },
-    "agreements": *[_type == "partner" && group == "agreements"] | order(coalesce(sortOrder, 9999) asc, title asc) {
-      _id,
+    "agreements": partnersAgreements[] {
+      _key,
       title,
       "logo": logo.asset->url,
       extra
