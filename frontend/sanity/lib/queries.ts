@@ -113,6 +113,8 @@ export const singleNewsQuery = defineQuery(`
 
 export const istorijaQuery = defineQuery(`
   *[_id == "istorija"][0] {
+    ourHistory,
+    kkpdaToday,
     presidentMessage,
     "services": services[] {
       _key,
@@ -244,7 +246,8 @@ export const membershipInfoQuery = defineQuery(`
   *[_id == "membershipInfo"][0] {
     whyJoinText,
     benefitsText,
-    feeText,
+    entryFee,
+    annualFeeDescription,
     "feeImage": feeImage{
       asset->{
         _id,

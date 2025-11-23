@@ -1198,6 +1198,22 @@
           "type": "string"
         }
       },
+      "ourHistory": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "blockContent"
+        },
+        "optional": true
+      },
+      "kkpdaToday": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "blockContent"
+        },
+        "optional": true
+      },
       "presidentMessage": {
         "type": "objectAttribute",
         "value": {

@@ -209,6 +209,8 @@ export type Istorija = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  ourHistory?: BlockContent;
+  kkpdaToday?: BlockContent;
   presidentMessage?: BlockContent;
   services?: Array<{
     title: string;
@@ -807,12 +809,16 @@ export type SingleNewsQueryResult = {
   }> | null;
 } | null;
 // Variable: istorijaQuery
-// Query: *[_id == "istorija"][0] {    presidentMessage,    "services": services[] {      _key,      title,      description    },    "pastPresidents": pastPresidents[] {      _key,      name,      startYear,      endYear    }  }
+// Query: *[_id == "istorija"][0] {    ourHistory,    kkpdaToday,    presidentMessage,    "services": services[] {      _key,      title,      description    },    "pastPresidents": pastPresidents[] {      _key,      name,      startYear,      endYear    }  }
 export type IstorijaQueryResult = {
+  ourHistory: null;
+  kkpdaToday: null;
   presidentMessage: null;
   services: null;
   pastPresidents: null;
 } | {
+  ourHistory: BlockContent | null;
+  kkpdaToday: BlockContent | null;
   presidentMessage: BlockContent | null;
   services: Array<{
     _key: string;
@@ -899,17 +905,19 @@ export type EventsListQueryResult = Array<never>;
 // Query: *[_type == "event" && slug.current == $slug][0] {    _id,    title,    slug,    date,    startAt,    endAt,    time,    location,    locationLat,    locationLng,    organizers,    excerpt,    content,    images[]{ asset->{ _id, url } }  }
 export type SingleEventQueryResult = null;
 // Variable: membershipInfoQuery
-// Query: *[_id == "membershipInfo"][0] {    whyJoinText,    benefitsText,    feeText,    "feeImage": feeImage{      asset->{        _id,        url      }    },    requiredDocuments[] {      _key,      title,      description,      "fileUrl": file.asset->url,      "fileName": file.asset->originalFilename    }  }
+// Query: *[_id == "membershipInfo"][0] {    whyJoinText,    benefitsText,    entryFee,    annualFeeDescription,    "feeImage": feeImage{      asset->{        _id,        url      }    },    requiredDocuments[] {      _key,      title,      description,      "fileUrl": file.asset->url,      "fileName": file.asset->originalFilename    }  }
 export type MembershipInfoQueryResult = {
   whyJoinText: null;
   benefitsText: null;
-  feeText: null;
+  entryFee: null;
+  annualFeeDescription: null;
   feeImage: null;
   requiredDocuments: null;
 } | {
   whyJoinText: BlockContent | null;
   benefitsText: string | null;
-  feeText: string | null;
+  entryFee: null;
+  annualFeeDescription: null;
   feeImage: {
     asset: {
       _id: string;
@@ -935,7 +943,7 @@ declare module "@sanity/client" {
     "\n  *[_type == \"news\"] | order(isFeatured desc, publishedAt desc) {\n    _id,\n    title,\n    slug,\n    type,\n    isFeatured,\n    excerpt,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    googleMapsLocation\n  }\n": AllNewsQueryResult;
     "\n  *[_type == \"news\"] | order(publishedAt desc) [0...5] {\n    _id,\n    title,\n    slug,\n    type,\n    publishedAt\n  }\n": RecentNewsQueryResult;
     "\n  *[_type == \"news\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    type,\n    excerpt,\n    content,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    googleMapsLocation,\n    entrance,\n    registrationUrl,\n    timeSlots,\n    program,\n    \"documents\": documents[]{\n      title,\n      \"file\": file.asset->{\n        _id,\n        url,\n        originalFilename,\n        size\n      }\n    },\n    additionalInfo\n  }\n": SingleNewsQueryResult;
-    "\n  *[_id == \"istorija\"][0] {\n    presidentMessage,\n    \"services\": services[] {\n      _key,\n      title,\n      description\n    },\n    \"pastPresidents\": pastPresidents[] {\n      _key,\n      name,\n      startYear,\n      endYear\n    }\n  }\n": IstorijaQueryResult;
+    "\n  *[_id == \"istorija\"][0] {\n    ourHistory,\n    kkpdaToday,\n    presidentMessage,\n    \"services\": services[] {\n      _key,\n      title,\n      description\n    },\n    \"pastPresidents\": pastPresidents[] {\n      _key,\n      name,\n      startYear,\n      endYear\n    }\n  }\n": IstorijaQueryResult;
     "\n  count(*[_type == \"member\"])\n": MembersCountQueryResult;
     "\n  *[_type == \"member\"] | order(company asc) {\n    _id,\n    company,\n    \"logo\": logo{\n      asset->{\n        _id,\n        url\n      }\n    }\n  }\n": MembersQueryResult;
     "\n  *[_type == \"strategicDirection\"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {\n    _id,\n    title,\n    sortOrder\n  }\n": StrategicDirectionsQueryResult;
@@ -945,6 +953,6 @@ declare module "@sanity/client" {
     "\n  *[_type == \"activityReport\"] | order(_createdAt asc) {\n    _id,\n    period,\n    \"fileUrl\": file.asset->url,\n    \"fileName\": file.asset->originalFilename,\n    _createdAt\n  }\n": ActivityReportsQueryResult;
     "\n  *[_type == \"event\" &&\n    (!defined($from) || $from == null || coalesce(startAt, dateTime(date)) >= dateTime($from)) &&\n    (!defined($to) || $to == null || coalesce(startAt, dateTime(date)) <= dateTime($to))\n  ] | order(coalesce(startAt, dateTime(date)) desc) {\n    _id,\n    title,\n    slug,\n    date,\n    startAt,\n    endAt,\n    time,\n    location,\n    organizers,\n    excerpt,\n    \"plainContent\": pt::text(content),\n    \"cover\": images[0]{ asset->{ _id, url } }\n  }\n": EventsListQueryResult;
     "\n  *[_type == \"event\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    date,\n    startAt,\n    endAt,\n    time,\n    location,\n    locationLat,\n    locationLng,\n    organizers,\n    excerpt,\n    content,\n    images[]{ asset->{ _id, url } }\n  }\n": SingleEventQueryResult;
-    "\n  *[_id == \"membershipInfo\"][0] {\n    whyJoinText,\n    benefitsText,\n    feeText,\n    \"feeImage\": feeImage{\n      asset->{\n        _id,\n        url\n      }\n    },\n    requiredDocuments[] {\n      _key,\n      title,\n      description,\n      \"fileUrl\": file.asset->url,\n      \"fileName\": file.asset->originalFilename\n    }\n  }\n": MembershipInfoQueryResult;
+    "\n  *[_id == \"membershipInfo\"][0] {\n    whyJoinText,\n    benefitsText,\n    entryFee,\n    annualFeeDescription,\n    \"feeImage\": feeImage{\n      asset->{\n        _id,\n        url\n      }\n    },\n    requiredDocuments[] {\n      _key,\n      title,\n      description,\n      \"fileUrl\": file.asset->url,\n      \"fileName\": file.asset->originalFilename\n    }\n  }\n": MembershipInfoQueryResult;
   }
 }

@@ -8,6 +8,18 @@ export const istorija = defineType({
   icon: DocumentTextIcon,
   fields: [
     defineField({
+      name: 'ourHistory',
+      title: 'Mūsų istorija',
+      type: 'blockContent',
+      description: 'Istorijos skyriaus turinys',
+    }),
+    defineField({
+      name: 'kkpdaToday',
+      title: 'KKPDA šiandien',
+      type: 'blockContent',
+      description: 'KKPDA šiandien skyriaus turinys',
+    }),
+    defineField({
       name: 'presidentMessage',
       title: 'Prezidento žodis',
       type: 'blockContent',
