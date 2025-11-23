@@ -1,6 +1,7 @@
 import { sanityFetch } from "@/sanity/lib/live";
 import { newsQuery, membersCountQuery, strategicDirectionsQuery, partnersQuery, membershipInfoQuery, contactInfoQuery } from "@/sanity/lib/queries";
 import { NewsCarousel } from "./components/NewsCarousel";
+import { PartnersSlider } from "./components/PartnersSlider";
 import { OrganizationFacts } from "./components/OrganizationFacts";
 import { MissionVision } from "./components/MissionVision";
 import { MemberBenefits } from "./components/MemberBenefits";
@@ -80,10 +81,22 @@ export default async function Page() {
       slug: item.slug?.current || "",
     })) || [];
 
+  // Get partners with logos for the slider
+  const partnersWithLogos = (partners?.cooperate || [])
+    .filter((partner: any) => partner.logo)
+    .map((partner: any) => ({
+      _key: partner._key,
+      title: partner.title,
+      logo: partner.logo,
+    }));
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero News Carousel */}
       <NewsCarousel news={news} />
+
+      {/* Partners Slider */}
+      <PartnersSlider partners={partnersWithLogos} />
 
       {/* Organization Facts / Stats */}
       <OrganizationFacts 

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { sanityFetch } from "@/sanity/lib/live";
 import { partnersQuery } from "@/sanity/lib/queries";
 import { Handshake, FileCheck, Building2, Calendar, Mail } from "lucide-react";
@@ -110,7 +111,7 @@ export default async function PartneriaiPage() {
               <Handshake className="size-5 text-[#fe9a00]" />
               <span className="text-gray-900 font-medium">Mūsų partneriai</span>
             </div>
-            <h2 className="text-2xl text-gray-900 mb-3">
+            <h2 className="text-gray-900 mb-3">
               Bendradarbiavimo tinklas
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
@@ -129,11 +130,23 @@ export default async function PartneriaiPage() {
                 <div className="absolute inset-0 bg-gradient-to-br from-[#fe9a00]/5 to-[#e17100]/5 opacity-0 group-hover:opacity-100 transition-opacity" />
 
                 <div className="relative">
-                  <div className="flex items-start gap-3">
-                    <div className="size-10 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg flex items-center justify-center shrink-0 group-hover:from-[#fe9a00] group-hover:to-[#e17100] transition-all duration-300">
-                      <Building2 className="size-5 text-gray-500 group-hover:text-white transition-colors" />
+                  <div className="flex flex-col gap-3">
+                    <div className="h-16 flex items-center justify-center bg-white rounded-lg p-2">
+                      {partner.logo ? (
+                        <Image
+                          src={partner.logo}
+                          alt={`${partner.title} logotipas`}
+                          width={200}
+                          height={64}
+                          className="max-h-full max-w-full object-contain"
+                        />
+                      ) : (
+                        <div className="h-full aspect-[3/1] bg-gradient-to-br from-gray-100 to-gray-200 rounded flex items-center justify-center group-hover:from-orange-100 group-hover:to-orange-200 transition-all">
+                          <Building2 className="size-6 text-gray-400 group-hover:text-[#fe9a00] transition-colors" />
+                        </div>
+                      )}
                     </div>
-                    <p className="text-gray-900 text-sm flex-1 pt-1 leading-snug">
+                    <p className="text-gray-900 text-sm text-center leading-snug">
                       {partner.title}
                     </p>
                   </div>
@@ -153,7 +166,7 @@ export default async function PartneriaiPage() {
                 <FileCheck className="size-5 text-white" />
                 <span className="text-white font-medium">Sutartys</span>
               </div>
-              <h2 className="text-2xl text-gray-900 mb-3">
+              <h2 className="text-gray-900 mb-3">
                 Pasirašytos bendradarbiavimo sutartys
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
@@ -171,9 +184,21 @@ export default async function PartneriaiPage() {
                   >
                     <div className="flex items-center justify-between gap-4">
                       <div className="flex items-center gap-4 flex-1">
-                        <div className="size-10 bg-white border border-orange-200 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-gradient-to-b group-hover:from-[#fe9a00] group-hover:to-[#e17100] transition-all">
-                          <FileCheck className="size-5 text-[#fe9a00] group-hover:text-white transition-colors" />
-                        </div>
+                        {agreement.logo ? (
+                          <div className="h-12 w-20 bg-white border border-orange-200 rounded-lg flex items-center justify-center shrink-0 p-2">
+                            <Image
+                              src={agreement.logo}
+                              alt={`${agreement.title} logotipas`}
+                              width={80}
+                              height={48}
+                              className="max-h-full max-w-full object-contain"
+                            />
+                          </div>
+                        ) : (
+                          <div className="size-10 bg-white border border-orange-200 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-gradient-to-b group-hover:from-[#fe9a00] group-hover:to-[#e17100] transition-all">
+                            <FileCheck className="size-5 text-[#fe9a00] group-hover:text-white transition-colors" />
+                          </div>
+                        )}
                         <p className="text-gray-900 flex-1">
                           {agreement.title}
                         </p>
