@@ -234,8 +234,17 @@ export type MembershipInfo = {
   _updatedAt: string;
   _rev: string;
   whyJoinText?: BlockContent;
-  benefitsText?: string;
-  feeText?: string;
+  benefitsText?: Array<{
+    title: string;
+    description1?: string;
+    description2?: string;
+    description3?: string;
+    description4?: string;
+    _type: "benefitItem";
+    _key: string;
+  }>;
+  entryFee: number;
+  annualFeeDescription?: string;
   feeImage?: {
     asset?: {
       _ref: string;
@@ -915,9 +924,17 @@ export type MembershipInfoQueryResult = {
   requiredDocuments: null;
 } | {
   whyJoinText: BlockContent | null;
-  benefitsText: string | null;
-  entryFee: null;
-  annualFeeDescription: null;
+  benefitsText: Array<{
+    title: string;
+    description1?: string;
+    description2?: string;
+    description3?: string;
+    description4?: string;
+    _type: "benefitItem";
+    _key: string;
+  }> | null;
+  entryFee: number;
+  annualFeeDescription: string | null;
   feeImage: {
     asset: {
       _id: string;
