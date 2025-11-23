@@ -23,10 +23,15 @@ import {
 } from "lucide-react";
 
 export default async function VeiklaPage() {
-  const [{ data: reports }, { data: strategicDirections }] = await Promise.all([
+  const [{ data: veiklaReportsData }, { data: veiklaData }] = await Promise.all([
     sanityFetch({ query: activityReportsQuery }),
     sanityFetch({ query: strategicDirectionsQuery }),
   ]);
+
+  const reports = veiklaReportsData?.reports || [];
+  const misija = veiklaData?.misija || "Atstovauti nariams, vienijant verslo, mokslo ir visuomenės interesus.";
+  const vizija = veiklaData?.vizija || "Vedanti ir atvira verslo organizacija, kurioje narystė yra vertinga ir garbinga.";
+  const strategicDirections = veiklaData?.strategicDirections || [];
 
   const nationalActivities = [
     {
@@ -196,8 +201,7 @@ export default async function VeiklaPage() {
               <div>
                 <h2 className="text-2xl text-gray-900 mb-3">Misija</h2>
                 <p className="text-gray-600 text-lg leading-relaxed">
-                  Atstovauti nariams, vienijant verslo, mokslo ir visuomenės
-                  interesus.
+                  {misija}
                 </p>
               </div>
 
@@ -206,8 +210,7 @@ export default async function VeiklaPage() {
               <div>
                 <h2 className="text-2xl text-gray-900 mb-3">Vizija</h2>
                 <p className="text-gray-600 text-lg leading-relaxed">
-                  Vedanti ir atvira verslo organizacija, kurioje narystė yra
-                  vertinga ir garbinga.
+                  {vizija}
                 </p>
               </div>
             </div>
@@ -229,7 +232,7 @@ export default async function VeiklaPage() {
                     strategicIcons[index % strategicIcons.length];
                   return (
                     <div
-                      key={direction._id}
+                      key={direction._key}
                       className="bg-gray-50 border border-gray-200 rounded-xl p-6 hover:border-[#fe9a00] hover:shadow-md transition-all group"
                     >
                       <div className="flex items-start gap-4">
@@ -351,7 +354,7 @@ export default async function VeiklaPage() {
           {Array.isArray(reports) && reports.length > 0 ? (
             reports.map((report: any) => (
               <div
-                key={report._id}
+                key={report._key}
                 className="bg-gradient-to-br from-orange-50 to-white border border-orange-100 rounded-2xl p-6 hover:shadow-lg transition-all group"
               >
                 <div className="flex items-start gap-4">

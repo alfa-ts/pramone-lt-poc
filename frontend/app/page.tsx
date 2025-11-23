@@ -42,7 +42,7 @@ export default async function Page() {
   const [
     { data: newsData },
     { data: membersCount },
-    { data: directions },
+    { data: veiklaData },
     { data: partners },
     { data: membership },
     { data: contactInfo }
@@ -54,6 +54,10 @@ export default async function Page() {
     sanityFetch({ query: membershipInfoQuery }),
     sanityFetch({ query: contactInfoQuery }),
   ]);
+
+  const misija = veiklaData?.misija;
+  const vizija = veiklaData?.vizija;
+  const strategicDirections = veiklaData?.strategicDirections || [];
 
   // Calculate full years of activity since 1989-12-22
   const now = new Date();
@@ -106,10 +110,14 @@ export default async function Page() {
       />
 
       {/* Mission, Vision & Strategic Directions */}
-      <MissionVision strategicDirections={directions} />
+      <MissionVision 
+        misija={misija ?? undefined} 
+        vizija={vizija ?? undefined} 
+        strategicDirections={strategicDirections} 
+      />
 
       {/* Member Benefits */}
-      <MemberBenefits />
+      <MemberBenefits benefits={membership?.benefitsText ?? undefined} />
 
       {/* Membership CTA */}
       <MembershipCTA 

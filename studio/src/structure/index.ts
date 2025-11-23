@@ -33,9 +33,13 @@ export const structure: StructureResolver = (S: StructureBuilder) =>
       S.listItem()
         .title('Partneriai')
         .child(S.document().schemaType('partneriai').documentId('partneriai')),
+      // Veikla singleton
+      S.listItem()
+        .title('Veikla')
+        .child(S.document().schemaType('veikla').documentId('veikla')),
       // Rest of types excluding disabled ones and the explicitly added singletons
       ...S.documentTypeListItems()
-        .filter((listItem: any) => !DISABLED_TYPES.includes(listItem.getId()) && listItem.getId() !== 'contact' && listItem.getId() !== 'contactsSettings' && listItem.getId() !== 'contactsPage' && listItem.getId() !== 'contactInfo' && listItem.getId() !== 'istatai' && listItem.getId() !== 'membershipInfo' && listItem.getId() !== 'istorija' && listItem.getId() !== 'pastPresident' && listItem.getId() !== 'partneriai'),
+        .filter((listItem: any) => !DISABLED_TYPES.includes(listItem.getId()) && listItem.getId() !== 'contact' && listItem.getId() !== 'contactsSettings' && listItem.getId() !== 'contactsPage' && listItem.getId() !== 'contactInfo' && listItem.getId() !== 'istatai' && listItem.getId() !== 'membershipInfo' && listItem.getId() !== 'istorija' && listItem.getId() !== 'pastPresident' && listItem.getId() !== 'partneriai' && listItem.getId() !== 'veikla' && listItem.getId() !== 'activityReport' && listItem.getId() !== 'strategicDirection'),
       // Settings Singleton
       S.listItem()
         .title('Site Settings')

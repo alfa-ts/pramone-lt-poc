@@ -1,15 +1,17 @@
 'use client';
 
 interface StrategicDirection {
-  _id?: string;
+  _key?: string;
   title: string;
 }
 
 interface MissionVisionProps {
+  misija?: string;
+  vizija?: string;
   strategicDirections?: StrategicDirection[];
 }
 
-export function MissionVision({ strategicDirections }: MissionVisionProps) {
+export function MissionVision({ misija, vizija, strategicDirections }: MissionVisionProps) {
   // Default strategic directions
   const defaultStrategic = [
     {
@@ -61,7 +63,7 @@ export function MissionVision({ strategicDirections }: MissionVisionProps) {
               </div>
               <h3 className="text-3xl text-amber-600 mb-4">Misija</h3>
               <p className="text-lg text-gray-700 leading-relaxed">
-                Atstovauti nariams, vienijant verslo, mokslo ir visuomenės interesus.
+                {misija || "Atstovauti nariams, vienijant verslo, mokslo ir visuomenės interesus."}
               </p>
             </div>
           </div>
@@ -78,7 +80,7 @@ export function MissionVision({ strategicDirections }: MissionVisionProps) {
               </div>
               <h3 className="text-3xl text-amber-600 mb-4">Vizija</h3>
               <p className="text-lg text-gray-700 leading-relaxed">
-                Vedanti ir atvira verslo organizacija, kurioje narystė yra vertinga ir garbinga.
+                {vizija || "Vedanti ir atvira verslo organizacija, kurioje narystė yra vertinga ir garbinga."}
               </p>
             </div>
           </div>

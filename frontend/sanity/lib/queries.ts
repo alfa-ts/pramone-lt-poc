@@ -147,10 +147,13 @@ export const membersQuery = defineQuery(`
 `);
 
 export const strategicDirectionsQuery = defineQuery(`
-  *[_type == "strategicDirection"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {
-    _id,
-    title,
-    sortOrder
+  *[_id == "veikla"][0] {
+    misija,
+    vizija,
+    "strategicDirections": strategicDirections[] {
+      _key,
+      title
+    }
   }
 `);
 
@@ -190,12 +193,13 @@ export const legalDocumentsQuery = defineQuery(`
 `);
 
 export const activityReportsQuery = defineQuery(`
-  *[_type == "activityReport"] | order(_createdAt asc) {
-    _id,
-    period,
-    "fileUrl": file.asset->url,
-    "fileName": file.asset->originalFilename,
-    _createdAt
+  *[_id == "veikla"][0] {
+    "reports": ataskaitos[] {
+      _key,
+      period,
+      "fileUrl": file.asset->url,
+      "fileName": file.asset->originalFilename
+    }
   }
 `);
 
@@ -241,7 +245,14 @@ export const singleEventQuery = defineQuery(`
 export const membershipInfoQuery = defineQuery(`
   *[_id == "membershipInfo"][0] {
     whyJoinText,
-    benefitsText,
+    benefitsText[] {
+      _key,
+      title,
+      description1,
+      description2,
+      description3,
+      description4
+    },
     entryFee,
     annualFeeDescription,
     "feeImage": feeImage{

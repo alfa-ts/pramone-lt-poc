@@ -57,15 +57,6 @@ export function MembershipCTA({ membersCount, yearsOfActivity, contactInfo }: Me
               <Link href="/nariai/kaip-tapti-nariu">
                 <Button 
                   size="lg"
-                  className="bg-white text-amber-600 hover:bg-amber-50 text-lg px-8"
-                >
-                  Užpildyti prašymą
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </Button>
-              </Link>
-              <Link href="/apie/valdymas">
-                <Button 
-                  size="lg"
                   variant="outline"
                   className="border-2 border-white text-white hover:bg-white/10 text-lg px-8"
                 >
