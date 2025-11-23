@@ -68,59 +68,6 @@ export type BlockContent = Array<{
   _key: string;
 }>;
 
-export type ActivityReport = {
-  _id: string;
-  _type: "activityReport";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  period: string;
-  file: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-    };
-    media?: unknown;
-    _type: "file";
-  };
-};
-
-export type Partner = {
-  _id: string;
-  _type: "partner";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  group: "cooperate" | "agreements";
-  title: string;
-  extra?: string;
-  isMinistry?: boolean;
-  sortOrder?: number;
-};
-
-export type StrategicDirection = {
-  _id: string;
-  _type: "strategicDirection";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  sortOrder?: number;
-};
-
-export type PastPresident = {
-  _id: string;
-  _type: "pastPresident";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name: string;
-  startYear: number;
-  endYear?: number;
-};
-
 export type Leadership = {
   _id: string;
   _type: "leadership";
@@ -140,10 +87,8 @@ export type Leadership = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    alt?: string;
     _type: "image";
   };
-  sortOrder?: number;
   phone?: string;
   email?: string;
 };
@@ -170,11 +115,7 @@ export type Member = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  person?: string;
-  title?: string;
   company: string;
-  address?: string;
-  activity?: string;
   logo?: {
     asset?: {
       _ref: string;
@@ -185,9 +126,104 @@ export type Member = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    alt?: string;
     _type: "image";
   };
+};
+
+export type Veikla = {
+  _id: string;
+  _type: "veikla";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  misija: string;
+  vizija: string;
+  strategicDirections?: Array<{
+    title: string;
+    _key: string;
+  }>;
+  ataskaitos?: Array<{
+    period: string;
+    file: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+      };
+      media?: unknown;
+      _type: "file";
+    };
+    _key: string;
+  }>;
+};
+
+export type Partneriai = {
+  _id: string;
+  _type: "partneriai";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  partnersCooperate?: Array<{
+    title: string;
+    extra?: string;
+    logo?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    _type: "partner";
+    _key: string;
+  }>;
+  partnersAgreements?: Array<{
+    title: string;
+    extra?: string;
+    logo?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    _type: "agreement";
+    _key: string;
+  }>;
+};
+
+export type Istorija = {
+  _id: string;
+  _type: "istorija";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  ourHistory?: BlockContent;
+  kkpdaToday?: BlockContent;
+  presidentMessage?: BlockContent;
+  services?: Array<{
+    title: string;
+    description?: string;
+    _type: "service";
+    _key: string;
+  }>;
+  pastPresidents?: Array<{
+    name: string;
+    startYear: number;
+    endYear?: number;
+    _type: "pastPresident";
+    _key: string;
+  }>;
 };
 
 export type MembershipInfo = {
@@ -196,32 +232,18 @@ export type MembershipInfo = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  whyJoinTitle: string;
-  whyJoinText?: string;
-  whyJoinFile?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-    };
-    media?: unknown;
-    _type: "file";
-  };
-  benefitsTitle: string;
-  benefitsText?: string;
-  benefitsFile?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-    };
-    media?: unknown;
-    _type: "file";
-  };
-  feeTitle: string;
-  feeText?: string;
+  whyJoinText?: BlockContent;
+  benefitsText?: Array<{
+    title: string;
+    description1?: string;
+    description2?: string;
+    description3?: string;
+    description4?: string;
+    _type: "benefitItem";
+    _key: string;
+  }>;
+  entryFee: number;
+  annualFeeDescription?: string;
   feeImage?: {
     asset?: {
       _ref: string;
@@ -232,10 +254,8 @@ export type MembershipInfo = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    alt?: string;
     _type: "image";
   };
-  requiredDocumentsTitle: string;
   requiredDocuments?: Array<{
     title: string;
     description?: string;
@@ -353,7 +373,6 @@ export type News = {
   slug: Slug;
   type: "naujiena" | "renginys";
   isFeatured?: boolean;
-  excerpt: string;
   content?: BlockContent;
   coverImage?: {
     asset?: {
@@ -365,7 +384,6 @@ export type News = {
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
-    alt?: string;
     _type: "image";
   };
   publishedAt: string;
@@ -629,7 +647,7 @@ export type Geopoint = {
   alt?: number;
 };
 
-export type AllSanitySchemaTypes = Link | CallToAction | InfoSection | BlockContent | ActivityReport | Partner | StrategicDirection | PastPresident | Leadership | SanityImageCrop | SanityImageHotspot | Member | MembershipInfo | Istatai | ContactInfo | Settings | News | Slug | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
+export type AllSanitySchemaTypes = Link | CallToAction | InfoSection | BlockContent | Leadership | SanityImageCrop | SanityImageHotspot | Member | Veikla | Partneriai | Istorija | MembershipInfo | Istatai | ContactInfo | Settings | News | Slug | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageMetadata | SanityFileAsset | SanityAssetSourceData | SanityImageAsset | Geopoint;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: settingsQuery
@@ -683,7 +701,7 @@ export type SettingsQueryResult = {
   };
 } | null;
 // Variable: leadershipQuery
-// Query: *[_type == "leadership"] | order(role asc, sortOrder asc, name asc) {    _id,    name,    position,    role,    "photo": photo{      asset->{        _id,        url      },      alt    },    sortOrder,    phone,    email  }
+// Query: *[_type == "leadership"] | order(role asc, name asc) {    _id,    name,    position,    role,    "photo": photo{      asset->{        _id,        url      }    },    phone,    email  }
 export type LeadershipQueryResult = Array<{
   _id: string;
   name: string;
@@ -694,45 +712,41 @@ export type LeadershipQueryResult = Array<{
       _id: string;
       url: string | null;
     } | null;
-    alt: string | null;
   };
-  sortOrder: number | null;
   phone: string | null;
   email: string | null;
 }>;
 // Variable: newsQuery
-// Query: *[_type == "news"] | order(publishedAt desc) [0...5] {    _id,    title,    slug,    type,    isFeatured,    excerpt,    "coverImage": coverImage{      asset->{        _id,        url      },      alt    },    publishedAt  }
+// Query: *[_type == "news"] | order(publishedAt desc) [0...5] {    _id,    title,    slug,    type,    isFeatured,    content,    "coverImage": coverImage{      asset->{        _id,        url      }    },    publishedAt  }
 export type NewsQueryResult = Array<{
   _id: string;
   title: string;
   slug: Slug;
   type: "naujiena" | "renginys";
   isFeatured: boolean | null;
-  excerpt: string;
+  content: BlockContent | null;
   coverImage: {
     asset: {
       _id: string;
       url: string | null;
     } | null;
-    alt: string | null;
   } | null;
   publishedAt: string;
 }>;
 // Variable: allNewsQuery
-// Query: *[_type == "news"] | order(isFeatured desc, publishedAt desc) {    _id,    title,    slug,    type,    isFeatured,    excerpt,    "coverImage": coverImage{      asset->{        _id,        url      },      alt    },    publishedAt,    eventStartDate,    eventEndDate,    organizers,    location,    googleMapsLocation  }
+// Query: *[_type == "news"] | order(isFeatured desc, publishedAt desc) {    _id,    title,    slug,    type,    isFeatured,    content,    "coverImage": coverImage{      asset->{        _id,        url      }    },    publishedAt,    eventStartDate,    eventEndDate,    organizers,    location,    googleMapsLocation  }
 export type AllNewsQueryResult = Array<{
   _id: string;
   title: string;
   slug: Slug;
   type: "naujiena" | "renginys";
   isFeatured: boolean | null;
-  excerpt: string;
+  content: BlockContent | null;
   coverImage: {
     asset: {
       _id: string;
       url: string | null;
     } | null;
-    alt: string | null;
   } | null;
   publishedAt: string;
   eventStartDate: string | null;
@@ -751,20 +765,18 @@ export type RecentNewsQueryResult = Array<{
   publishedAt: string;
 }>;
 // Variable: singleNewsQuery
-// Query: *[_type == "news" && slug.current == $slug][0] {    _id,    title,    slug,    type,    excerpt,    content,    "coverImage": coverImage{      asset->{        _id,        url      },      alt    },    publishedAt,    eventStartDate,    eventEndDate,    organizers,    location,    googleMapsLocation,    entrance,    registrationUrl,    timeSlots,    program,    "documents": documents[]{      title,      "file": file.asset->{        _id,        url,        originalFilename,        size      }    },    additionalInfo  }
+// Query: *[_type == "news" && slug.current == $slug][0] {    _id,    title,    slug,    type,    content,    "coverImage": coverImage{      asset->{        _id,        url      }    },    publishedAt,    eventStartDate,    eventEndDate,    organizers,    location,    googleMapsLocation,    entrance,    registrationUrl,    timeSlots,    program,    "documents": documents[]{      title,      "file": file.asset->{        _id,        url,        originalFilename,        size      }    },    additionalInfo  }
 export type SingleNewsQueryResult = {
   _id: string;
   title: string;
   slug: Slug;
   type: "naujiena" | "renginys";
-  excerpt: string;
   content: BlockContent | null;
   coverImage: {
     asset: {
       _id: string;
       url: string | null;
     } | null;
-    alt: string | null;
   } | null;
   publishedAt: string;
   eventStartDate: string | null;
@@ -798,59 +810,78 @@ export type SingleNewsQueryResult = {
     _key: string;
   }> | null;
 } | null;
-// Variable: pastPresidentsQuery
-// Query: *[_type == "pastPresident"] | order(startYear asc) {    _id,    name,    startYear,    endYear  }
-export type PastPresidentsQueryResult = Array<{
-  _id: string;
-  name: string;
-  startYear: number;
-  endYear: number | null;
-}>;
+// Variable: istorijaQuery
+// Query: *[_id == "istorija"][0] {    ourHistory,    kkpdaToday,    presidentMessage,    "services": services[] {      _key,      title,      description    },    "pastPresidents": pastPresidents[] {      _key,      name,      startYear,      endYear    }  }
+export type IstorijaQueryResult = {
+  ourHistory: null;
+  kkpdaToday: null;
+  presidentMessage: null;
+  services: null;
+  pastPresidents: null;
+} | {
+  ourHistory: BlockContent | null;
+  kkpdaToday: BlockContent | null;
+  presidentMessage: BlockContent | null;
+  services: Array<{
+    _key: string;
+    title: string;
+    description: string | null;
+  }> | null;
+  pastPresidents: Array<{
+    _key: string;
+    name: string;
+    startYear: number;
+    endYear: number | null;
+  }> | null;
+} | null;
 // Variable: membersCountQuery
 // Query: count(*[_type == "member"])
 export type MembersCountQueryResult = number;
 // Variable: membersQuery
-// Query: *[_type == "member"] | order(company asc) {    _id,    person,    title,    company,    address,    activity,    "logo": logo{      asset->{        _id,        url      },      alt    }  }
+// Query: *[_type == "member"] | order(company asc) {    _id,    company,    "logo": logo{      asset->{        _id,        url      }    }  }
 export type MembersQueryResult = Array<{
   _id: string;
-  person: string | null;
-  title: string | null;
   company: string;
-  address: string | null;
-  activity: string | null;
   logo: {
     asset: {
       _id: string;
       url: string | null;
     } | null;
-    alt: string | null;
   } | null;
 }>;
 // Variable: strategicDirectionsQuery
-// Query: *[_type == "strategicDirection"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {    _id,    title,    sortOrder  }
-export type StrategicDirectionsQueryResult = Array<{
-  _id: string;
-  title: string;
-  sortOrder: number | null;
-}>;
+// Query: *[_id == "veikla"][0] {    misija,    vizija,    "strategicDirections": strategicDirections[] {      _key,      title    }  }
+export type StrategicDirectionsQueryResult = {
+  misija: null;
+  vizija: null;
+  strategicDirections: null;
+} | {
+  misija: string;
+  vizija: string;
+  strategicDirections: Array<{
+    _key: string;
+    title: string;
+  }> | null;
+} | null;
 // Variable: partnersQuery
-// Query: {    "cooperate": *[_type == "partner" && group == "cooperate"] | order(coalesce(sortOrder, 9999) asc, title asc) {      _id,      title,      "logo": logo.asset->url,      extra,      isMinistry    },    "agreements": *[_type == "partner" && group == "agreements"] | order(coalesce(sortOrder, 9999) asc, title asc) {      _id,      title,      "logo": logo.asset->url,      extra,      isMinistry    }  }
+// Query: *[_id == "partneriai"][0] {    "cooperate": partnersCooperate[] {      _key,      title,      "logo": logo.asset->url,      extra    },    "agreements": partnersAgreements[] {      _key,      title,      "logo": logo.asset->url,      extra    }  }
 export type PartnersQueryResult = {
+  cooperate: null;
+  agreements: null;
+} | {
   cooperate: Array<{
-    _id: string;
+    _key: string;
     title: string;
-    logo: null;
+    logo: string | null;
     extra: string | null;
-    isMinistry: boolean | null;
-  }>;
+  }> | null;
   agreements: Array<{
-    _id: string;
+    _key: string;
     title: string;
-    logo: null;
+    logo: string | null;
     extra: string | null;
-    isMinistry: boolean | null;
-  }>;
-};
+  }> | null;
+} | null;
 // Variable: contactInfoQuery
 // Query: *[_type == "contactInfo"][0] {    address,    phone,    email,    googleAddress  }
 export type ContactInfoQueryResult = {
@@ -868,14 +899,17 @@ export type LegalDocumentsQueryResult = {
   ethicsName: string | null;
 } | null;
 // Variable: activityReportsQuery
-// Query: *[_type == "activityReport"] | order(_createdAt asc) {    _id,    period,    "fileUrl": file.asset->url,    "fileName": file.asset->originalFilename,    _createdAt  }
-export type ActivityReportsQueryResult = Array<{
-  _id: string;
-  period: string;
-  fileUrl: string | null;
-  fileName: string | null;
-  _createdAt: string;
-}>;
+// Query: *[_id == "veikla"][0] {    "reports": ataskaitos[] {      _key,      period,      "fileUrl": file.asset->url,      "fileName": file.asset->originalFilename    }  }
+export type ActivityReportsQueryResult = {
+  reports: null;
+} | {
+  reports: Array<{
+    _key: string;
+    period: string;
+    fileUrl: string | null;
+    fileName: string | null;
+  }> | null;
+} | null;
 // Variable: eventsListQuery
 // Query: *[_type == "event" &&    (!defined($from) || $from == null || coalesce(startAt, dateTime(date)) >= dateTime($from)) &&    (!defined($to) || $to == null || coalesce(startAt, dateTime(date)) <= dateTime($to))  ] | order(coalesce(startAt, dateTime(date)) desc) {    _id,    title,    slug,    date,    startAt,    endAt,    time,    location,    organizers,    excerpt,    "plainContent": pt::text(content),    "cover": images[0]{ asset->{ _id, url } }  }
 export type EventsListQueryResult = Array<never>;
@@ -883,26 +917,32 @@ export type EventsListQueryResult = Array<never>;
 // Query: *[_type == "event" && slug.current == $slug][0] {    _id,    title,    slug,    date,    startAt,    endAt,    time,    location,    locationLat,    locationLng,    organizers,    excerpt,    content,    images[]{ asset->{ _id, url } }  }
 export type SingleEventQueryResult = null;
 // Variable: membershipInfoQuery
-// Query: *[_type == "membershipInfo"][0] {    whyJoinTitle,    whyJoinText,    "whyJoinFileUrl": whyJoinFile.asset->url,    "whyJoinFileName": whyJoinFile.asset->originalFilename,    benefitsTitle,    benefitsText,    "benefitsFileUrl": benefitsFile.asset->url,    "benefitsFileName": benefitsFile.asset->originalFilename,    feeTitle,    feeText,    "feeImage": feeImage{      asset->{        _id,        url      },      alt    },    requiredDocumentsTitle,    requiredDocuments[] {      _key,      title,      description,      "fileUrl": file.asset->url,      "fileName": file.asset->originalFilename    }  }
+// Query: *[_id == "membershipInfo"][0] {    whyJoinText,    benefitsText[] {      _key,      title,      description1,      description2,      description3,      description4    },    entryFee,    annualFeeDescription,    "feeImage": feeImage{      asset->{        _id,        url      }    },    requiredDocuments[] {      _key,      title,      description,      "fileUrl": file.asset->url,      "fileName": file.asset->originalFilename    }  }
 export type MembershipInfoQueryResult = {
-  whyJoinTitle: string;
-  whyJoinText: string | null;
-  whyJoinFileUrl: string | null;
-  whyJoinFileName: string | null;
-  benefitsTitle: string;
-  benefitsText: string | null;
-  benefitsFileUrl: string | null;
-  benefitsFileName: string | null;
-  feeTitle: string;
-  feeText: string | null;
+  whyJoinText: null;
+  benefitsText: null;
+  entryFee: null;
+  annualFeeDescription: null;
+  feeImage: null;
+  requiredDocuments: null;
+} | {
+  whyJoinText: BlockContent | null;
+  benefitsText: Array<{
+    _key: string;
+    title: string;
+    description1: string | null;
+    description2: string | null;
+    description3: string | null;
+    description4: string | null;
+  }> | null;
+  entryFee: number;
+  annualFeeDescription: string | null;
   feeImage: {
     asset: {
       _id: string;
       url: string | null;
     } | null;
-    alt: string | null;
   } | null;
-  requiredDocumentsTitle: string;
   requiredDocuments: Array<{
     _key: string;
     title: string;
@@ -917,21 +957,21 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"settings\"][0]": SettingsQueryResult;
-    "\n  *[_type == \"leadership\"] | order(role asc, sortOrder asc, name asc) {\n    _id,\n    name,\n    position,\n    role,\n    \"photo\": photo{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    sortOrder,\n    phone,\n    email\n  }\n": LeadershipQueryResult;
-    "\n  *[_type == \"news\"] | order(publishedAt desc) [0...5] {\n    _id,\n    title,\n    slug,\n    type,\n    isFeatured,\n    excerpt,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt\n  }\n": NewsQueryResult;
-    "\n  *[_type == \"news\"] | order(isFeatured desc, publishedAt desc) {\n    _id,\n    title,\n    slug,\n    type,\n    isFeatured,\n    excerpt,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    googleMapsLocation\n  }\n": AllNewsQueryResult;
+    "\n  *[_type == \"leadership\"] | order(role asc, name asc) {\n    _id,\n    name,\n    position,\n    role,\n    \"photo\": photo{\n      asset->{\n        _id,\n        url\n      }\n    },\n    phone,\n    email\n  }\n": LeadershipQueryResult;
+    "\n  *[_type == \"news\"] | order(publishedAt desc) [0...5] {\n    _id,\n    title,\n    slug,\n    type,\n    isFeatured,\n    content,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      }\n    },\n    publishedAt\n  }\n": NewsQueryResult;
+    "\n  *[_type == \"news\"] | order(isFeatured desc, publishedAt desc) {\n    _id,\n    title,\n    slug,\n    type,\n    isFeatured,\n    content,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      }\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    googleMapsLocation\n  }\n": AllNewsQueryResult;
     "\n  *[_type == \"news\"] | order(publishedAt desc) [0...5] {\n    _id,\n    title,\n    slug,\n    type,\n    publishedAt\n  }\n": RecentNewsQueryResult;
-    "\n  *[_type == \"news\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    type,\n    excerpt,\n    content,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    googleMapsLocation,\n    entrance,\n    registrationUrl,\n    timeSlots,\n    program,\n    \"documents\": documents[]{\n      title,\n      \"file\": file.asset->{\n        _id,\n        url,\n        originalFilename,\n        size\n      }\n    },\n    additionalInfo\n  }\n": SingleNewsQueryResult;
-    "\n  *[_type == \"pastPresident\"] | order(startYear asc) {\n    _id,\n    name,\n    startYear,\n    endYear\n  }\n": PastPresidentsQueryResult;
+    "\n  *[_type == \"news\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    type,\n    content,\n    \"coverImage\": coverImage{\n      asset->{\n        _id,\n        url\n      }\n    },\n    publishedAt,\n    eventStartDate,\n    eventEndDate,\n    organizers,\n    location,\n    googleMapsLocation,\n    entrance,\n    registrationUrl,\n    timeSlots,\n    program,\n    \"documents\": documents[]{\n      title,\n      \"file\": file.asset->{\n        _id,\n        url,\n        originalFilename,\n        size\n      }\n    },\n    additionalInfo\n  }\n": SingleNewsQueryResult;
+    "\n  *[_id == \"istorija\"][0] {\n    ourHistory,\n    kkpdaToday,\n    presidentMessage,\n    \"services\": services[] {\n      _key,\n      title,\n      description\n    },\n    \"pastPresidents\": pastPresidents[] {\n      _key,\n      name,\n      startYear,\n      endYear\n    }\n  }\n": IstorijaQueryResult;
     "\n  count(*[_type == \"member\"])\n": MembersCountQueryResult;
-    "\n  *[_type == \"member\"] | order(company asc) {\n    _id,\n    person,\n    title,\n    company,\n    address,\n    activity,\n    \"logo\": logo{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    }\n  }\n": MembersQueryResult;
-    "\n  *[_type == \"strategicDirection\"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {\n    _id,\n    title,\n    sortOrder\n  }\n": StrategicDirectionsQueryResult;
-    "\n  {\n    \"cooperate\": *[_type == \"partner\" && group == \"cooperate\"] | order(coalesce(sortOrder, 9999) asc, title asc) {\n      _id,\n      title,\n      \"logo\": logo.asset->url,\n      extra,\n      isMinistry\n    },\n    \"agreements\": *[_type == \"partner\" && group == \"agreements\"] | order(coalesce(sortOrder, 9999) asc, title asc) {\n      _id,\n      title,\n      \"logo\": logo.asset->url,\n      extra,\n      isMinistry\n    }\n  }\n": PartnersQueryResult;
+    "\n  *[_type == \"member\"] | order(company asc) {\n    _id,\n    company,\n    \"logo\": logo{\n      asset->{\n        _id,\n        url\n      }\n    }\n  }\n": MembersQueryResult;
+    "\n  *[_id == \"veikla\"][0] {\n    misija,\n    vizija,\n    \"strategicDirections\": strategicDirections[] {\n      _key,\n      title\n    }\n  }\n": StrategicDirectionsQueryResult;
+    "\n  *[_id == \"partneriai\"][0] {\n    \"cooperate\": partnersCooperate[] {\n      _key,\n      title,\n      \"logo\": logo.asset->url,\n      extra\n    },\n    \"agreements\": partnersAgreements[] {\n      _key,\n      title,\n      \"logo\": logo.asset->url,\n      extra\n    }\n  }\n": PartnersQueryResult;
     "\n  *[_type == \"contactInfo\"][0] {\n    address,\n    phone,\n    email,\n    googleAddress\n  }\n": ContactInfoQueryResult;
     "\n  *[_type == \"istatai\"][0] {\n    \"statutesUrl\": statutesFile.asset->url,\n    \"statutesName\": statutesFile.asset->originalFilename,\n    \"ethicsUrl\": ethicsFile.asset->url,\n    \"ethicsName\": ethicsFile.asset->originalFilename\n  }\n": LegalDocumentsQueryResult;
-    "\n  *[_type == \"activityReport\"] | order(_createdAt asc) {\n    _id,\n    period,\n    \"fileUrl\": file.asset->url,\n    \"fileName\": file.asset->originalFilename,\n    _createdAt\n  }\n": ActivityReportsQueryResult;
+    "\n  *[_id == \"veikla\"][0] {\n    \"reports\": ataskaitos[] {\n      _key,\n      period,\n      \"fileUrl\": file.asset->url,\n      \"fileName\": file.asset->originalFilename\n    }\n  }\n": ActivityReportsQueryResult;
     "\n  *[_type == \"event\" &&\n    (!defined($from) || $from == null || coalesce(startAt, dateTime(date)) >= dateTime($from)) &&\n    (!defined($to) || $to == null || coalesce(startAt, dateTime(date)) <= dateTime($to))\n  ] | order(coalesce(startAt, dateTime(date)) desc) {\n    _id,\n    title,\n    slug,\n    date,\n    startAt,\n    endAt,\n    time,\n    location,\n    organizers,\n    excerpt,\n    \"plainContent\": pt::text(content),\n    \"cover\": images[0]{ asset->{ _id, url } }\n  }\n": EventsListQueryResult;
     "\n  *[_type == \"event\" && slug.current == $slug][0] {\n    _id,\n    title,\n    slug,\n    date,\n    startAt,\n    endAt,\n    time,\n    location,\n    locationLat,\n    locationLng,\n    organizers,\n    excerpt,\n    content,\n    images[]{ asset->{ _id, url } }\n  }\n": SingleEventQueryResult;
-    "\n  *[_type == \"membershipInfo\"][0] {\n    whyJoinTitle,\n    whyJoinText,\n    \"whyJoinFileUrl\": whyJoinFile.asset->url,\n    \"whyJoinFileName\": whyJoinFile.asset->originalFilename,\n    benefitsTitle,\n    benefitsText,\n    \"benefitsFileUrl\": benefitsFile.asset->url,\n    \"benefitsFileName\": benefitsFile.asset->originalFilename,\n    feeTitle,\n    feeText,\n    \"feeImage\": feeImage{\n      asset->{\n        _id,\n        url\n      },\n      alt\n    },\n    requiredDocumentsTitle,\n    requiredDocuments[] {\n      _key,\n      title,\n      description,\n      \"fileUrl\": file.asset->url,\n      \"fileName\": file.asset->originalFilename\n    }\n  }\n": MembershipInfoQueryResult;
+    "\n  *[_id == \"membershipInfo\"][0] {\n    whyJoinText,\n    benefitsText[] {\n      _key,\n      title,\n      description1,\n      description2,\n      description3,\n      description4\n    },\n    entryFee,\n    annualFeeDescription,\n    \"feeImage\": feeImage{\n      asset->{\n        _id,\n        url\n      }\n    },\n    requiredDocuments[] {\n      _key,\n      title,\n      description,\n      \"fileUrl\": file.asset->url,\n      \"fileName\": file.asset->originalFilename\n    }\n  }\n": MembershipInfoQueryResult;
   }
 }

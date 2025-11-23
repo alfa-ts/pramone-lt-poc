@@ -11,7 +11,8 @@ import {
   Clock,
   Building2,
 } from "lucide-react";
-import { AllNewsQueryResult } from "@/sanity.types";
+import { AllNewsQueryResult, BlockContent } from "@/sanity.types";
+import { createExcerpt } from "@/lib/portableTextUtils";
 
 interface NewsItem {
   _id: string;
@@ -19,12 +20,11 @@ interface NewsItem {
   slug: { current: string };
   type: "naujiena" | "renginys";
   isFeatured?: boolean;
-  excerpt: string;
+  content: BlockContent | null;
   coverImage?: {
     asset?: {
       url: string;
     };
-    alt?: string;
   };
   publishedAt: string;
   eventStartDate?: string;
@@ -172,10 +172,7 @@ export function NewsFilter({ newsData }: NewsFilterProps) {
                   {featuredArticle.coverImage?.asset?.url ? (
                     <Image
                       src={featuredArticle.coverImage.asset.url}
-                      alt={
-                        featuredArticle.coverImage.alt ||
-                        featuredArticle.title
-                      }
+                      alt={`${featuredArticle.title} nuotrauka`}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
                     />
@@ -208,7 +205,7 @@ export function NewsFilter({ newsData }: NewsFilterProps) {
                     {featuredArticle.title}
                   </h2>
                   <p className="text-gray-600 mb-6 leading-relaxed">
-                    {featuredArticle.excerpt}
+                    {createExcerpt(featuredArticle.content)}
                   </p>
 
                   <Link
@@ -264,7 +261,7 @@ export function NewsFilter({ newsData }: NewsFilterProps) {
                     {article.coverImage?.asset?.url ? (
                       <Image
                         src={article.coverImage.asset.url}
-                        alt={article.coverImage.alt || article.title}
+                        alt={`${article.title} nuotrauka`}
                         fill
                         className="object-cover group-hover:scale-110 transition-transform duration-500"
                       />
@@ -295,7 +292,7 @@ export function NewsFilter({ newsData }: NewsFilterProps) {
                     </h3>
 
                     <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-1">
-                      {article.excerpt}
+                      {createExcerpt(article.content, 200)}
                     </p>
 
                     <Link

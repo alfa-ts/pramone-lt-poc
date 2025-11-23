@@ -1,10 +1,12 @@
 import { sanityFetch } from "@/sanity/lib/live";
 import { newsQuery, membersCountQuery, strategicDirectionsQuery, partnersQuery, membershipInfoQuery, contactInfoQuery } from "@/sanity/lib/queries";
 import { NewsCarousel } from "./components/NewsCarousel";
+import { PartnersSlider } from "./components/PartnersSlider";
 import { OrganizationFacts } from "./components/OrganizationFacts";
 import { MissionVision } from "./components/MissionVision";
 import { MemberBenefits } from "./components/MemberBenefits";
 import { MembershipCTA } from "./components/MembershipCTA";
+import { createExcerpt } from "@/lib/portableTextUtils";
 
 function formatDate(dateString: string) {
   const date = new Date(dateString);
@@ -40,7 +42,7 @@ export default async function Page() {
   const [
     { data: newsData },
     { data: membersCount },
-    { data: directions },
+    { data: veiklaData },
     { data: partners },
     { data: membership },
     { data: contactInfo }
@@ -52,6 +54,10 @@ export default async function Page() {
     sanityFetch({ query: membershipInfoQuery }),
     sanityFetch({ query: contactInfoQuery }),
   ]);
+
+  const misija = veiklaData?.misija;
+  const vizija = veiklaData?.vizija;
+  const strategicDirections = veiklaData?.strategicDirections || [];
 
   // Calculate full years of activity since 1989-12-22
   const now = new Date();
@@ -74,16 +80,28 @@ export default async function Page() {
       date: formatDate(item.publishedAt),
       title: item.title,
       category: formatCategory(item.type),
-      excerpt: item.excerpt,
+      excerpt: createExcerpt(item.content),
       image: item.coverImage?.asset?.url || "",
-      alt: item.coverImage?.alt || item.title,
+      alt: `${item.title} nuotrauka`,
       slug: item.slug?.current || "",
     })) || [];
+
+  // Get partners with logos for the slider
+  const partnersWithLogos = (partners?.cooperate || [])
+    .filter((partner: any) => partner.logo)
+    .map((partner: any) => ({
+      _key: partner._key,
+      title: partner.title,
+      logo: partner.logo,
+    }));
 
   return (
     <div className="min-h-screen bg-white">
       {/* Hero News Carousel */}
       <NewsCarousel news={news} />
+
+      {/* Partners Slider */}
+      <PartnersSlider partners={partnersWithLogos} />
 
       {/* Organization Facts / Stats */}
       <OrganizationFacts 
@@ -92,10 +110,14 @@ export default async function Page() {
       />
 
       {/* Mission, Vision & Strategic Directions */}
-      <MissionVision strategicDirections={directions} />
+      <MissionVision 
+        misija={misija ?? undefined} 
+        vizija={vizija ?? undefined} 
+        strategicDirections={strategicDirections} 
+      />
 
       {/* Member Benefits */}
-      <MemberBenefits />
+      <MemberBenefits benefits={membership?.benefitsText ?? undefined} />
 
       {/* Membership CTA */}
       <MembershipCTA 

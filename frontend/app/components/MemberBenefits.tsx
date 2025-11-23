@@ -11,8 +11,18 @@ import {
   Award
 } from 'lucide-react';
 
-export function MemberBenefits() {
-  const benefits = [
+interface Benefit {
+  _key: string;
+  title: string;
+  description1?: string | null;
+}
+
+interface MemberBenefitsProps {
+  benefits?: Benefit[];
+}
+
+export function MemberBenefits({ benefits: sanityBenefits }: MemberBenefitsProps) {
+  const defaultBenefits = [
     {
       icon: Briefcase,
       title: 'Verslo konsultacijos',
@@ -55,6 +65,17 @@ export function MemberBenefits() {
     },
   ];
 
+  const icons = [Briefcase, Users, BookOpen, Globe, Shield, TrendingUp, FileText, Award];
+
+  // Use Sanity benefits if available, otherwise use defaults
+  const benefits = sanityBenefits && sanityBenefits.length > 0
+    ? sanityBenefits.map((b, idx) => ({
+        icon: icons[idx % icons.length],
+        title: b.title,
+        description: b.description1 || '',
+      }))
+    : defaultBenefits;
+
   return (
     <section className="bg-white py-20 relative">
       {/* Subtle background decoration */}
@@ -64,7 +85,7 @@ export function MemberBenefits() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="text-center mb-12">
-          <h2 className="text-4xl text-gray-900 mb-4">Narystės privalumai</h2>
+          <h2 className="text-4xl text-gray-900 mb-4">Narystės naudos</h2>
           <p className="text-gray-600 max-w-3xl mx-auto">
             Tapę mūsų asociacijos nariais, gausite prieigą prie išskirtinių galimybių 
             ir paslaugų, skirtų jūsų verslo augimui ir plėtrai

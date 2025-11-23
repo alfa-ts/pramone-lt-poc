@@ -2,29 +2,35 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { membershipInfoQuery } from "@/sanity/lib/queries";
 import Image from "next/image";
 import Link from "next/link";
-import { CheckCircle, ArrowRight, TrendingUp, Send, Mail, Phone, MapPin } from "lucide-react";
+import {
+  CheckCircle,
+  TrendingUp,
+  Send,
+  Mail,
+  Phone,
+  MapPin,
+  Users,
+  Network,
+  Shield,
+  FileText,
+} from "lucide-react";
+import PortableText from "@/app/components/PortableText";
+import ImageModal from "@/app/components/ImageModal";
 
 export default async function KaipTaptiNariuPage() {
   const { data } = await sanityFetch({ query: membershipInfoQuery });
-  const benefitsLines: string[] =
-    typeof data?.benefitsText === "string"
-      ? data.benefitsText
-          .split(/\r?\n/)
-          .map((line: string) => line.replace(/^\s*[•\-]\s*/, "").trim())
-          .filter((line: string) => line.length > 0)
-      : [];
 
   return (
     <div className="min-h-screen bg-white">
       {/* Header Section */}
-      <div className="bg-gradient-to-b from-gray-50 to-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-8 py-16">
+      <div className="bg-gradient-to-b from-[#f9fafb] to-white border-b border-gray-100">
+        <div className="max-w-[1280px] mx-auto px-8 py-16">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 mb-11">
-            <Link href="/" className="text-sm text-gray-500 hover:text-gray-700">
+            <Link href="/" className="text-sm text-[#6a7282] hover:text-gray-700">
               Pradžia
             </Link>
-            <svg className="size-3.5 text-gray-400" fill="none" viewBox="0 0 14 14">
+            <svg className="size-3.5 text-[#99A1AF]" fill="none" viewBox="0 0 14 14">
               <path
                 d="M5.25 10.5L8.75 7L5.25 3.5"
                 stroke="currentColor"
@@ -33,11 +39,11 @@ export default async function KaipTaptiNariuPage() {
                 strokeWidth="1.16667"
               />
             </svg>
-            <span className="text-sm text-gray-900">Kaip tapti nariu</span>
+            <span className="text-sm text-[#101828]">Kaip tapti nariu</span>
           </div>
 
-          <h1 className="text-5xl text-gray-900 mb-6">Kaip tapti nariu?</h1>
-          <p className="text-xl text-gray-600 max-w-3xl">
+          <h1 className="text-5xl text-neutral-950 mb-6">Kaip tapti nariu?</h1>
+          <p className="text-xl text-[#4a5565] max-w-3xl">
             KKPDA vienija įvairių sektorių įmones, teikiančias kvalifikuotas
             paslaugas įmonėms socialinės partnerystės, viešųjų pirkimų ir kitais
             klausimais
@@ -49,215 +55,438 @@ export default async function KaipTaptiNariuPage() {
 
       {/* Main Content */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-8">
+        <div className="max-w-[1280px] mx-auto px-8">
           {/* Section 1: Why become a member */}
           <div className="mb-16">
             <h2 className="text-[32px] leading-[40px] text-[#2c3e5a] mb-6">
-              {data?.whyJoinTitle || "Kodėl verta tapti KKPDA nariu?"}
+              Kodėl verta tapti KKPDA nariu?
             </h2>
 
-            <div className="space-y-4 text-base leading-relaxed text-gray-600">
-              {data?.whyJoinText && (
-                <div className="whitespace-pre-line">{data.whyJoinText}</div>
-              )}
-            </div>
-
-            {data?.whyJoinFileUrl && (
-              <div className="mt-4">
-                <a
-                  href={data.whyJoinFileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#fe9a00] hover:underline font-medium"
-                >
-                  {data.whyJoinFileName || "Atsisiųsti dokumentą"}
-                </a>
-              </div>
+            {data?.whyJoinText && (
+              <article className="prose prose-lg max-w-none text-[#4a5565]">
+                <PortableText value={data.whyJoinText as any} />
+              </article>
             )}
           </div>
 
-          {/* Section 2: Membership Benefits */}
-          <div className="mb-16">
-            <h2 className="text-[32px] leading-[40px] text-[#2c3e5a] mb-6">
-              {data?.benefitsTitle ||
-                "Narystės Kauno krašto pramonininkų ir darbdavių asociacijoje privalumai"}
+          {/* Section 2: Membership Benefits - Dynamic from Sanity */}
+          {Array.isArray(data?.benefitsText) && data.benefitsText.length > 0 && (
+            <div>
+              <h2 className="text-[32px] leading-[40px] text-[#2c3e5a] mb-12">
+                Narystės naudos
+              </h2>
+
+              <div className="space-y-8">
+                {data.benefitsText.map((benefit: any, index: number) => {
+                  // Color schemes for different categories
+                  const colorSchemes = [
+                    {
+                      bg: "from-orange-50 to-white",
+                      border: "border-orange-100",
+                    },
+                    {
+                      bg: "from-blue-50 to-white",
+                      border: "border-blue-100",
+                    },
+                    {
+                      bg: "from-green-50 to-white",
+                      border: "border-green-100",
+                    },
+                    {
+                      bg: "from-purple-50 to-white",
+                      border: "border-purple-100",
+                    },
+                    {
+                      bg: "from-amber-50 to-white",
+                      border: "border-amber-100",
+                    },
+                  ];
+                  const colorScheme =
+                    colorSchemes[index % colorSchemes.length];
+
+                  return (
+                    <div
+                      key={benefit._key || index}
+                      className={`bg-gradient-to-br ${colorScheme.bg} border ${colorScheme.border} rounded-2xl p-8 hover:shadow-lg transition-all`}
+                    >
+                      <div className="flex items-start gap-4 mb-6">
+                        <div className="size-14 shrink-0 bg-gradient-to-br from-[#fe9a00] to-[#e17100] rounded-xl flex items-center justify-center">
+                          <span className="text-white text-2xl">
+                            {index + 1}
+                          </span>
+                        </div>
+                        <div>
+                          <h3 className="text-[24px] leading-[32px] text-[#2c3e5a] mb-2">
+                            {benefit.title}
+                          </h3>
+                        </div>
+                      </div>
+                      <ul className="space-y-3">
+                        {benefit.description1 && (
+                          <li className="flex items-start gap-3">
+                            <div className="size-1.5 shrink-0 mt-2.5 bg-[#fe9a00] rounded-full" />
+                            <p className="text-base leading-relaxed text-[#4a5565]">
+                              {benefit.description1}
+                            </p>
+                          </li>
+                        )}
+                        {benefit.description2 && (
+                          <li className="flex items-start gap-3">
+                            <div className="size-1.5 shrink-0 mt-2.5 bg-[#fe9a00] rounded-full" />
+                            <p className="text-base leading-relaxed text-[#4a5565]">
+                              {benefit.description2}
+                            </p>
+                          </li>
+                        )}
+                        {benefit.description3 && (
+                          <li className="flex items-start gap-3">
+                            <div className="size-1.5 shrink-0 mt-2.5 bg-[#fe9a00] rounded-full" />
+                            <p className="text-base leading-relaxed text-[#4a5565]">
+                              {benefit.description3}
+                            </p>
+                          </li>
+                        )}
+                        {benefit.description4 && (
+                          <li className="flex items-start gap-3">
+                            <div className="size-1.5 shrink-0 mt-2.5 bg-[#fe9a00] rounded-full" />
+                            <p className="text-base leading-relaxed text-[#4a5565]">
+                              {benefit.description4}
+                            </p>
+                          </li>
+                        )}
+                      </ul>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* How to Become a Member Section */}
+      <section className="py-20 bg-white border-b border-gray-100">
+        <div className="max-w-[1280px] mx-auto px-8">
+          <div className="text-center mb-16">
+            <div className="relative inline-block">
+              {/* Decorative elements */}
+              <div className="absolute -top-8 -left-8 size-16 bg-gradient-to-br from-orange-200 to-orange-100 rounded-full opacity-50 blur-xl" />
+              <div className="absolute -top-4 -right-12 size-20 bg-gradient-to-br from-[#fe9a00] to-[#e17100] rounded-full opacity-30 blur-2xl" />
+
+              <h2 className="text-[56px] leading-[64px] bg-gradient-to-r from-[#fe9a00] via-[#e17100] to-[#fe9a00] bg-clip-text text-transparent mb-4 relative">
+                Kaip tapti KKPDA nariu
             </h2>
 
-            <div className="space-y-5">
-              {benefitsLines.map((item: string, idx: number) => (
-                <div key={idx} className="flex items-start gap-3">
-                  <div className="size-6 shrink-0 mt-1 flex items-center justify-center">
-                    <div className="size-2 bg-[#fe9a00] rounded-full" />
-                  </div>
-                  <p className="text-base leading-relaxed text-gray-600">{item}</p>
+              {/* Decorative line */}
+              <div className="flex items-center justify-center gap-3 mt-6">
+                <div className="w-12 h-1 bg-gradient-to-r from-transparent via-[#fe9a00] to-[#fe9a00] rounded-full" />
+                <div className="size-2 bg-[#fe9a00] rounded-full animate-pulse" />
+                <div className="w-12 h-1 bg-gradient-to-l from-transparent via-[#fe9a00] to-[#fe9a00] rounded-full" />
+              </div>
+            </div>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            {/* Main Content - Who can become a member */}
+            <div className="bg-gradient-to-br from-orange-50 via-white to-orange-50 border-2 border-orange-200 rounded-3xl p-12 shadow-xl mb-8">
+              <div className="flex items-start gap-6 mb-6">
+                <div className="size-20 shrink-0 bg-gradient-to-br from-[#fe9a00] to-[#e17100] rounded-2xl flex items-center justify-center shadow-lg">
+                  <Users className="size-10 text-white" />
                 </div>
-              ))}
+                <div>
+                  <h3 className="text-[32px] leading-[40px] text-[#2c3e5a] mb-4">
+                    Kas gali tapti nariu
+                  </h3>
+                  <div className="w-16 h-1 bg-gradient-to-r from-[#fe9a00] to-[#e17100] rounded-full" />
+                </div>
+              </div>
+
+              <p className="text-xl leading-relaxed text-[#2c3e5a]">
+                Kauno krašto pramonininkų ir darbdavių asociacijos (KKPDA) nariais gali tapti{" "}
+                <span className="font-bold text-[#fe9a00]">juridiniai asmenys</span> – įmonės,
+                įstaigos, organizacijos, veikiantys pramonės, gamybos, paslaugų, mokslo ar švietimo srityse.
+              </p>
             </div>
 
-            {data?.benefitsFileUrl && (
-              <div className="mt-6">
-                <a
-                  href={data.benefitsFileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#fe9a00] hover:underline font-medium"
-                >
-                  {data.benefitsFileName || "Atsisiųsti dokumentą"}
-                </a>
+            {/* Secondary Information */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white border border-gray-200 rounded-xl p-6 hover:border-orange-200 transition-all">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="size-10 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg flex items-center justify-center">
+                    <Network className="size-5 text-blue-600" />
+                  </div>
+                  <h4 className="text-lg text-[#2c3e5a]">Aktyvi bendruomenė</h4>
+                </div>
+                <p className="text-sm leading-relaxed text-[#4a5565]">
+                  Narystė KKPDA – tai galimybė jungtis į aktyvią regioninę bendruomenę,
+                  atstovaujančią verslo ir mokslo interesams regioniniu bei nacionaliniu lygiu.
+                </p>
+            </div>
+
+              <div className="bg-white border border-gray-200 rounded-xl p-6 hover:border-orange-200 transition-all">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="size-10 bg-gradient-to-br from-green-50 to-green-100 rounded-lg flex items-center justify-center">
+                    <Shield className="size-5 text-green-600" />
+                  </div>
+                  <h4 className="text-lg text-[#2c3e5a]">Prezidiumas tvirtina</h4>
+                </div>
+                <p className="text-sm leading-relaxed text-[#4a5565]">
+                  Priėmimą į asociacijos narius tvirtina{" "}
+                  <span className="font-semibold text-[#2c3e5a]">KKPDA Prezidiumas.</span>
+                </p>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Documents Required Section */}
       <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-8">
+        <div className="max-w-[1280px] mx-auto px-8">
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-50 to-orange-100 rounded-full px-4 py-2 mb-4 border border-orange-200">
               <CheckCircle className="size-5 text-[#fe9a00]" />
-              <span className="text-base text-gray-900 font-medium">
-                Paprastas procesas
-              </span>
+              <span className="text-base text-gray-900">Paprastas procesas</span>
             </div>
-            <h2 className="text-4xl text-[#2c3e5a] mb-4">
-              {data?.requiredDocumentsTitle || "Kokie dokumentai reikalingi?"}
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Prisijungti prie KKPDA yra paprasta. Paruoškite šiuos dokumentus ir
-              pradėkite kelionę kartu su mumis
+            <h2 className="text-4xl text-[#2c3e5a] mb-4">Kokie dokumentai reikalingi?</h2>
+            <p className="text-lg text-[#4a5565] max-w-2xl mx-auto">
+              Prisijungti prie KKPDA yra paprasta. Paruoškite šiuos dokumentus ir pradėkite kelionę kartu su mumis
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {Array.isArray(data?.requiredDocuments) && data.requiredDocuments.length > 0 ? (
-              data.requiredDocuments.slice(0, 3).map((doc: any, index: number) => (
-                <div key={doc._key || index} className="relative">
-                  <div className="bg-white rounded-2xl p-8 border-2 border-gray-200 hover:border-[#fe9a00] transition-all h-full flex flex-col">
-                    <div className="size-16 bg-gradient-to-br from-[#fe9a00] to-[#e17100] rounded-xl flex items-center justify-center mb-6 mx-auto">
-                      <span className="text-white text-2xl font-medium">
-                        {index + 1}
-                      </span>
+          <div className="max-w-4xl mx-auto space-y-4">
+            {Array.isArray(data?.requiredDocuments) &&
+            data.requiredDocuments.length > 0 ? (
+              data.requiredDocuments.map((doc: any, index: number) => (
+                <div
+                  key={doc._key || index}
+                  className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-[#fe9a00] hover:shadow-md transition-all group"
+                >
+                  <div className="flex items-start md:items-center gap-4 flex-col md:flex-row">
+                    <div className="flex items-start gap-4 flex-1">
+                      <div className="size-12 shrink-0 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg flex items-center justify-center group-hover:from-[#fe9a00] group-hover:to-[#e17100] transition-all">
+                        <FileText className="size-6 text-[#fe9a00] group-hover:text-white transition-all" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-lg text-[#2c3e5a] mb-2">{doc.title}</h3>
+                        <p className="text-sm leading-relaxed text-[#4a5565]">
+                          {doc.description}
+                        </p>
+                      </div>
                     </div>
-                    <h3 className="text-xl text-center mb-3 text-gray-900 font-medium">
-                      {doc.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 text-center flex-grow">
-                      {doc.description && (
-                        <span className="whitespace-pre-line">{doc.description}</span>
-                      )}
-                      {doc.fileUrl && (
-                        <>
-                          <br />
+                    {doc.fileUrl ? (
                           <a
                             href={doc.fileUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[#fe9a00] hover:underline font-medium"
-                          >
-                            {doc.fileName || "Parsisiųsti"}
-                          </a>
-                        </>
-                      )}
-                    </p>
+                        className="bg-gradient-to-r from-[#fe9a00] to-[#e17100] text-white px-6 py-2.5 rounded-lg text-sm hover:shadow-lg transition-all flex items-center gap-2 whitespace-nowrap"
+                      >
+                        <svg
+                          className="size-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                          />
+                        </svg>
+                        {doc.fileName || "Atsisiųsti (PDF)"}
+                      </a>
+                    ) : (
+                      <div className="bg-gray-100 text-[#4a5565] px-6 py-2.5 rounded-lg text-sm whitespace-nowrap">
+                        Jūsų dokumentas
+                      </div>
+                    )}
                   </div>
-                  {/* Connector Arrow */}
-                  {index < 2 && (
-                    <div className="hidden md:block absolute top-1/2 -right-8 -translate-y-1/2 z-10">
-                      <ArrowRight className="size-8 text-[#fe9a00]" />
-                    </div>
-                  )}
                 </div>
               ))
             ) : (
-              <div className="col-span-3 text-center text-gray-500">
-                Nėra dokumentų.
-              </div>
+              <div className="text-center text-gray-500">Nėra dokumentų.</div>
             )}
           </div>
         </div>
       </section>
 
       {/* Pricing Table */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-50 to-orange-100 rounded-full px-4 py-2 mb-4 border border-orange-200">
-              <TrendingUp className="size-5 text-[#fe9a00]" />
-              <span className="text-base text-gray-900 font-medium">
-                Narystės mokestis
-              </span>
+      <section id="pricing" className="py-20 bg-white border-b border-gray-100">
+        <div className="max-w-[1280px] mx-auto px-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-50 to-orange-100 rounded-full px-4 py-2 mb-4 border border-orange-200">
+                <TrendingUp className="size-5 text-[#fe9a00]" />
+                <span className="text-sm text-gray-900">Įnašai</span>
+              </div>
+              <h2 className="text-4xl text-[#2c3e5a] mb-4">Nario įnašai</h2>
+              <p className="text-base leading-relaxed text-[#4a5565] max-w-2xl mx-auto">
+                Nario stojamąjį ir metinį įnašą nustato KKPDA narių konferencija
+              </p>
             </div>
-            <h2 className="text-4xl text-[#2c3e5a] mb-4">
-              {data?.feeTitle || "Kokia yra KKPDA nario mokestis?"}
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              {data?.feeText || "Metinis mokestis priklauso nuo organizacijos dydžio"}
-            </p>
-          </div>
 
-          {data?.feeImage?.asset?.url && (
-            <div className="max-w-4xl mx-auto">
-              <a
-                href={data.feeImage.asset.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block relative group cursor-pointer"
-              >
-                <Image
-                  src={data.feeImage.asset.url}
-                  alt={data.feeImage.alt || "Metinis KKPDA nario mokestis"}
-                  width={1200}
-                  height={800}
-                  className="w-full rounded-2xl shadow-lg transition-transform group-hover:scale-[1.02]"
-                  style={{ width: "100%", height: "auto" }}
-                />
-                {/* Overlay hint */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors rounded-2xl flex items-center justify-center">
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg">
-                    <span className="text-sm text-gray-900 font-medium">Spustelėkite peržiūrėti</span>
+            <div className="bg-gradient-to-br from-orange-50 to-white border-2 border-orange-200 rounded-2xl p-8 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="bg-white rounded-xl p-6 border border-orange-100 shadow-sm">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="size-12 bg-gradient-to-br from-[#fe9a00] to-[#e17100] rounded-lg flex items-center justify-center">
+                      <TrendingUp className="size-6 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-[#4a5565]">Stojamasis įnašas</p>
+                      <p className="text-[28px] leading-[32px] text-[#2c3e5a]">
+                        {data?.entryFee || 300} €
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-sm leading-relaxed text-[#4a5565]">
+                    Vienkartinius mokestis įstojant į asociaciją
+                  </p>
+                </div>
+
+                <div className="bg-white rounded-xl p-6 border border-orange-100 shadow-sm">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="size-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                      <svg
+                        className="size-6 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                        />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-sm text-[#4a5565]">Metinis įnašas</p>
+                      <p className="text-xl text-[#2c3e5a]">Pagal lentelę</p>
+                    </div>
+                  </div>
+                  <p className="text-sm leading-relaxed text-[#4a5565]">
+                    {data?.annualFeeDescription ||
+                      "Nustatomas pagal 2022 m. gruodžio 5 d. konferencijos sprendimą"}
+                  </p>
+                </div>
+              </div>
+
+              {data?.feeImage?.asset?.url && (
+                <div className="bg-white rounded-xl p-4 border border-gray-200">
+                  <ImageModal
+                    src={data.feeImage.asset.url}
+                    alt="Metinis KKPDA nario mokestis"
+                    width={1200}
+                    height={800}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Membership Confirmation Section */}
+      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-[1280px] mx-auto px-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-50 to-orange-100 rounded-full px-4 py-2 mb-4 border border-orange-200">
+                <CheckCircle className="size-5 text-[#fe9a00]" />
+                <span className="text-base text-gray-900">Patvirtinimas</span>
+              </div>
+              <h2 className="text-4xl text-[#2c3e5a] mb-4">Narystės patvirtinimas</h2>
+            </div>
+
+            {/* Timeline Style Layout */}
+            <div className="space-y-8">
+              {/* Header */}
+              <div className="bg-gradient-to-r from-[#fe9a00] to-[#e17100] rounded-2xl p-8 text-white">
+                <p className="text-xl leading-relaxed">Naujas narys laikomas priimtu, kai:</p>
+              </div>
+
+              {/* Step 1 */}
+              <div className="flex gap-6 items-start">
+                <div className="shrink-0">
+                  <div className="size-12 bg-gradient-to-br from-[#fe9a00] to-[#e17100] rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-white text-xl">1</span>
+                  </div>
+                  <div className="w-0.5 h-20 bg-gradient-to-b from-[#fe9a00] to-gray-300 mx-auto mt-2" />
+                </div>
+                <div className="flex-1 bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all">
+                  <h4 className="text-lg text-[#2c3e5a] mb-2 flex items-center gap-2">
+                    <Shield className="size-5 text-[#fe9a00]" />
+                    Prezidiumas patvirtina sprendimą
+                  </h4>
+                  <p className="text-base leading-relaxed text-[#4a5565] pl-7">
+                    Prezidiumas patvirtina sprendimą dėl priėmimo
+                  </p>
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="flex gap-6 items-start">
+                <div className="shrink-0">
+                  <div className="size-12 bg-gradient-to-br from-[#fe9a00] to-[#e17100] rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-white text-xl">2</span>
+                  </div>
+                  <div className="w-0.5 h-20 bg-gradient-to-b from-gray-300 to-transparent mx-auto mt-2" />
+                </div>
+                <div className="flex-1 bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all">
+                  <h4 className="text-lg text-[#2c3e5a] mb-2 flex items-center gap-2">
+                    <TrendingUp className="size-5 text-[#fe9a00]" />
+                    Sumokamas įnašas
+                  </h4>
+                  <p className="text-base leading-relaxed text-[#4a5565] pl-7">
+                    Sumokamas stojamasis ir pirmasis metinis įnašas (ne vėliau kaip per 30 dienų nuo
+                    sprendimo priėmimo)
+                  </p>
+                </div>
+              </div>
+
+              {/* Result */}
+              <div className="bg-gradient-to-br from-green-50 to-white border-2 border-green-200 rounded-2xl p-8 shadow-md">
+                <div className="flex items-start gap-4">
+                  <div className="size-14 shrink-0 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
+                    <CheckCircle className="size-8 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl text-[#2c3e5a] mb-2">Narystė patvirtinta</h4>
+                    <p className="text-base leading-relaxed text-[#4a5565]">
+                      Po to nariui suteikiamos visos teisės ir pareigos pagal KKPDA status.
+                    </p>
                   </div>
                 </div>
-              </a>
+              </div>
             </div>
-          )}
+          </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="bg-gradient-to-br from-[#fe9a00] to-[#e17100] py-20">
-        <div className="max-w-7xl mx-auto px-8">
+      <section id="contact" className="bg-gradient-to-br from-[#fe9a00] to-[#e17100] py-20">
+        <div className="max-w-[1280px] mx-auto px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-4xl text-white mb-6">Pasiruošę prisijungti?</h2>
-              <p className="text-lg text-amber-50 mb-8">
-                Tapkite mūsų organizacijos nariu ir pradėkite naudotis visais
-                narystės privalumais jau šiandien. Mūsų komanda mielai padės visame
-                narystės registracijos procese.
+              <h2 className="text-4xl text-white mb-6">
+                Narystė – bendruomenė, ne formalumas
+              </h2>
+              <p className="text-lg leading-relaxed text-amber-50 mb-6">
+                Narystė KKPDA – tai ne tik teisė dalyvauti, bet ir galimybė veikti.
               </p>
-
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center gap-3 text-white">
-                  <div className="size-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center shrink-0">
-                    <CheckCircle className="size-5" />
-                  </div>
-                  <span className="text-base">Profesionalus verslo tinklas</span>
-                </div>
-                <div className="flex items-center gap-3 text-white">
-                  <div className="size-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center shrink-0">
-                    <CheckCircle className="size-5" />
-                  </div>
-                  <span className="text-base">
-                    Ekspertinė pagalba ir konsultacijos
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 text-white">
-                  <div className="size-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center shrink-0">
-                    <CheckCircle className="size-5" />
-                  </div>
-                  <span className="text-base">Įtaka verslo aplinkai regione</span>
-                </div>
-              </div>
+              <p className="text-lg leading-relaxed text-amber-50 mb-6">
+                Kiekvienas narys jungiasi į renginius, komitetus, diskusijas ir projektus, kurie
+                formuoja Kauno regiono bei Lietuvos pramonės ateitį.
+              </p>
+              <p className="text-lg leading-relaxed text-white mb-8">
+                <strong>
+                  Prisijunkite prie bendruomenės, kuri jungia lyderius, formuoja sprendimus ir kuria
+                  vertę regionui.
+                </strong>
+              </p>
             </div>
 
             <div className="bg-white/10 backdrop-blur-sm border border-white/30 rounded-2xl p-8">
@@ -268,9 +497,7 @@ export default async function KaipTaptiNariuPage() {
                   <MapPin className="size-5 text-amber-200 shrink-0 mt-1" />
                   <div>
                     <p className="text-base mb-1">Adresas</p>
-                    <p className="text-sm text-amber-100">
-                      Donelaičio g. 2, 119 kab., Kaunas
-                    </p>
+                    <p className="text-sm text-amber-100">Donelaičio g. 2, 119 kab., Kaunas</p>
                   </div>
                 </div>
 
@@ -305,5 +532,3 @@ export default async function KaipTaptiNariuPage() {
     </div>
   );
 }
-
-

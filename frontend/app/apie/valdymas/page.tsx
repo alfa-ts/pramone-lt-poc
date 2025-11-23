@@ -14,11 +14,9 @@ interface LeadershipMember {
     asset: {
       url: string | null;
     } | null;
-    alt: string | null;
   };
   phone?: string | null;
   email?: string | null;
-  sortOrder: number | null;
 }
 
 export default async function ValdymasPage() {
@@ -101,10 +99,7 @@ export default async function ValdymasPage() {
             Visuotinė narių konferencija – aukščiausias valdymo organas
           </h2>
           <p className="text-gray-600 text-lg">
-            Ji šaukiama ne rečiau kaip kartą per dvejus metus. Konferencija
-            nustato pagrindinius asociacijos tikslus ir uždavinius, renka ir
-            atšaukia asociacijos Prezidiumą, vertina Prezidiumo veiklos
-            rezultatus.
+            Tai aukščiausias asociacijos valdymo organas. Ji nustato pagrindines veiklos kryptis, tvirtina tikslus ir uždavinius, renka Prezidiumą bei revizorių, priima sprendimus dėl įstatų keitimo, nario mokesčio ir kitų esminių klausimų. Konferencija šaukiama ne rečiau kaip kartą per dvejus metus ir yra sprendimų priėmimo vieta, kurioje formuojama visos organizacijos strateginė vizija.
           </p>
         </div>
       </section>
@@ -117,7 +112,7 @@ export default async function ValdymasPage() {
             <div className="lg:sticky lg:top-24">
               <GovernanceStructureCard
                 title="Prezidentas"
-                description="Atstovauja asociaciją valstybinėse valdžios institucijose, savarankiškai vykdo Prezidiumo pavestas funkcijas, sprendžia organizacinius asociacijos klausimus."
+                description="Prezidentas atstovauja asociacijai aukščiausiu lygiu – valstybės institucijose, savivaldoje, partnerių organizacijose ir tarptautinėje erdvėje. Jis pirmininkauja Prezidiumo posėdžiams, įgyvendina jo sprendimus, koordinuoja veiklą ir gali deleguoti tam tikras funkcijas viceprezidentams ar administracijai."
                 icon={
                   <User className="size-6 text-white" strokeWidth={2} />
                 }
@@ -131,7 +126,7 @@ export default async function ValdymasPage() {
                 name={president.name}
                 position={president.position || ""}
                 image={president.photo?.asset?.url || "/placeholder.jpg"}
-                alt={president.photo?.alt || president.name}
+                alt={`${president.name} nuotrauka`}
                 phone={president.phone || undefined}
                 email={president.email || undefined}
               />
@@ -147,7 +142,7 @@ export default async function ValdymasPage() {
             <div className="mb-12 max-w-4xl mx-auto">
               <GovernanceStructureCard
                 title="Viceprezidentai"
-                description="Vykdo Prezidiumo ir Prezidento apibrėžtas veiklos funkcijas. Padeda prezidentui vadovauti asociacijai ir atstovauja strateginėms veiklos kryptims."
+                description="Viceprezidentai padeda prezidentui įgyvendinti strateginius tikslus ir kuruoja konkrečias sritis – pramonę, statybą, paslaugas, transportą, švietimą ir kitas. Jie atstovauja savo sektoriams bei teikia siūlymus Prezidiumui dėl veiklos prioritetų."
                 icon={
                   <Users className="size-6 text-white" strokeWidth={2} />
                 }
@@ -162,7 +157,7 @@ export default async function ValdymasPage() {
                   name={member.name}
                   position={member.position || ""}
                   image={member.photo?.asset?.url || "/placeholder.jpg"}
-                  alt={member.photo?.alt || member.name}
+                  alt={`${member.name} nuotrauka`}
                   phone={member.phone || undefined}
                   email={member.email || undefined}
                 />
@@ -177,8 +172,8 @@ export default async function ValdymasPage() {
         <section className="max-w-7xl mx-auto px-8 py-20">
           <div className="mb-12 max-w-4xl mx-auto">
             <GovernanceStructureCard
-              title="Prezidiumas – kolegialus valdymo organas"
-              description="Prezidiumas renkamas visuotinėje narių konferencijoje 4 metams. Jis priima strateginius veiklos sprendimus, susijusius su asociacijos nuostatomis ir tikslais, tarp asociacijos narių konferencijų svarsto ir tvirtina asociacijos metinę finansinę atskaitomybę, priima bei šalina asociacijos narius, skiria ir atleidžia asociacijos administracijos vadovą ir vyriausiąjį finansininką, tvirtina administracijos etatus, vadovo darbo reglamentą, priima sprendimus dėl nario mokesčio."
+              title="Prezidiumas"
+              description="Tai kolegialus valdymo organas, renkamas ketverių metų laikotarpiui. Prezidiumas – tai asociacijos strateginis centras, kuriame formuojamos pagrindinės kryptys ir sprendimai."
               icon={
                 <UsersRound className="size-6 text-white" strokeWidth={2} />
               }
@@ -193,7 +188,7 @@ export default async function ValdymasPage() {
                 name={member.name}
                 position={member.position || ""}
                 image={member.photo?.asset?.url || "/placeholder.jpg"}
-                alt={member.photo?.alt || member.name}
+                alt={`${member.name} nuotrauka`}
                 phone={member.phone || undefined}
                 email={member.email || undefined}
               />
@@ -223,7 +218,7 @@ export default async function ValdymasPage() {
                   name={member.name}
                   position={member.position || ""}
                   image={member.photo?.asset?.url || "/placeholder.jpg"}
-                  alt={member.photo?.alt || member.name}
+                  alt={`${member.name} nuotrauka`}
                   phone={member.phone || undefined}
                   email={member.email || undefined}
                 />

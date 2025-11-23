@@ -14,11 +14,7 @@ export function MembersGrid({ members }: MembersGridProps) {
 
   const filteredMembers = members.filter((member) => {
     const searchLower = searchQuery.toLowerCase();
-    return (
-      member.company?.toLowerCase().includes(searchLower) ||
-      member.activity?.toLowerCase().includes(searchLower) ||
-      member.person?.toLowerCase().includes(searchLower)
-    );
+    return member.company?.toLowerCase().includes(searchLower);
   });
 
   return (
@@ -75,7 +71,7 @@ export function MembersGrid({ members }: MembersGridProps) {
                     <div className="relative w-full h-full">
                       <Image
                         src={member.logo.asset.url}
-                        alt={member.logo.alt || member.company || "Company logo"}
+                        alt={`${member.company} logotipas`}
                         fill
                         className="object-contain"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
@@ -117,4 +113,3 @@ export function MembersGrid({ members }: MembersGridProps) {
     </section>
   );
 }
-

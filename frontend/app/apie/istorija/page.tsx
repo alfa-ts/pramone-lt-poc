@@ -8,15 +8,11 @@ import {
 } from "@/sanity/lib/queries";
 import { HistoryTimeline } from "@/app/components/HistoryTimeline";
 import { ServiceCard } from "@/app/components/ServiceCard";
+import PortableText from "@/app/components/PortableText";
 import {
   Users,
   TrendingUp,
   Calendar as CalendarIcon,
-  Award,
-  FileText,
-  Briefcase,
-  MessageSquare,
-  Target,
   Building2,
   Globe,
   Handshake,
@@ -25,13 +21,19 @@ import {
 export default async function IstorijaPage() {
   const [
     { data: leadershipData },
-    { data: pastPresidents },
+    { data: istorijaData },
     { data: membersCount },
   ] = await Promise.all([
     sanityFetch({ query: leadershipQuery }),
     sanityFetch({ query: pastPresidentsQuery }),
     sanityFetch({ query: membersCountQuery }),
   ]);
+
+  const pastPresidents = istorijaData?.pastPresidents || [];
+  const presidentMessage = istorijaData?.presidentMessage;
+  const services = istorijaData?.services || [];
+  const ourHistory = istorijaData?.ourHistory;
+  const kkpdaToday = istorijaData?.kkpdaToday;
 
   // Find the current president
   const president = leadershipData?.find(
@@ -44,46 +46,6 @@ export default async function IstorijaPage() {
   const foundingYear = 1989;
   const currentYear = new Date().getFullYear();
   const yearsOfActivity = currentYear - foundingYear;
-
-  // Services data
-  const services = [
-    {
-      icon: <Award className="w-8 h-8" />,
-      title: "Narių interesų atstovavimas valdžios institucijose",
-      description:
-        "Dėka ilgametės veiklos ir sukuptos patirties KKPDA turi užmezgusi gerus ryšius su įvairiomis vietos ir valstybinės valdžios institucijomis, todėl nuolat efektyviai atstovauja savo narių interesus jose.",
-    },
-    {
-      icon: <FileText className="w-8 h-8" />,
-      title: "Konsultacijos",
-      description:
-        "Tikslinės konsultacijos verslininkų pageidaujamais aktualiais klausimais.",
-    },
-    {
-      icon: <Briefcase className="w-8 h-8" />,
-      title: "Tarptautinės verslo misijos",
-      description:
-        "Nariai turi galimybę dalyvauti Lietuvos pramonininkų konfederacijos organizuojamose verslo forumuose, tarptautinėse verslo kelionėse ir lydėti Vyriausybės vadovus į Europos ir kitas pasaulio šalis.",
-    },
-    {
-      icon: <MessageSquare className="w-8 h-8" />,
-      title: "Ryšiai su žiniasklaida",
-      description:
-        "Ryšiai su žiniasklaida, sudarant galimybę viešai pareikšti verslininkų nuomonę bei stiprinti gerą verslo įvaizdį.",
-    },
-    {
-      icon: <Globe className="w-8 h-8" />,
-      title: "Ekonominė diplomatija",
-      description:
-        "Ryšiai su Lietuvos, Europos Sąjungos ir pasaulio šalių ambasadomis, jų komercijos atašė, per kuriuos teikiami komerciniai pasiūlymai verslininkams.",
-    },
-    {
-      icon: <Target className="w-8 h-8" />,
-      title: "Projektų valdymas ir partnerių paieška",
-      description:
-        "Padedame nariams vykdyti partnerių paiešką ir dalyvauti nacionaliniuose bei tarptautiniuose projektuose.",
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-white">
@@ -107,7 +69,10 @@ export default async function IstorijaPage() {
                 strokeWidth="1.16667"
               />
             </svg>
-            <Link href="/apie/istorija" className="text-gray-500 hover:text-gray-700">
+            <Link
+              href="/apie/istorija"
+              className="text-gray-500 hover:text-gray-700"
+            >
               Apie mus
             </Link>
             <svg
@@ -138,18 +103,15 @@ export default async function IstorijaPage() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-8 py-16">
-        {/* Introduction Section */}
-        <div className="mb-16">
-          <p className="text-lg text-[#4a5565] leading-[1.7] mb-6">
-            <strong className="text-[#101828]">
-              Įkurta 1989 m. gruodžio 22 d.
-            </strong>{" "}
-            Kauno pramonininkų asociacija yra viena seniausių ir įtakingiausių
-            verslo organizacijų Lietuvoje. Per šį laikotarpį tapome patikimu
-            partneriu tiek nariams, tiek valstybės institucijoms, nuolat
-            prisidedant prie verslo aplinkos gerinimo ir ekonomikos plėtros.
-          </p>
-        </div>
+        {/* Mūsų istorija Section */}
+        {ourHistory && (
+          <div className="mb-16">
+            <h2 className="text-2xl text-[#101828] mb-6">Mūsų istorija</h2>
+            <article className="prose prose-lg max-w-none text-[#4a5565]">
+              <PortableText value={ourHistory as any} />
+            </article>
+          </div>
+        )}
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16 p-8 bg-gray-50 rounded-2xl border border-gray-100">
@@ -186,107 +148,42 @@ export default async function IstorijaPage() {
           </div>
         </div>
 
-        {/* Historical Context Section */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-bold text-[#101828] mb-6">
-            Istorinė raida
-          </h2>
-
-          <p className="text-lg text-[#4a5565] leading-[1.7] mb-6">
-            1930 metų balandžio 12 d. buvo įsteigta pirmoji Lietuvoje
-            gamybininkų ir prekybininkų organizacija, Lietuvių prekybininkų,
-            pramonininkų ir amatininkų sąjunga, kuri vėliau pasivadinę
-            Verslininkų sąjunga.
-          </p>
-
-          <div className="bg-amber-50 border-l-4 border-[#FE9A00] p-6 rounded-r-lg mb-6">
-            <p className="text-lg text-[#4a5565] leading-[1.7]">
-              Po beveik 60-ies metų, 1989 m. gruodžio 22 d. buvo įsteigta Kauno
-              pramonininkų asociacija. Nuo pat įkūrimo dienos, asociacija
-              aktyviai dalyvavo formuojant palankią verslo aplinką ir
-              įtvirtinant socialinės rinkos ekonomikos principus.
-            </p>
+        {/* KKPDA šiandien Section */}
+        {kkpdaToday && (
+          <div className="mb-16">
+            <h2 className="text-2xl text-[#101828] mb-6">KKPDA šiandien</h2>
+            <article className="prose prose-lg max-w-none text-[#4a5565]">
+              <PortableText value={kkpdaToday as any} />
+            </article>
           </div>
+        )}
+      </div>
 
-          <p className="text-lg text-[#4a5565] leading-[1.7] mb-6">
-            Vystantis veiklai, formuojantis naujiems veiklos prioritetams bei
-            įsiįungiant naujiems nariams, 1996 m. rugpjūčio 15 d. asociacija
-            buvo perregistruota ir pavadinta Kauno krašto pramonininkų ir
-            darbdavių asociacija (KKPDA). Jos narių veiklos prioritetai išliko
-            iki šių dienų.
-          </p>
-        </div>
-
-        {/* Mission Section */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-bold text-[#101828] mb-6">
-            Mūsų organizacija
-          </h2>
-
-          <p className="text-lg text-[#4a5565] leading-[1.7] mb-6">
-            Kauno krašto pramonininkų ir darbdavių asociacija – savarankiška
-            pelno nesiekianti organizacija, kurios tikslas yra suvienyti Kauno
-            regiono pramonės įmones, kitus juridinius ir fizinius asmenis,
-            vadovaujantis geranoriškumo bei tarpusavio supratimo principais
-            atstovauti ir ginti narių teisėtus interesus valstybinės ir vietos
-            valdžios bei kitose institucijose.
-          </p>
-        </div>
-
-        {/* Representation Section */}
-        <div className="mb-16">
-          <h2 className="text-2xl font-bold text-[#101828] mb-6">
-            Atstovavimas ir įtaka
-          </h2>
-
-          <p className="text-lg text-[#4a5565] leading-[1.7] mb-6">
-            Asociacija atstovauja savo nariams nacionaliniu ir tarptautiniu
-            lygiu, užtikrindama, kad jų interesai būtų išgirsti ir įgyvendinti
-            sprendžiant svarbiausius verslo klausimus.
-          </p>
-
-          <div className="grid grid-cols-1 gap-4 mb-6">
-            <div className="flex gap-4 items-start">
-              <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-[#FE9A00] to-[#E17100] rounded-lg flex items-center justify-center mt-1">
-                <Building2 className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-[#101828] mb-2">
-                  Lietuvos pramonininkų konfederacija
-                </h3>
-                <p className="text-[#4a5565] leading-[1.7]">
-                  Aktyvūs nariai, prisidedantys prie nacionalinės verslo
-                  politikos formavimo
+      {/* Values Statement Section - Hardcoded */}
+      <div className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-8">
+          <div className="relative">
+            {/* Decorative gradient background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-amber-50 to-orange-50 rounded-3xl opacity-60"></div>
+            
+            {/* Content */}
+            <div className="relative p-12 md:p-16">
+              {/* Quotation mark decoration */}
+              <div className="absolute top-8 left-8 text-8xl text-[#FE9A00] opacity-20 leading-none">&ldquo;</div>
+              
+              <div className="relative z-10 text-center">
+                <h2 className="text-3xl md:text-4xl text-[#101828] mb-8 leading-tight">
+                  Mūsų nariai – mūsų vertybė.
+                </h2>
+                
+                <div className="w-16 h-1 bg-gradient-to-r from-[#FE9A00] to-[#E17100] mx-auto mb-8 rounded-full"></div>
+                
+                <p className="text-xl md:text-2xl text-[#4a5565] leading-relaxed mb-6">
+                  Tai šūkis, kuris iš kasdienės veiklos tapo žodiniu kūnu.
                 </p>
-              </div>
-            </div>
-
-            <div className="flex gap-4 items-start">
-              <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-[#FE9A00] to-[#E17100] rounded-lg flex items-center justify-center mt-1">
-                <Globe className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-[#101828] mb-2">
-                  Tarptautinės organizacijos
-                </h3>
-                <p className="text-[#4a5565] leading-[1.7]">
-                  Dalyvaujame daugelyje tarptautinių verslo organizacijų
-                  veikloje
-                </p>
-              </div>
-            </div>
-
-            <div className="flex gap-4 items-start">
-              <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-[#FE9A00] to-[#E17100] rounded-lg flex items-center justify-center mt-1">
-                <Handshake className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-[#101828] mb-2">
-                  Partnerystė su institucijomis
-                </h3>
-                <p className="text-[#4a5565] leading-[1.7]">
-                  Glaudus bendradarbiavimas su valstybės institucijomis ir
-                  savivalda
+                
+                <p className="text-lg text-[#4a5565] leading-[1.7] max-w-2xl mx-auto">
+                  KKPDA – išskirtinė asocijuota struktūra, kurios veikimo pagrindą sudaro stipri, darni ir aktyvi bendruomenė bei dėmesys kiekvienam nariui.
                 </p>
               </div>
             </div>
@@ -328,7 +225,7 @@ export default async function IstorijaPage() {
               <div>
                 <Image
                   src={president.photo?.asset?.url || "/placeholder.jpg"}
-                  alt={president.photo?.alt || president.name}
+                  alt={`${president.name} nuotrauka`}
                   width={600}
                   height={750}
                   className="rounded-2xl shadow-2xl w-full aspect-[4/5] object-cover"
@@ -345,31 +242,11 @@ export default async function IstorijaPage() {
                   </p>
                 </div>
 
-                <div className="space-y-6 text-lg text-[#4a5565] leading-[1.7]">
-                  <p>
-                    Keičiasi verslo karta ir ateina jauni verslininkai. Norime
-                    kalbėti apie Kauno krašto pramonę, darbdavius ir
-                    transformaciją. Transformuojame pramonę, o mūsų, verslo
-                    atstovų, niekas neklausia kaip tą daryti, kokie iššūkiai
-                    laukia ir kokių sprendimų reikia.
-                  </p>
-
-                  <p>
-                    Regioninė asociacija turi būti regiono visuomenės dalis.
-                    Matau norą sukurti tokią aplinką, kad verslas ir toliau
-                    sėkmingai dirbtų, o darbuotojai liktų patenkinti. Kartu
-                    turėtų bendradarbiauti verslo, savivaldybių ir mokslo
-                    atstovai.
-                  </p>
-
-                  <p className="italic">
-                    Po penkerių metų norėtųsi, kad verslas matytų asociacijos
-                    teikiamą naudą, vadovai tarpusavyje bendrautų ir
-                    bendradarbiautų, regiono verslo aplinka įgautų didesnį
-                    tvarumą. Kiekvienas iš mūsų galėtų atsakyti į klausimą kuo
-                    aš galėčiau būti naudingas asociacijai.
-                  </p>
-                </div>
+                {presidentMessage && (
+                  <article className="prose prose-lg max-w-none text-[#4a5565]">
+                    <PortableText value={presidentMessage as any} />
+                  </article>
+                )}
               </div>
             </div>
           </div>
@@ -377,31 +254,33 @@ export default async function IstorijaPage() {
       )}
 
       {/* Services Section */}
-      <div className="py-20 bg-gray-50 border-t border-gray-100">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-[#101828] mb-4">
-              Teikiamos paslaugos
-            </h2>
-            <p className="text-lg text-[#4a5565] leading-[1.7] max-w-2xl mx-auto">
-              Siūlome platų paslaugų spektrą, padedantį nariams augti ir
-              sėkmingai plėtoti verslą
-            </p>
-            <div className="w-16 h-1 bg-gradient-to-r from-[#FE9A00] to-[#E17100] mx-auto mt-6 rounded-full"></div>
-          </div>
+      {services.length > 0 && (
+        <div className="py-20 bg-gray-50 border-t border-gray-100">
+          <div className="max-w-7xl mx-auto px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold text-[#101828] mb-4">
+                Teikiamos paslaugos
+              </h2>
+              <p className="text-lg text-[#4a5565] leading-[1.7] max-w-2xl mx-auto">
+                Siūlome platų paslaugų spektrą, padedantį nariams augti ir
+                sėkmingai plėtoti verslą
+              </p>
+              <div className="w-16 h-1 bg-gradient-to-r from-[#FE9A00] to-[#E17100] mx-auto mt-6 rounded-full"></div>
+            </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <ServiceCard
-                key={index}
-                icon={service.icon}
-                title={service.title}
-                description={service.description}
-              />
-            ))}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {services.map((service, index) => (
+                <ServiceCard
+                  key={service._key}
+                  number={index + 1}
+                  title={service.title}
+                  description={service.description || ""}
+                />
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

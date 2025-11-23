@@ -157,7 +157,7 @@ export default async function NewsDetailPage({
             <div className="rounded-2xl overflow-hidden shadow-xl">
               <Image
                 src={news.coverImage.asset.url}
-                alt={news.coverImage.alt || news.title}
+                alt={`${news.title} nuotrauka`}
                 width={1200}
                 height={500}
                 className="w-full h-[500px] object-cover"
@@ -226,12 +226,6 @@ export default async function NewsDetailPage({
               )}
 
               <article className="prose prose-lg max-w-none">
-                {news.excerpt && (
-                  <p className="text-xl text-gray-700 leading-relaxed mb-6">
-                    {news.excerpt}
-                  </p>
-                )}
-
                 {news.content && <PortableText value={news.content as any} />}
               </article>
 

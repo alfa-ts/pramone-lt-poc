@@ -1,8 +1,6 @@
 import { sanityFetch } from "@/sanity/lib/live";
 import { membersQuery } from "@/sanity/lib/queries";
 import Link from "next/link";
-import Image from "next/image";
-import { Award } from "lucide-react";
 import { Suspense } from "react";
 import { MembersGrid } from "@/app/components/MembersGrid";
 
@@ -52,96 +50,6 @@ export default async function NariaiPage() {
       >
         <MembersGrid members={members || []} />
       </Suspense>
-
-      {/* Benefits Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="relative h-[400px] rounded-2xl overflow-hidden">
-              <Image
-                src="https://images.unsplash.com/photo-1601509876296-aba16d4c10a4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMHRlYW0lMjBjb2xsYWJvcmF0aW9ufGVufDF8fHx8MTc2MzQxMjg1M3ww&ixlib=rb-4.1.0&q=80&w=1080"
-                alt="Business collaboration"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-            </div>
-
-            <div>
-              <div className="inline-flex items-center gap-2 bg-orange-50 rounded-full px-4 py-2 mb-6">
-                <Award className="size-5 text-[#fe9a00]" />
-                <span className="text-[#fe9a00] font-medium text-sm">
-                  Narystės privalumai
-                </span>
-              </div>
-
-              <h2 className="text-xl text-gray-900 font-medium mb-6">
-                Kodėl verta tapti nariu?
-              </h2>
-
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="size-8 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg flex items-center justify-center shrink-0 mt-1">
-                    <div className="size-2 bg-[#fe9a00] rounded-full" />
-                  </div>
-                  <div>
-                    <h4 className="text-gray-900 mb-1">
-                      Atstovavimas interesams
-                    </h4>
-                    <p className="text-gray-600 text-sm">
-                      Aktyvus dalyvavimas formuojant verslo aplinką regione
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="size-8 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg flex items-center justify-center shrink-0 mt-1">
-                    <div className="size-2 bg-[#fe9a00] rounded-full" />
-                  </div>
-                  <div>
-                    <h4 className="text-gray-900 mb-1">
-                      Verslo tinklas
-                    </h4>
-                    <p className="text-gray-600 text-sm">
-                      Bendradarbiavimo galimybės su kitais nariais
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="size-8 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg flex items-center justify-center shrink-0 mt-1">
-                    <div className="size-2 bg-[#fe9a00] rounded-full" />
-                  </div>
-                  <div>
-                    <h4 className="text-gray-900 mb-1">
-                      Konsultacijos
-                    </h4>
-                    <p className="text-gray-600 text-sm">
-                      Profesionali pagalba teisės, mokesčių ir darbo santykių
-                      klausimais
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3">
-                  <div className="size-8 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg flex items-center justify-center shrink-0 mt-1">
-                    <div className="size-2 bg-[#fe9a00] rounded-full" />
-                  </div>
-                  <div>
-                    <h4 className="text-gray-900 mb-1">
-                      Mokymai ir renginiai
-                    </h4>
-                    <p className="text-gray-600 text-sm">
-                      Specializuoti mokymai ir verslo forumų organizavimas
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="bg-gradient-to-br from-[#fe9a00] to-[#e17100] py-16">

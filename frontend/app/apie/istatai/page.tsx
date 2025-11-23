@@ -3,7 +3,6 @@ import Link from "next/link";
 import { sanityFetch } from "@/sanity/lib/live";
 import { legalDocumentsQuery } from "@/sanity/lib/queries";
 import {
-  Info,
   Calendar,
   Users,
   Scale,
@@ -12,6 +11,13 @@ import {
   Download,
   BookOpen,
   Shield,
+  ExternalLink,
+  Eye,
+  Heart,
+  Handshake,
+  Leaf,
+  ShieldX,
+  Lock,
 } from "lucide-react";
 
 export default async function IstataiPage() {
@@ -43,7 +49,10 @@ export default async function IstataiPage() {
                 strokeWidth="1.16667"
               />
             </svg>
-            <Link href="/apie/istorija" className="text-gray-500 hover:text-gray-700">
+            <Link
+              href="/apie/istorija"
+              className="text-gray-500 hover:text-gray-700"
+            >
               Apie mus
             </Link>
             <svg
@@ -72,169 +81,36 @@ export default async function IstataiPage() {
       </div>
 
       {/* Introduction Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-100 rounded-full px-4 py-2 mb-6">
-                <Info className="size-4 text-[#fe9a00]" />
-                <span className="text-[#fe9a00] font-medium text-sm">
-                  Apie organizaciją
-                </span>
-              </div>
-
-              <h2 className="text-2xl text-gray-900 mb-6">
-                Kauno krašto pramonininkų ir darbdavių asociacija
-              </h2>
-
-              <div className="space-y-4 text-gray-600 leading-relaxed">
-                <p>
-                  Kauno krašto pramonininkų ir darbdavių asociacija (toliau –
-                  Asociacija) yra ribotos civilinės atsakomybės viešasis
-                  juridinis asmuo, kurio teisinė forma – asociacija.
-                </p>
-                <p>
-                  Asociacija yra savarankiška savanoriškumo principu atsikūrus
-                  Lietuvos Respublikos ūkio subjektus, veikiančius gamybos ir
-                  gamybos aptarnavimo bei kitose verslo, švietimo ir paslaugų
-                  teikimo srityse, jungianti organizacija.
-                </p>
-              </div>
-
-              <div className="mt-8 flex items-center gap-3 p-4 bg-blue-50 border border-blue-100 rounded-xl">
-                <Calendar className="size-5 text-blue-600 shrink-0" />
-                <div>
-                  <div className="text-sm text-blue-900 font-medium">
-                    Įstatai įregistruoti
-                  </div>
-                  <div className="text-sm text-blue-700">
-                    Juridinių asmenų registre 2021 m. gruodžio 7 dieną
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-xl">
-              <Image
-                src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1080&q=80"
-                alt="Legal documents"
-                fill
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Key Principles Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl text-gray-900 mb-3">
-              Pagrindiniai principai
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Asociacijos veikla grindžiama šiais principais
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white border border-gray-200 rounded-2xl p-8 hover:shadow-lg transition-shadow">
-              <div className="size-14 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl flex items-center justify-center mb-6">
-                <Users className="size-7 text-[#fe9a00]" />
-              </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-3">
-                Savanoriškumas
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Narystė asociacijoje yra laisvanoriška ir grindžiama bendromis
-                narių interesų apsauga bei verslo plėtros principais
-              </p>
-            </div>
-
-            <div className="bg-white border border-gray-200 rounded-2xl p-8 hover:shadow-lg transition-shadow">
-              <div className="size-14 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl flex items-center justify-center mb-6">
-                <Scale className="size-7 text-blue-600" />
-              </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-3">
-                Teisėtumas
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Visos asociacijos veiksmai ir sprendimai atitinka Lietuvos
-                Respublikos įstatymus ir kitus teisės aktus
-              </p>
-            </div>
-
-            <div className="bg-white border border-gray-200 rounded-2xl p-8 hover:shadow-lg transition-shadow">
-              <div className="size-14 bg-gradient-to-br from-green-50 to-green-100 rounded-xl flex items-center justify-center mb-6">
-                <CheckCircle className="size-7 text-green-600" />
-              </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-3">
-                Atvirumas
-              </h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Skaidri ir atvira veikla, užtikrinanti visų narių dalyvavimą
-                priimant svarbius sprendimus
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Documents Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-8">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#fe9a00] to-[#e17100] rounded-full px-4 py-2 mb-4">
-              <FileText className="size-5 text-white" />
-              <span className="text-white font-medium">
-                Pagrindiniai dokumentai
-              </span>
-            </div>
-            <h2 className="text-2xl text-gray-900 mb-4">
-              Atsisiųskite dokumentus
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Peržiūrėkite asociacijos įstatus ir etikos kodeksą
-            </p>
-          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-2xl text-gray-900 mb-8">
+                Teisinė ir etinė struktūra
+              </h2>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {/* Įstatai Document */}
-            <div className="bg-gradient-to-br from-white to-gray-50 border-2 border-gray-200 rounded-3xl p-8 hover:border-[#fe9a00] hover:shadow-2xl transition-all group">
-              <div className="flex items-start gap-6 mb-6">
-                <div className="size-20 bg-gradient-to-b from-[#fe9a00] to-[#e17100] rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <BookOpen className="size-10 text-white" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-medium text-gray-900 mb-2">
+              <div className="space-y-5 text-gray-600 leading-relaxed text-lg">
+                <p>
+                  Kauno krašto pramonininkų ir darbdavių asociacija (KKPDA) –
+                  ribotos civilinės atsakomybės viešasis juridinis asmuo,
+                  veikiantis asociacijos teisine forma.
+                </p>
+                <p>
+                  Asociacija vienija gamybos, paslaugų, švietimo, mokslo ir
+                  kitų sričių organizacijas, siekiančias stiprinti Kauno
+                  regiono ir visos šalies ekonominę, socialinę bei
+                  technologinę pažangą.
+                </p>
+                <p>
+                  Asociacijos veiklą reglamentuoja{" "}
+                  <span className="font-medium text-gray-900">
                     KKPDA įstatai
-                  </h3>
-                  <p className="text-gray-600 text-sm mb-3">
-                    Asociacijos įstatai, įregistruoti Juridinių asmenų registre
-                    2021 metais
-                  </p>
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <FileText className="size-4" />
-                    <span>{statutesName || "KKPDA-istatai-2021.pdf"}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <div className="size-1.5 bg-[#fe9a00] rounded-full" />
-                  <span>Asociacijos tikslai ir uždaviniai</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <div className="size-1.5 bg-[#fe9a00] rounded-full" />
-                  <span>Narių teisės ir pareigos</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <div className="size-1.5 bg-[#fe9a00] rounded-full" />
-                  <span>Valdymo organų struktūra</span>
-                </div>
+                  </span>
+                  , įregistruoti Juridinių asmenų registre{" "}
+                  <span className="font-medium text-gray-900">
+                    2021 m. gruodžio 7 d.
+                  </span>
+                </p>
               </div>
 
               {statutesUrl ? (
@@ -242,69 +118,172 @@ export default async function IstataiPage() {
                   href={statutesUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#fe9a00] to-[#e17100] text-white px-6 py-4 rounded-xl font-medium hover:shadow-lg hover:scale-[1.02] transition-all"
+                  className="group mt-10 inline-flex items-center gap-3 bg-gradient-to-r from-[#fe9a00] to-[#e17100] text-white px-8 py-4 rounded-xl font-medium hover:shadow-xl hover:shadow-orange-500/20 hover:scale-[1.02] transition-all"
                 >
-                  <Download className="size-5" />
-                  Atidaryti dokumentą
+                  <FileText className="size-5" />
+                  Peržiūrėti KKPDA įstatus
+                  <ExternalLink className="size-4 opacity-75 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </a>
               ) : (
-                <div className="w-full inline-flex items-center justify-center gap-2 bg-gray-300 text-gray-500 px-6 py-4 rounded-xl font-medium cursor-not-allowed">
-                  <Download className="size-5" />
-                  Dokumentas nepasiekiamas
+                <div className="group mt-10 inline-flex items-center gap-3 bg-gray-300 text-gray-500 px-8 py-4 rounded-xl font-medium cursor-not-allowed">
+                  <FileText className="size-5" />
+                  Peržiūrėti KKPDA įstatus
+                  <ExternalLink className="size-4 opacity-75" />
                 </div>
               )}
             </div>
 
-            {/* Ethics Code Document */}
-            <div className="bg-gradient-to-br from-white to-gray-50 border-2 border-gray-200 rounded-3xl p-8 hover:border-[#fe9a00] hover:shadow-2xl transition-all group">
-              <div className="flex items-start gap-6 mb-6">
-                <div className="size-20 bg-gradient-to-b from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <Shield className="size-10 text-white" />
+            <div className="relative h-[550px] rounded-3xl overflow-hidden shadow-2xl hover:shadow-orange-500/10 transition-shadow">
+              <Image
+                src="https://images.unsplash.com/photo-1659355894099-b2c2b2884322?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsZWdhbCUyMGRvY3VtZW50cyUyMHByb2Zlc3Npb25hbHxlbnwxfHx8fDE3NjMzMTE2MDV8MA&ixlib=rb-4.1.0&q=80&w=1080"
+                alt="Legal documents"
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Ethics Code Detailed Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-8">
+          {/* Header */}
+          <div className="mb-12">
+            <div className="inline-flex items-center gap-2 bg-orange-50 rounded-full px-4 py-2 mb-4">
+              <Shield className="size-4 text-[#fe9a00]" />
+              <span className="text-[#fe9a00] font-medium text-sm">
+                Etikos kodeksas
+              </span>
+            </div>
+            <h2 className="text-2xl text-gray-900 mb-4">
+              Vertybės ir principai
+            </h2>
+            <p className="text-gray-600 leading-relaxed max-w-3xl">
+              KKPDA Etikos kodeksas – tai{" "}
+              <span className="font-medium text-gray-900">
+                bendruomenės veikimo kultūros pagrindas
+              </span>
+              , apibrėžiantis elgesio ir atsakomybės principus, kurių laikosi
+              visi asociacijos nariai, vadovai ir atstovaujančios įstaigos.
+            </p>
+          </div>
+
+          {/* Core Values - Highlighted Section */}
+          <div className="bg-gradient-to-br from-gray-50 via-orange-50/30 to-gray-50 border-2 border-orange-200 rounded-3xl p-8 sm:p-10 lg:p-12 shadow-xl mb-16">
+            <p className="text-gray-800 text-xl sm:text-2xl leading-relaxed mb-8 text-center">
+              Kodeksas nustato aiškias vertybes, kuriomis grindžiami KKPDA
+              narių tarpusavio santykiai ir bendravimas su išoriniais
+              partneriais:
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="flex items-center gap-4 bg-white border-2 border-gray-200 rounded-xl p-5 hover:border-[#fe9a00] hover:shadow-lg transition-all">
+                <div className="size-12 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl flex items-center justify-center shrink-0">
+                  <Eye className="size-7 text-[#fe9a00]" />
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-medium text-gray-900 mb-2">
-                    Etikos kodeksas
-                  </h3>
-                  <p className="text-gray-600 text-sm mb-3">
-                    Asociacijos narių elgesio ir profesinės veiklos etikos
-                    standartai
-                  </p>
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <FileText className="size-4" />
-                    <span>{ethicsName || "KKPDA-Etikos-kodeksas.pdf"}</span>
-                  </div>
-                </div>
+                <span className="text-gray-900 font-medium leading-tight">
+                  Skaidrumas ir sąžiningumas
+                </span>
               </div>
 
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <div className="size-1.5 bg-blue-500 rounded-full" />
-                  <span>Profesinės veiklos principai</span>
+              <div className="flex items-center gap-4 bg-white border-2 border-gray-200 rounded-xl p-5 hover:border-[#fe9a00] hover:shadow-lg transition-all">
+                <div className="size-12 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl flex items-center justify-center shrink-0">
+                  <Heart className="size-7 text-[#fe9a00]" />
                 </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <div className="size-1.5 bg-blue-500 rounded-full" />
-                  <span>Narių tarpusavio santykiai</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <div className="size-1.5 bg-blue-500 rounded-full" />
-                  <span>Atsakomybė ir skaidrumas</span>
-                </div>
+                <span className="text-gray-900 font-medium leading-tight">
+                  Pagarba ir pasitikėjimas
+                </span>
               </div>
 
+              <div className="flex items-center gap-4 bg-white border-2 border-gray-200 rounded-xl p-5 hover:border-[#fe9a00] hover:shadow-lg transition-all">
+                <div className="size-12 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl flex items-center justify-center shrink-0">
+                  <Handshake className="size-7 text-[#fe9a00]" />
+                </div>
+                <span className="text-gray-900 font-medium leading-tight">
+                  Etiškas konkuravimas ir verslo solidarumas
+                </span>
+              </div>
+
+              <div className="flex items-center gap-4 bg-white border-2 border-gray-200 rounded-xl p-5 hover:border-[#fe9a00] hover:shadow-lg transition-all">
+                <div className="size-12 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl flex items-center justify-center shrink-0">
+                  <Leaf className="size-7 text-[#fe9a00]" />
+                </div>
+                <span className="text-gray-900 font-medium leading-tight">
+                  Žmogaus teisių ir tvarumo principai
+                </span>
+              </div>
+
+              <div className="flex items-center gap-4 bg-white border-2 border-gray-200 rounded-xl p-5 hover:border-[#fe9a00] hover:shadow-lg transition-all">
+                <div className="size-12 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl flex items-center justify-center shrink-0">
+                  <ShieldX className="size-7 text-[#fe9a00]" />
+                </div>
+                <span className="text-gray-900 font-medium leading-tight">
+                  Korupcijos netoleravimas
+                </span>
+              </div>
+
+              <div className="flex items-center gap-4 bg-white border-2 border-gray-200 rounded-xl p-5 hover:border-[#fe9a00] hover:shadow-lg transition-all">
+                <div className="size-12 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl flex items-center justify-center shrink-0">
+                  <Lock className="size-7 text-[#fe9a00]" />
+                </div>
+                <span className="text-gray-900 font-medium leading-tight">
+                  Reputacijos ir konfidencialumo apsauga
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Section */}
+          <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl p-6 sm:p-8 lg:p-10">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 mb-8 lg:mb-10">
+              <div className="flex gap-3">
+                <CheckCircle className="size-5 text-[#fe9a00] shrink-0 mt-0.5" />
+                <p className="text-gray-700 leading-relaxed text-sm">
+                  Etikos kodeksas įpareigoja visus KKPDA narius elgtis
+                  atsakingai, laikytis sąžiningumo, protingumo ir teisingumo
+                  principų. Jo laikymasis – kiekvieno nario garbės reikalas.
+                </p>
+              </div>
+
+              <div className="flex gap-3">
+                <Scale className="size-5 text-[#fe9a00] shrink-0 mt-0.5" />
+                <p className="text-gray-700 leading-relaxed text-sm">
+                  Pažeidimų atveju sprendimus priima Asociacijos Prezidiumas,
+                  užtikrindamas vienodą, skaidrią ir garbingą standartų
+                  taikymą.
+                </p>
+              </div>
+
+              <div className="flex gap-3">
+                <Shield className="size-5 text-[#fe9a00] shrink-0 mt-0.5" />
+                <p className="text-gray-700 leading-relaxed text-sm italic">
+                  Etika KKPDA – tai ne dokumentas ar veikimo kultūros
+                  pagrindas. Ji grįsta pagarba, atsakomybe ir pasitikėjimu,
+                  kurie kuria stiprų ir patikimą bendruomenės stimulą.
+                </p>
+              </div>
+            </div>
+
+            {/* CTA Button */}
+            <div className="text-center pt-2 lg:pt-4">
               {ethicsUrl ? (
                 <a
                   href={ethicsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-4 rounded-xl font-medium hover:shadow-lg hover:scale-[1.02] transition-all"
+                  className="group inline-flex items-center gap-3 bg-gradient-to-r from-[#fe9a00] to-[#e17100] text-white px-8 py-4 rounded-xl font-medium hover:shadow-xl hover:shadow-orange-500/20 hover:scale-[1.02] transition-all"
                 >
-                  <Download className="size-5" />
-                  Atidaryti dokumentą
+                  <Shield className="size-5" />
+                  Peržiūrėti Etikos Kodeksą
+                  <ExternalLink className="size-4 opacity-75 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </a>
               ) : (
-                <div className="w-full inline-flex items-center justify-center gap-2 bg-gray-300 text-gray-500 px-6 py-4 rounded-xl font-medium cursor-not-allowed">
-                  <Download className="size-5" />
-                  Dokumentas nepasiekiamas
+                <div className="group inline-flex items-center gap-3 bg-gray-300 text-gray-500 px-8 py-4 rounded-xl font-medium cursor-not-allowed">
+                  <Shield className="size-5" />
+                  Peržiūrėti Etikos Kodeksą
+                  <ExternalLink className="size-4 opacity-75" />
                 </div>
               )}
             </div>

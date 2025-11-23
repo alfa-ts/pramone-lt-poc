@@ -4,7 +4,7 @@ export const settingsQuery = defineQuery(`*[_type == "settings"][0]`);
 // Removed: contacts settings singleton no longer used
 
 export const leadershipQuery = defineQuery(`
-  *[_type == "leadership"] | order(role asc, sortOrder asc, name asc) {
+  *[_type == "leadership"] | order(role asc, name asc) {
     _id,
     name,
     position,
@@ -13,10 +13,8 @@ export const leadershipQuery = defineQuery(`
       asset->{
         _id,
         url
-      },
-      alt
+      }
     },
-    sortOrder,
     phone,
     email
   }
@@ -29,13 +27,12 @@ export const newsQuery = defineQuery(`
     slug,
     type,
     isFeatured,
-    excerpt,
+    content,
     "coverImage": coverImage{
       asset->{
         _id,
         url
-      },
-      alt
+      }
     },
     publishedAt
   }
@@ -48,13 +45,12 @@ export const allNewsQuery = defineQuery(`
     slug,
     type,
     isFeatured,
-    excerpt,
+    content,
     "coverImage": coverImage{
       asset->{
         _id,
         url
-      },
-      alt
+      }
     },
     publishedAt,
     eventStartDate,
@@ -81,14 +77,12 @@ export const singleNewsQuery = defineQuery(`
     title,
     slug,
     type,
-    excerpt,
     content,
     "coverImage": coverImage{
       asset->{
         _id,
         url
-      },
-      alt
+      }
     },
     publishedAt,
     eventStartDate,
@@ -113,14 +107,27 @@ export const singleNewsQuery = defineQuery(`
   }
 `);
 
-export const pastPresidentsQuery = defineQuery(`
-  *[_type == "pastPresident"] | order(startYear asc) {
-    _id,
-    name,
-    startYear,
-    endYear
+export const istorijaQuery = defineQuery(`
+  *[_id == "istorija"][0] {
+    ourHistory,
+    kkpdaToday,
+    presidentMessage,
+    "services": services[] {
+      _key,
+      title,
+      description
+    },
+    "pastPresidents": pastPresidents[] {
+      _key,
+      name,
+      startYear,
+      endYear
+    }
   }
 `);
+
+// Backwards compatibility alias
+export const pastPresidentsQuery = istorijaQuery;
 
 export const membersCountQuery = defineQuery(`
   count(*[_type == "member"])
@@ -129,44 +136,40 @@ export const membersCountQuery = defineQuery(`
 export const membersQuery = defineQuery(`
   *[_type == "member"] | order(company asc) {
     _id,
-    person,
-    title,
     company,
-    address,
-    activity,
     "logo": logo{
       asset->{
         _id,
         url
-      },
-      alt
+      }
     }
   }
 `);
 
 export const strategicDirectionsQuery = defineQuery(`
-  *[_type == "strategicDirection"] | order(coalesce(sortOrder, 9999) asc, _createdAt asc) {
-    _id,
-    title,
-    sortOrder
+  *[_id == "veikla"][0] {
+    misija,
+    vizija,
+    "strategicDirections": strategicDirections[] {
+      _key,
+      title
+    }
   }
 `);
 
 export const partnersQuery = defineQuery(`
-  {
-    "cooperate": *[_type == "partner" && group == "cooperate"] | order(coalesce(sortOrder, 9999) asc, title asc) {
-      _id,
+  *[_id == "partneriai"][0] {
+    "cooperate": partnersCooperate[] {
+      _key,
       title,
       "logo": logo.asset->url,
-      extra,
-      isMinistry
+      extra
     },
-    "agreements": *[_type == "partner" && group == "agreements"] | order(coalesce(sortOrder, 9999) asc, title asc) {
-      _id,
+    "agreements": partnersAgreements[] {
+      _key,
       title,
       "logo": logo.asset->url,
-      extra,
-      isMinistry
+      extra
     }
   }
 `);
@@ -190,12 +193,13 @@ export const legalDocumentsQuery = defineQuery(`
 `);
 
 export const activityReportsQuery = defineQuery(`
-  *[_type == "activityReport"] | order(_createdAt asc) {
-    _id,
-    period,
-    "fileUrl": file.asset->url,
-    "fileName": file.asset->originalFilename,
-    _createdAt
+  *[_id == "veikla"][0] {
+    "reports": ataskaitos[] {
+      _key,
+      period,
+      "fileUrl": file.asset->url,
+      "fileName": file.asset->originalFilename
+    }
   }
 `);
 
@@ -239,25 +243,24 @@ export const singleEventQuery = defineQuery(`
 `);
 
 export const membershipInfoQuery = defineQuery(`
-  *[_type == "membershipInfo"][0] {
-    whyJoinTitle,
+  *[_id == "membershipInfo"][0] {
     whyJoinText,
-    "whyJoinFileUrl": whyJoinFile.asset->url,
-    "whyJoinFileName": whyJoinFile.asset->originalFilename,
-    benefitsTitle,
-    benefitsText,
-    "benefitsFileUrl": benefitsFile.asset->url,
-    "benefitsFileName": benefitsFile.asset->originalFilename,
-    feeTitle,
-    feeText,
+    benefitsText[] {
+      _key,
+      title,
+      description1,
+      description2,
+      description3,
+      description4
+    },
+    entryFee,
+    annualFeeDescription,
     "feeImage": feeImage{
       asset->{
         _id,
         url
-      },
-      alt
+      }
     },
-    requiredDocumentsTitle,
     requiredDocuments[] {
       _key,
       title,
