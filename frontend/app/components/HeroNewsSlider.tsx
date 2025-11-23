@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from "react";
 type SliderItem = {
   title: string;
   image: string;
-  alt?: string;
   date?: string;
   slug?: string;
 };
@@ -82,7 +81,7 @@ export default function HeroNewsSlider({ items, autoPlayMs = 6000 }: HeroNewsSli
                 {item.image ? (
                   <Image
                     src={getOptimizedSrc(item.image)}
-                    alt={item.alt || item.title}
+                    alt={`${item.title} nuotrauka`}
                     fill
                     priority={idx === 0}
                     quality={90}

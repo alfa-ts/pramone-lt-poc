@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { GoogleMap } from "@/app/components/GoogleMap";
+import { createExcerpt } from "@/lib/portableTextUtils";
 import {
   Calendar,
   MapPin,
@@ -131,7 +132,7 @@ export default async function EventDetailPage({
             <div className="absolute inset-0 opacity-20">
               <Image
                 src={event.coverImage.asset.url}
-                alt={event.coverImage.alt || event.title}
+                alt={`${event.title} nuotrauka`}
                 fill
                 className="object-cover"
               />
@@ -152,7 +153,7 @@ export default async function EventDetailPage({
             <h1 className="mb-6 text-5xl lg:text-6xl">{event.title}</h1>
 
             <p className="text-xl text-gray-300 leading-relaxed mb-8">
-              {event.excerpt}
+              {createExcerpt(event.content)}
             </p>
 
             <div className="flex flex-wrap items-center gap-6 text-gray-300">

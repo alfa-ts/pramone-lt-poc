@@ -6,6 +6,7 @@ import { OrganizationFacts } from "./components/OrganizationFacts";
 import { MissionVision } from "./components/MissionVision";
 import { MemberBenefits } from "./components/MemberBenefits";
 import { MembershipCTA } from "./components/MembershipCTA";
+import { createExcerpt } from "@/lib/portableTextUtils";
 
 function formatDate(dateString: string) {
   const date = new Date(dateString);
@@ -75,9 +76,9 @@ export default async function Page() {
       date: formatDate(item.publishedAt),
       title: item.title,
       category: formatCategory(item.type),
-      excerpt: item.excerpt,
+      excerpt: createExcerpt(item.content),
       image: item.coverImage?.asset?.url || "",
-      alt: item.coverImage?.alt || item.title,
+      alt: `${item.title} nuotrauka`,
       slug: item.slug?.current || "",
     })) || [];
 

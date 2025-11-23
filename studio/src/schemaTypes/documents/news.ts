@@ -18,8 +18,50 @@ export const news = defineType({
       title: 'URL kelias',
       type: 'slug',
       options: {
-        source: 'title',
-        maxLength: 96,
+        source: (doc: any) => {
+          const timestamp = Math.floor(Date.now() / 1000)
+          return doc.title ? `${doc.title}-${timestamp}` : `naujiena-${timestamp}`
+        },
+        maxLength: 200,
+        isUnique: () => true,
+        slugify: (input: string) => {
+          // Lithuanian to English letter mapping
+          const lithuanianMap: Record<string, string> = {
+            ą: 'a',
+            č: 'c',
+            ę: 'e',
+            ė: 'e',
+            į: 'i',
+            š: 's',
+            ų: 'u',
+            ū: 'u',
+            ž: 'z',
+            Ą: 'A',
+            Č: 'C',
+            Ę: 'E',
+            Ė: 'E',
+            Į: 'I',
+            Š: 'S',
+            Ų: 'U',
+            Ū: 'U',
+            Ž: 'Z',
+          }
+
+          // Replace Lithuanian characters
+          let processed = input
+          Object.keys(lithuanianMap).forEach((char) => {
+            processed = processed.replace(new RegExp(char, 'g'), lithuanianMap[char])
+          })
+
+          // Convert to slug format
+          return processed
+            .toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^\w\-]+/g, '')
+            .replace(/\-\-+/g, '-')
+            .replace(/^-+/, '')
+            .replace(/-+$/, '')
+        },
       },
       validation: (rule) => rule.required(),
     }),
@@ -71,13 +113,6 @@ export const news = defineType({
         }),
     }),
     defineField({
-      name: 'excerpt',
-      title: 'Trumpas aprašymas',
-      type: 'text',
-      rows: 3,
-      validation: (rule) => rule.required().max(300),
-    }),
-    defineField({
       name: 'content',
       title: 'Turinys',
       type: 'blockContent',
@@ -89,26 +124,6 @@ export const news = defineType({
       options: {
         hotspot: true,
       },
-      fields: [
-        defineField({
-          name: 'alt',
-          type: 'string',
-          title: 'Alternatyvus tekstas',
-          description: 'Aprašo nuotrauką.',
-          placeholder: 'Pvz: Nuotrauka apie...',
-          validation: (rule) => {
-            return rule.custom((alt, context) => {
-              if ((context.document?.coverImage as any)?.asset?._ref && !alt) {
-                return {
-                  message: 'Rekomenduojama nurodyti alternatyvų tekstą geresniam prieinamumui',
-                  level: 'warning',
-                }
-              }
-              return true
-            })
-          },
-        }),
-      ],
     }),
     defineField({
       name: 'publishedAt',

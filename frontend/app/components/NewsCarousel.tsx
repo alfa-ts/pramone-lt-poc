@@ -12,7 +12,6 @@ interface NewsItem {
   title: string;
   excerpt: string;
   image: string;
-  alt: string;
   slug: string;
 }
 
@@ -138,7 +137,7 @@ export function NewsCarousel({ news }: NewsCarouselProps) {
               <div className="relative rounded-[3rem] overflow-hidden shadow-2xl">
                 <ImageWithFallback
                   src={news[currentSlide].image || '/images/placeholder.svg'}
-                  alt={news[currentSlide].alt || 'Nuotrauka'}
+                  alt={`${news[currentSlide].title} nuotrauka`}
                   className="w-full h-[500px] lg:h-[650px] xl:h-[750px] object-cover transform group-hover:scale-105 transition-transform duration-700"
                 />
                 {/* Gradient overlay */}

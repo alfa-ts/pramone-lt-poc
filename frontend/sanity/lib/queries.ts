@@ -27,13 +27,12 @@ export const newsQuery = defineQuery(`
     slug,
     type,
     isFeatured,
-    excerpt,
+    content,
     "coverImage": coverImage{
       asset->{
         _id,
         url
-      },
-      alt
+      }
     },
     publishedAt
   }
@@ -46,13 +45,12 @@ export const allNewsQuery = defineQuery(`
     slug,
     type,
     isFeatured,
-    excerpt,
+    content,
     "coverImage": coverImage{
       asset->{
         _id,
         url
-      },
-      alt
+      }
     },
     publishedAt,
     eventStartDate,
@@ -79,14 +77,12 @@ export const singleNewsQuery = defineQuery(`
     title,
     slug,
     type,
-    excerpt,
     content,
     "coverImage": coverImage{
       asset->{
         _id,
         url
-      },
-      alt
+      }
     },
     publishedAt,
     eventStartDate,
