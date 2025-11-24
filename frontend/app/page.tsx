@@ -84,6 +84,7 @@ export default async function Page() {
       image: item.coverImage?.asset?.url || "",
       alt: `${item.title} nuotrauka`,
       slug: item.slug?.current || "",
+      type: item.type,
     })) || [];
 
   // Get partners with logos for the slider

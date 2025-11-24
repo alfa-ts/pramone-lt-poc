@@ -13,6 +13,7 @@ interface NewsItem {
   excerpt: string;
   image: string;
   slug: string;
+  type: string;
 }
 
 interface NewsCarouselProps {
@@ -73,7 +74,7 @@ export function NewsCarousel({ news }: NewsCarouselProps) {
 
             {/* CTA Buttons */}
             <div className="flex flex-wrap gap-4 pt-4">
-              <Link href={`/naujienos/${news[currentSlide].slug}`}>
+              <Link href={`/${news[currentSlide].type === 'renginys' ? 'renginiai' : 'naujienos'}/${news[currentSlide].slug}`}>
                 <Button className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white px-8 py-6 text-lg shadow-xl hover:shadow-2xl transition-all group">
                   Plačiau
                   <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
