@@ -61,6 +61,15 @@ export async function generateMetadata(): Promise<Metadata> {
     authors: [{ name: "KKPDA" }],
     creator: "KKPDA",
     publisher: "KKPDA",
+    manifest: "/site.webmanifest",
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "any" },
+      ],
+      apple: [
+        { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+      ],
+    },
     openGraph: {
       type: "website",
       locale: "lt_LT",
