@@ -27,7 +27,7 @@ export function OrganizationFacts({ yearsOfActivity, membersCount }: Organizatio
     },
     {
       icon: Users,
-      title: `${membersCount}+ narių`,
+      title: `${membersCount} narių`,
       description: 'Kauno krašto pramonininkų ir darbdavių asociacija – savarankiška pelno nesiekianti organizacija vienijanti verslo lyderius.',
       link: '/nariai',
       linkText: 'Plačiau',

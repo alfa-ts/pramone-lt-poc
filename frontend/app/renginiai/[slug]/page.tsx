@@ -5,16 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { GoogleMap } from "@/app/components/GoogleMap";
+import { ShareButtons } from "@/app/components/ShareButtons";
 import { createExcerpt } from "@/lib/portableTextUtils";
+import type { Metadata } from "next";
 import {
   Calendar,
   MapPin,
   Users,
   Clock,
   Tag,
-  Facebook,
-  Twitter,
-  Linkedin,
   ChevronRight,
   ArrowRight,
   Download,
@@ -77,6 +76,72 @@ function formatFileSize(bytes?: number) {
   const mb = kb / 1024;
   if (mb >= 1) return `${mb.toFixed(1)} MB`;
   return `${kb.toFixed(0)} KB`;
+}
+
+/**
+ * Generate metadata for social sharing (Open Graph, Twitter Cards)
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const { data: event } = await sanityFetch({
+    query: singleNewsQuery,
+    params: { slug },
+    stega: false, // Metadata should never contain stega
+  });
+
+  if (!event) {
+    return {
+      title: "Renginys nerastas",
+      description: "Šis renginys neegzistuoja arba buvo pašalintas.",
+    };
+  }
+
+  // Create description from content
+  const description = createExcerpt(event.content as any, 160);
+
+  // Get cover image URL for Open Graph
+  const coverImageUrl = event.coverImage?.asset?.url;
+
+  const title = event.title || "Renginys";
+  const eventTime = event.eventStartDate 
+    ? formatEventTime(event.eventStartDate, event.eventEndDate)
+    : null;
+
+  const fullDescription = eventTime 
+    ? `${eventTime}. ${description}`
+    : description;
+
+  return {
+    title,
+    description: fullDescription,
+    openGraph: {
+      title,
+      description: fullDescription,
+      type: "article",
+      publishedTime: event.publishedAt,
+      authors: ["KKPDA"],
+      images: coverImageUrl
+        ? [
+            {
+              url: coverImageUrl,
+              width: 1200,
+              height: 630,
+              alt: `${event.title} nuotrauka`,
+            },
+          ]
+        : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: fullDescription,
+      images: coverImageUrl ? [coverImageUrl] : [],
+    },
+  };
 }
 
 export default async function EventDetailPage({
@@ -191,18 +256,11 @@ export default async function EventDetailPage({
                   <ArrowRight className="size-5" />
                 </a>
               )}
-              <div className="flex items-center gap-2">
-                <span className="text-gray-400 text-sm">Dalintis:</span>
-                <button className="size-10 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg flex items-center justify-center hover:bg-[#1877f2] hover:border-[#1877f2] transition-all">
-                  <Facebook className="size-5" />
-                </button>
-                <button className="size-10 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg flex items-center justify-center hover:bg-[#1da1f2] hover:border-[#1da1f2] transition-all">
-                  <Twitter className="size-5" />
-                </button>
-                <button className="size-10 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg flex items-center justify-center hover:bg-[#0077b5] hover:border-[#0077b5] transition-all">
-                  <Linkedin className="size-5" />
-                </button>
-              </div>
+              <ShareButtons
+                title={event.title}
+                description={createExcerpt(event.content as any, 160)}
+                variant="dark"
+              />
             </div>
           </div>
         </div>

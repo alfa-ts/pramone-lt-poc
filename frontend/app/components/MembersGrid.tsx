@@ -59,14 +59,11 @@ export function MembersGrid({ members }: MembersGridProps) {
           {filteredMembers.map((member, index) => (
             <div
               key={member._id}
-              className="group bg-white border border-gray-200 rounded-xl p-6 hover:border-[#fe9a00] hover:shadow-xl transition-all duration-300 relative overflow-hidden"
+              className="group bg-white hover:bg-gray-50 border border-gray-200 hover:border-gray-300 rounded-xl p-4 hover:shadow-lg transition-all duration-300 relative overflow-hidden"
             >
-              {/* Gradient overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#fe9a00]/5 to-[#e17100]/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-
               <div className="relative">
                 {/* Logo */}
-                <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-6 mb-4 h-32 flex items-center justify-center group-hover:from-orange-50 group-hover:to-orange-100 transition-all overflow-hidden">
+                <div className="bg-white rounded-lg p-4 mb-3 h-32 flex items-center justify-center transition-all overflow-hidden">
                   {member.logo?.asset?.url ? (
                     <div className="relative w-full h-full">
                       <Image
@@ -79,8 +76,8 @@ export function MembersGrid({ members }: MembersGridProps) {
                     </div>
                   ) : (
                     <div className="text-center">
-                      <Building2 className="size-10 text-gray-300 group-hover:text-[#fe9a00] transition-colors mx-auto mb-2" />
-                      <p className="text-xs text-gray-400 group-hover:text-[#fe9a00] transition-colors">
+                      <Building2 className="size-10 text-gray-300 group-hover:text-gray-400 transition-colors mx-auto mb-2" />
+                      <p className="text-xs text-gray-400 group-hover:text-gray-500 transition-colors">
                         LOGO
                       </p>
                     </div>
@@ -89,7 +86,7 @@ export function MembersGrid({ members }: MembersGridProps) {
 
                 {/* Company name */}
                 <div className="text-center">
-                  <h3 className="text-lg font-medium text-gray-900 group-hover:text-[#fe9a00] transition-colors">
+                  <h3 className="text-lg font-medium text-gray-900 transition-colors">
                     {member.company}
                   </h3>
                 </div>

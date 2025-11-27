@@ -47,3 +47,24 @@ export function createExcerpt(
     : truncated + "...";
 }
 
+/**
+ * Calculates reading time in minutes based on content
+ * @param content - The Portable Text content
+ * @param wordsPerMinute - Average reading speed (default: 130)
+ * @returns Reading time in minutes
+ */
+export function calculateReadingTime(
+  content: BlockContent | null | undefined,
+  wordsPerMinute: number = 130
+): number {
+  const plainText = toPlainText(content);
+  
+  // Count words (split by whitespace and filter out empty strings)
+  const wordCount = plainText.split(/\s+/).filter(word => word.length > 0).length;
+  
+  // Calculate reading time in minutes, round up to at least 1 minute
+  const readingTime = Math.ceil(wordCount / wordsPerMinute);
+  
+  return Math.max(1, readingTime);
+}
+
