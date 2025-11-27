@@ -134,7 +134,7 @@ export const membersCountQuery = defineQuery(`
 `);
 
 export const membersQuery = defineQuery(`
-  *[_type == "member"] | order(company asc) {
+  *[_type == "member"] | order(lower(company) asc) {
     _id,
     company,
     "logo": logo{
