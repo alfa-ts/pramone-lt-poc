@@ -6,15 +6,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { GoogleMap } from "@/app/components/GoogleMap";
 import { NewsSidebar } from "@/app/components/NewsSidebar";
+import { ShareButtons } from "@/app/components/ShareButtons";
+import { calculateReadingTime, createExcerpt } from "@/lib/portableTextUtils";
+import type { Metadata } from "next";
 import {
   Calendar,
   MapPin,
   Users,
   Clock,
   Tag,
-  Facebook,
-  Twitter,
-  Linkedin,
   ChevronRight,
 } from "lucide-react";
 
@@ -63,6 +63,65 @@ function formatEventTime(startDate?: string, endDate?: string | null) {
   return `${formatFullDate(start)}, ${formatTime(start)}`;
 }
 
+/**
+ * Generate metadata for social sharing (Open Graph, Twitter Cards)
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const { data: news } = await sanityFetch({
+    query: singleNewsQuery,
+    params: { slug },
+    stega: false, // Metadata should never contain stega
+  });
+
+  if (!news) {
+    return {
+      title: "Naujiena nerasta",
+      description: "Ši naujiena neegzistuoja arba buvo pašalinta.",
+    };
+  }
+
+  // Create description from content
+  const description = createExcerpt(news.content as any, 160);
+
+  // Get cover image URL for Open Graph
+  const coverImageUrl = news.coverImage?.asset?.url;
+
+  const title = news.title || "Naujiena";
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      publishedTime: news.publishedAt,
+      authors: ["KKPDA"],
+      images: coverImageUrl
+        ? [
+            {
+              url: coverImageUrl,
+              width: 1200,
+              height: 630,
+              alt: `${news.title} nuotrauka`,
+            },
+          ]
+        : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: coverImageUrl ? [coverImageUrl] : [],
+    },
+  };
+}
+
 export default async function NewsDetailPage({
   params,
 }: {
@@ -81,6 +140,9 @@ export default async function NewsDetailPage({
   if (!news) {
     notFound();
   }
+
+  // Calculate reading time based on content
+  const readingTime = calculateReadingTime(news.content as any);
 
   return (
     <div className="min-h-screen bg-white">
@@ -129,24 +191,14 @@ export default async function NewsDetailPage({
             </div>
             <div className="flex items-center gap-2">
               <Clock className="size-5 text-[#fe9a00]" />
-              <span>5 min skaitymo</span>
+              <span>{readingTime} min skaitymo</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="text-gray-600 text-sm font-medium">Dalintis:</span>
-            <div className="flex items-center gap-2">
-              <button className="size-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center hover:bg-[#1877f2] hover:text-white hover:border-[#1877f2] transition-all group">
-                <Facebook className="size-5" />
-              </button>
-              <button className="size-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center hover:bg-[#1da1f2] hover:text-white hover:border-[#1da1f2] transition-all group">
-                <Twitter className="size-5" />
-              </button>
-              <button className="size-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center hover:bg-[#0077b5] hover:text-white hover:border-[#0077b5] transition-all group">
-                <Linkedin className="size-5" />
-              </button>
-            </div>
-          </div>
+          <ShareButtons
+            title={news.title}
+            description={createExcerpt(news.content as any, 160)}
+          />
         </div>
       </section>
 
