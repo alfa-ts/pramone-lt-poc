@@ -99,34 +99,63 @@ export function MissionVision({ misija, vizija, strategicDirections }: MissionVi
             <h2 className="text-4xl text-gray-900 mb-4">
               Strateginės veiklos kryptys
             </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Keturios pagrindinės kryptys, kuriomis judame siekdami savo tikslų ir kuriame vertę nariams
+            </p>
           </div>
 
-          {/* Bubbles in single line */}
-          <div className="flex flex-wrap justify-center items-center gap-6 lg:gap-10 max-w-6xl mx-auto">
-            {strategic.map((item, index) => (
-              <div
-                key={item.title || index}
-                className="group relative flex-shrink-0"
-              >
-                {/* Glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full blur-2xl opacity-20 group-hover:opacity-40 transition-opacity scale-110"></div>
-                
-                {/* Bubble */}
-                <div className="relative w-52 h-52 lg:w-60 lg:h-60 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-2xl hover:shadow-amber-300/50 transition-all duration-300 hover:scale-105 p-6 border-4 border-white">
-                  {/* Number Badge */}
-                  <div className="absolute -top-4 -right-4 w-14 h-14 lg:w-16 lg:h-16 rounded-full bg-white flex items-center justify-center shadow-xl border-4 border-amber-100 group-hover:border-amber-200 transition-colors">
-                    <span className="text-2xl font-bold bg-gradient-to-br from-amber-400 to-amber-600 bg-clip-text text-transparent">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
+          {/* Vertical Flowing Design with Alternating Layout */}
+          <div className="max-w-5xl mx-auto space-y-12">
+            {strategic.map((item, index) => {
+              const isLeft = index % 2 === 0;
+              const gradients = [
+                'from-amber-500 to-orange-600',
+                'from-amber-600 to-amber-700',
+                'from-orange-500 to-amber-600',
+                'from-amber-400 to-orange-500',
+              ];
+              const gradient = gradients[index % gradients.length];
+              
+              return (
+                <div key={item.title || index} className="group relative">
+                  {/* Background Gradient Blob */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${gradient} rounded-3xl opacity-0 group-hover:opacity-5 transition-opacity duration-500 blur-xl`}></div>
+                  
+                  <div className={`relative flex flex-col ${isLeft ? 'lg:flex-row' : 'lg:flex-row-reverse'} items-center gap-8 lg:gap-12`}>
+                    {/* Large Decorative Number Side */}
+                    <div className="flex-shrink-0 lg:w-1/3">
+                      <div className={`flex ${isLeft ? 'lg:justify-end' : 'lg:justify-start'} justify-center`}>
+                        <div className="relative">
+                          {/* Giant Number */}
+                          <div className={`text-[120px] lg:text-[160px] leading-none bg-gradient-to-br ${gradient} bg-clip-text text-transparent opacity-20 group-hover:opacity-30 transition-opacity duration-500 select-none`}>
+                            {String(index + 1).padStart(2, '0')}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Content Side */}
+                    <div className="flex-1 lg:w-2/3">
+                      <div className={`${isLeft ? 'lg:text-left' : 'lg:text-right'} text-center`}>
+                        <h3 className="text-2xl lg:text-3xl text-gray-900 mb-4 leading-tight group-hover:text-amber-700 transition-colors duration-300">
+                          {item.title}
+                        </h3>
+                        
+                        {/* Decorative Line */}
+                        <div className={`flex ${isLeft ? 'lg:justify-start' : 'lg:justify-end'} justify-center`}>
+                          <div className={`h-1 w-24 bg-gradient-to-r ${gradient} rounded-full group-hover:w-40 transition-all duration-500`}></div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-
-                  {/* Title */}
-                  <p className="text-center text-white leading-relaxed text-sm lg:text-base font-medium">
-                    {item.title}
-                  </p>
+                  
+                  {/* Connecting Line to Next Item */}
+                  {index < strategic.length - 1 && (
+                    <div className="hidden lg:block absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-6 w-px h-12 bg-gradient-to-b from-amber-300 to-transparent opacity-30"></div>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

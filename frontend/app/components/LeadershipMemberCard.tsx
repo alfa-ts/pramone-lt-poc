@@ -8,6 +8,7 @@ interface LeadershipMemberCardProps {
   alt?: string;
   phone?: string;
   email?: string;
+  variant?: "president" | "member";
 }
 
 export function LeadershipMemberCard({
@@ -17,10 +18,16 @@ export function LeadershipMemberCard({
   alt,
   phone,
   email,
+  variant = "member",
 }: LeadershipMemberCardProps) {
+  const isPresident = variant === "president";
+  const imageAspect = isPresident ? "aspect-[3/4]" : "aspect-square";
+  const imagePadding = isPresident ? "p-4" : "p-3";
+  const contentPadding = isPresident ? "p-6" : "p-4";
+
   return (
     <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow">
-      <div className="aspect-[3/4] bg-gray-100 overflow-hidden p-4">
+      <div className={`${imageAspect} bg-gray-100 overflow-hidden ${imagePadding}`}>
         <div className="relative w-full h-full rounded-xl overflow-hidden">
           <Image
             src={image}
@@ -31,7 +38,7 @@ export function LeadershipMemberCard({
           />
         </div>
       </div>
-      <div className="p-6">
+      <div className={contentPadding}>
         <h4 className="text-lg font-medium text-gray-900 mb-1">{name}</h4>
         <p className="text-gray-600 mb-4 text-sm">{position}</p>
         {(phone || email) && (

@@ -120,39 +120,65 @@ export default async function PartneriaiPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {cooperate.map((partner) => (
-              <div
-                key={partner._key}
-                className="group bg-white border border-gray-200 rounded-xl p-5 hover:border-[#fe9a00] hover:shadow-lg transition-all duration-300 relative overflow-hidden"
-              >
-                {/* Gradient overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#fe9a00]/5 to-[#e17100]/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="space-y-12">
+            {/* Partners with logos */}
+            {cooperate.filter((p) => p.logo).length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {cooperate
+                  .filter((p) => p.logo)
+                  .map((partner) => (
+                    <div
+                      key={partner._key}
+                      className="group bg-white border border-gray-200 rounded-xl p-6 hover:border-[#fe9a00] hover:shadow-lg transition-all duration-300 relative overflow-hidden"
+                    >
+                      {/* Gradient overlay on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#fe9a00]/5 to-[#e17100]/5 opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                <div className="relative">
-                  <div className="flex flex-col gap-3">
-                    <div className="h-16 flex items-center justify-center bg-white rounded-lg p-2">
-                      {partner.logo ? (
-                        <Image
-                          src={partner.logo}
-                          alt={`${partner.title} logotipas`}
-                          width={200}
-                          height={64}
-                          className="max-h-full max-w-full object-contain"
-                        />
-                      ) : (
-                        <div className="h-full aspect-[3/1] bg-gradient-to-br from-gray-100 to-gray-200 rounded flex items-center justify-center group-hover:from-orange-100 group-hover:to-orange-200 transition-all">
-                          <Building2 className="size-6 text-gray-400 group-hover:text-[#fe9a00] transition-colors" />
+                      <div className="relative">
+                        <div className="flex flex-col gap-4">
+                          <div className="h-28 flex items-center justify-center rounded-lg p-4">
+                            <Image
+                              src={partner.logo!}
+                              alt={`${partner.title} logotipas`}
+                              width={200}
+                              height={112}
+                              className="max-h-full max-w-full object-contain"
+                            />
+                          </div>
+                          <p className="text-gray-900 text-sm text-center leading-snug">
+                            {partner.title}
+                          </p>
                         </div>
-                      )}
+                      </div>
                     </div>
-                    <p className="text-gray-900 text-sm text-center leading-snug">
-                      {partner.title}
-                    </p>
+                  ))}
+              </div>
+            )}
+
+            {/* Partners without logos */}
+            {cooperate.filter((p) => !p.logo).length > 0 && (
+              <div className="max-w-5xl mx-auto">
+                <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-200">
+                    {cooperate
+                      .filter((p) => !p.logo)
+                      .map((partner) => (
+                        <div
+                          key={partner._key}
+                          className="bg-white p-4 hover:bg-gray-50 transition-colors group"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="size-2 rounded-full bg-gray-300 group-hover:bg-[#fe9a00] transition-colors shrink-0" />
+                            <p className="text-gray-700 text-sm group-hover:text-gray-900 transition-colors">
+                              {partner.title}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
                   </div>
                 </div>
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>

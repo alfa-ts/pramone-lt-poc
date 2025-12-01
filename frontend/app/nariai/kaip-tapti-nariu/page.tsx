@@ -1,5 +1,5 @@
 import { sanityFetch } from "@/sanity/lib/live";
-import { membershipInfoQuery } from "@/sanity/lib/queries";
+import { membershipInfoQuery, contactInfoQuery } from "@/sanity/lib/queries";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -19,6 +19,7 @@ import ImageModal from "@/app/components/ImageModal";
 
 export default async function KaipTaptiNariuPage() {
   const { data } = await sanityFetch({ query: membershipInfoQuery });
+  const { data: contactInfo } = await sanityFetch({ query: contactInfoQuery });
 
   return (
     <div className="min-h-screen bg-white">
@@ -493,38 +494,46 @@ export default async function KaipTaptiNariuPage() {
               <h3 className="text-2xl text-white mb-6">Susisiekite su mumis</h3>
 
               <div className="space-y-4 mb-6">
-                <div className="flex items-start gap-3 text-white">
-                  <MapPin className="size-5 text-amber-200 shrink-0 mt-1" />
-                  <div>
-                    <p className="text-base mb-1">Adresas</p>
-                    <p className="text-sm text-amber-100">Donelaičio g. 2, 119 kab., Kaunas</p>
+                {contactInfo?.address && (
+                  <div className="flex items-start gap-3 text-white">
+                    <MapPin className="size-5 text-amber-200 shrink-0 mt-1" />
+                    <div>
+                      <p className="text-base mb-1">Adresas</p>
+                      <p className="text-sm text-amber-100">{contactInfo.address}</p>
+                    </div>
                   </div>
-                </div>
+                )}
 
-                <div className="flex items-start gap-3 text-white">
-                  <Phone className="size-5 text-amber-200 shrink-0 mt-1" />
-                  <div>
-                    <p className="text-base mb-1">Telefonas</p>
-                    <p className="text-sm text-amber-100">+370 37 409 578</p>
+                {contactInfo?.phone && (
+                  <div className="flex items-start gap-3 text-white">
+                    <Phone className="size-5 text-amber-200 shrink-0 mt-1" />
+                    <div>
+                      <p className="text-base mb-1">Telefonas</p>
+                      <p className="text-sm text-amber-100">{contactInfo.phone}</p>
+                    </div>
                   </div>
-                </div>
+                )}
 
-                <div className="flex items-start gap-3 text-white">
-                  <Mail className="size-5 text-amber-200 shrink-0 mt-1" />
-                  <div>
-                    <p className="text-base mb-1">El. paštas</p>
-                    <p className="text-sm text-amber-100">info@pramone.lt</p>
+                {contactInfo?.email && (
+                  <div className="flex items-start gap-3 text-white">
+                    <Mail className="size-5 text-amber-200 shrink-0 mt-1" />
+                    <div>
+                      <p className="text-base mb-1">El. paštas</p>
+                      <p className="text-sm text-amber-100">{contactInfo.email}</p>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
-              <a
-                href="mailto:info@pramone.lt"
-                className="bg-white text-[#fe9a00] px-6 py-3 rounded-lg font-medium hover:bg-amber-50 transition-colors w-full inline-flex items-center justify-center gap-2"
-              >
-                <Send className="size-5" />
-                Siųsti užklausą
-              </a>
+              {contactInfo?.email && (
+                <a
+                  href={`mailto:${contactInfo.email}`}
+                  className="bg-white text-[#fe9a00] px-6 py-3 rounded-lg font-medium hover:bg-amber-50 transition-colors w-full inline-flex items-center justify-center gap-2"
+                >
+                  <Send className="size-5" />
+                  Siųsti užklausą
+                </a>
+              )}
             </div>
           </div>
         </div>

@@ -129,6 +129,7 @@ export default async function ValdymasPage() {
                 alt={`${president.name} nuotrauka`}
                 phone={president.phone || undefined}
                 email={president.email || undefined}
+                variant="president"
               />
             </div>
           </div>
@@ -181,7 +182,7 @@ export default async function ValdymasPage() {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {presidiumMembers.map((member: LeadershipMember) => (
               <LeadershipMemberCard
                 key={member._id}
@@ -211,7 +212,7 @@ export default async function ValdymasPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {honoraryMembers.map((member: LeadershipMember) => (
                 <LeadershipMemberCard
                   key={member._id}
