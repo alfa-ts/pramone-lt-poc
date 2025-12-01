@@ -44,9 +44,9 @@ export default async function KontaktaiPage() {
           {(contactPhone || contactEmail) && (
             <div className="max-w-3xl mx-auto mb-16">
               <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-8 border border-gray-100">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Phone */}
-                  {contactPhone && (
+                {contactPhone && contactEmail ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Phone */}
                     <a 
                       href={`tel:${contactPhone.replace(/\s/g, "")}`}
                       className="flex items-center gap-4 p-6 bg-white rounded-xl border-2 border-gray-100 hover:border-[#fe9a00] hover:shadow-md transition-all group"
@@ -61,10 +61,8 @@ export default async function KontaktaiPage() {
                         </div>
                       </div>
                     </a>
-                  )}
 
-                  {/* Email */}
-                  {contactEmail && (
+                    {/* Email */}
                     <a 
                       href={`mailto:${contactEmail}`}
                       className="flex items-center gap-4 p-6 bg-white rounded-xl border-2 border-gray-100 hover:border-[#fe9a00] hover:shadow-md transition-all group"
@@ -79,8 +77,43 @@ export default async function KontaktaiPage() {
                         </div>
                       </div>
                     </a>
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <div className="flex justify-center">
+                    {contactPhone && (
+                      <a 
+                        href={`tel:${contactPhone.replace(/\s/g, "")}`}
+                        className="flex items-center gap-4 p-6 bg-white rounded-xl border-2 border-gray-100 hover:border-[#fe9a00] hover:shadow-md transition-all group"
+                      >
+                        <div className="size-14 bg-gradient-to-br from-[#fe9a00] to-[#e17100] rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                          <Phone className="size-7 text-white" />
+                        </div>
+                        <div>
+                          <div className="text-sm text-gray-600 mb-1">Telefonas</div>
+                          <div className="text-sm md:text-lg text-gray-900 group-hover:text-[#fe9a00] transition-colors">
+                            {contactPhone}
+                          </div>
+                        </div>
+                      </a>
+                    )}
+                    {contactEmail && (
+                      <a 
+                        href={`mailto:${contactEmail}`}
+                        className="flex items-center gap-4 p-6 bg-white rounded-xl border-2 border-gray-100 hover:border-[#fe9a00] hover:shadow-md transition-all group"
+                      >
+                        <div className="size-14 bg-gradient-to-br from-[#fe9a00] to-[#e17100] rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                          <Mail className="size-7 text-white" />
+                        </div>
+                        <div>
+                          <div className="text-sm text-gray-600 mb-1">El. paštas</div>
+                          <div className="text-sm md:text-lg text-gray-900 group-hover:text-[#fe9a00] transition-colors break-all">
+                            {contactEmail}
+                          </div>
+                        </div>
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           )}
