@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { Mail, Phone, MapPin, Building2 } from "lucide-react";
+import { sanityFetch } from "@/sanity/lib/live";
+import { contactInfoQuery } from "@/sanity/lib/queries";
 
-export default function Footer() {
+export default async function Footer() {
+  const { data: contactInfo } = await sanityFetch({
+    query: contactInfoQuery,
+  });
   return (
     <footer className="bg-gray-900 text-white py-16">
       <div className="max-w-7xl mx-auto px-8">
@@ -74,33 +79,43 @@ export default function Footer() {
           </div>
 
           {/* Contact Info */}
-          <div>
-            <h4 className="mb-4 text-white">Kontaktai</h4>
-            <ul className="space-y-3 text-sm">
-              <li className="flex items-start gap-2 text-gray-400">
-                <MapPin className="size-4 text-[#fe9a00] mt-0.5 shrink-0" />
-                <span>Donelaičio g. 2, 119 kab., Kaunas</span>
-              </li>
-              <li className="flex items-center gap-2 text-gray-400">
-                <Phone className="size-4 text-[#fe9a00] shrink-0" />
-                <a
-                  href="tel:+37037409578"
-                  className="hover:text-white transition-colors"
-                >
-                  +370 37 409 578
-                </a>
-              </li>
-              <li className="flex items-center gap-2 text-gray-400">
-                <Mail className="size-4 text-[#fe9a00] shrink-0" />
-                <a
-                  href="mailto:info@pramone.lt"
-                  className="hover:text-white transition-colors"
-                >
-                  info@pramone.lt
-                </a>
-              </li>
-            </ul>
-          </div>
+          {(contactInfo?.address ||
+            contactInfo?.phone ||
+            contactInfo?.email) && (
+            <div>
+              <h4 className="mb-4 text-white">Kontaktai</h4>
+              <ul className="space-y-3 text-sm">
+                {contactInfo?.address && (
+                  <li className="flex items-start gap-2 text-gray-400">
+                    <MapPin className="size-4 text-[#fe9a00] mt-0.5 shrink-0" />
+                    <span>{contactInfo.address}</span>
+                  </li>
+                )}
+                {contactInfo?.phone && (
+                  <li className="flex items-center gap-2 text-gray-400">
+                    <Phone className="size-4 text-[#fe9a00] shrink-0" />
+                    <a
+                      href={`tel:${contactInfo.phone.replace(/\s/g, "")}`}
+                      className="hover:text-white transition-colors"
+                    >
+                      {contactInfo.phone}
+                    </a>
+                  </li>
+                )}
+                {contactInfo?.email && (
+                  <li className="flex items-center gap-2 text-gray-400">
+                    <Mail className="size-4 text-[#fe9a00] shrink-0" />
+                    <a
+                      href={`mailto:${contactInfo.email}`}
+                      className="hover:text-white transition-colors"
+                    >
+                      {contactInfo.email}
+                    </a>
+                  </li>
+                )}
+              </ul>
+            </div>
+          )}
 
           {/* Social Media */}
           <div>
@@ -140,13 +155,12 @@ export default function Footer() {
                 </svg>
               </a>
             </div>
-            <p className="text-gray-500 text-xs mt-6">Įmonės kodas: 134778710</p>
           </div>
         </div>
 
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-sm text-gray-500">
-          © 2025 Kauno krašto pramonininkų ir darbdavių asociacija. Visos teisės
-          saugomos.
+          © {new Date().getFullYear()} Kauno krašto pramonininkų ir darbdavių
+          asociacija. Visos teisės saugomos.
         </div>
       </div>
     </footer>

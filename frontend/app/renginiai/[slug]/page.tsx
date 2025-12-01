@@ -1,5 +1,5 @@
 import { sanityFetch } from "@/sanity/lib/live";
-import { singleNewsQuery, recentNewsQuery } from "@/sanity/lib/queries";
+import { singleNewsQuery, recentNewsQuery, contactInfoQuery } from "@/sanity/lib/queries";
 import PortableText from "@/app/components/PortableText";
 import Image from "next/image";
 import Link from "next/link";
@@ -157,6 +157,10 @@ export default async function EventDetailPage({
 
   const { data: recentEvents } = await sanityFetch({
     query: recentNewsQuery,
+  });
+
+  const { data: contactInfo } = await sanityFetch({
+    query: contactInfoQuery,
   });
 
   if (!event || event.type !== "renginys") {
@@ -551,32 +555,40 @@ export default async function EventDetailPage({
                 )}
 
                 {/* Contact Info */}
-                <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-xl p-6">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Info className="size-5 text-[#fe9a00]" />
-                    <h3 className="mb-0">Kontaktai</h3>
-                  </div>
-                  <div className="space-y-3 text-sm">
-                    <a
-                      href="tel:+37037409578"
-                      className="flex items-center gap-2 text-gray-600 hover:text-[#fe9a00] transition-colors"
-                    >
-                      <Phone className="size-4 shrink-0" />
-                      <span>+370 37 409 578</span>
-                    </a>
-                    <a
-                      href="mailto:info@pramone.lt"
-                      className="flex items-center gap-2 text-gray-600 hover:text-[#fe9a00] transition-colors"
-                    >
-                      <Mail className="size-4 shrink-0" />
-                      <span>info@pramone.lt</span>
-                    </a>
-                    <div className="flex items-start gap-2 text-gray-600">
-                      <MapPin className="size-4 shrink-0 mt-0.5" />
-                      <span>Donelaičio g. 2, 119 kab., Kaunas</span>
+                {(contactInfo?.address || contactInfo?.phone || contactInfo?.email) && (
+                  <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-xl p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <Info className="size-5 text-[#fe9a00]" />
+                      <h3 className="mb-0">Kontaktai</h3>
+                    </div>
+                    <div className="space-y-3 text-sm">
+                      {contactInfo?.phone && (
+                        <a
+                          href={`tel:${contactInfo.phone.replace(/\s/g, "")}`}
+                          className="flex items-center gap-2 text-gray-600 hover:text-[#fe9a00] transition-colors"
+                        >
+                          <Phone className="size-4 shrink-0" />
+                          <span>{contactInfo.phone}</span>
+                        </a>
+                      )}
+                      {contactInfo?.email && (
+                        <a
+                          href={`mailto:${contactInfo.email}`}
+                          className="flex items-center gap-2 text-gray-600 hover:text-[#fe9a00] transition-colors"
+                        >
+                          <Mail className="size-4 shrink-0" />
+                          <span>{contactInfo.email}</span>
+                        </a>
+                      )}
+                      {contactInfo?.address && (
+                        <div className="flex items-start gap-2 text-gray-600">
+                          <MapPin className="size-4 shrink-0 mt-0.5" />
+                          <span>{contactInfo.address}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
