@@ -31,18 +31,12 @@ export function PartnersSlider({ partners }: PartnersSliderProps) {
   ];
 
   return (
-    <section className="relative py-16 overflow-hidden bg-gradient-to-br from-amber-50 via-amber-50/50 to-white">
-      {/* Subtle decorative background */}
-      <div className="absolute inset-0 opacity-[0.03]">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-400 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-amber-500 rounded-full blur-3xl"></div>
-      </div>
-
+    <section className="relative overflow-hidden bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         {/* Infinite scroll container */}
         <div className="relative">
           {/* Gradient fade edges */}
-          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-amber-50 to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
           <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
 
           {/* Scrolling logos */}
@@ -70,7 +64,7 @@ export function PartnersSlider({ partners }: PartnersSliderProps) {
         <div className="text-center mt-8">
           <Link
             href="/apie/partneriai"
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-amber-600 transition-colors group text-sm"
+            className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors group text-sm"
           >
             <span>Visi partneriai</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -89,7 +83,7 @@ export function PartnersSlider({ partners }: PartnersSliderProps) {
         }
 
         .animate-scroll {
-          animation: scroll 20s linear infinite;
+          animation: scroll 40s linear infinite;
           width: max-content;
         }
       `}</style>
